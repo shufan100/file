@@ -8,4 +8,5 @@ react:
 	https://www.cnblogs.com/Michelle20180227/p/10129873.html
 	https://www.ruanyifeng.com/blog/2015/03/react.html
 
-react-router：https://react-router.docschina.org/web/guides/philosophy
+react-router：https://react-router.docschina.org/
+	web：https://react-router.docschina.org/web/guides/philosophy
