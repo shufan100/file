@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+</body>
+</html>
+<script type="text/javascript">
+// 一、异步（宏队列）
+	// 1、 计数器（setTimeout,setInterval）
+	// 2、 ajax
+	// 3、 读取文件
+	
+// 二、单线程
+	// js是单线程、一个任务完成后才能执行另一个任务
+
+// 三、process.nextTick 和 setImmediate 方法
+
+	// setImmediate(()=>{
+	//   console.log(0)
+	// })
+	// console.log(1)
+	// process.nextTick(()=>{
+	//   console.log(2)
+	// })
+	// console.log(3)
+	// setTimeout(()=>{console.log(4)},0)
+	// console.log(5)
+
+	// // 1，同步 2，nextTick 3,异步 4，setImmediate
+	// // 如果是for循环也是先走完循环再走后面得，也算是同步
+	// for (var i = 0; i < 2000; i++) {
+	// 	console.log(1)
+	// }
+	// setTimeout(()=>{console.log(2)},0)
+	// setTimeout(()=>{console.log(3)},0)
+	// console.log(4) 
+
+/** 四、宏队列，微队列
+		宏队列：
+			1、计时器，ajax, 读取文件
+		微队列：
+			1、promise().then	
+	
+	运行栈执行： 
+	  1、同步（promise内部的执行也是同步）
+	  2、nextTick 
+	  3、微任务 
+	  4、宏任务 
+	  5、setImmediate（计数器放在运行栈内，第一次栈内的事情循环加载完后就会触发）
+**/
+	// 输出：2、5、6、8、7、3、1、4
+// 	setImmediate(()=>{
+// 	  console.log(1)
+// 	})
+// 	console.log(2)
+// 	setTimeout(()=>{console.log(3)},0)//第一次放入任务队列中，事件循环加载，然后走setImmediate
+// 	setTimeout(()=>{console.log(4)},100)//100毫秒后第二次放入任务队列中，所以这个打印再在setImmediate后
+// 	console.log(5)
+// 	new Promise((resolve)=>{
+// 	  console.log(6) // 同步
+// 	  resolve() 	// 加这个，promise才会走then方法
+// 	}).then(()=>{
+// 	  console.log(7)
+// 	})
+// 	process.nextTick(()=>{
+// 	  console.log(8)
+// 	})
+
+
+// let b = null
+// console.log(typeof(b))
+// 
+
+const p = new Promise(resolve=>{
+	console.log(1) //同步
+	resolve('nihao') //resolve返回的值是then返回值的形参，一定要加这个，不然不会执行then
+})
+console.log(p) //promise对象
+p.then(data=>{
+	console.log(data)
+	console.log(2) 
+})
+
+async function fun1() {
+	let data = await fun2()
+	console.log(data) //then中执行的代码
+}
+async function fun2() {
+	console.log(22)
+	return 11
+}
+fun1()
+
+Number.prototype.plus = function (n) {
+  return this + n;
+}
+Number.prototype.minus = function (n) {
+  return this - n;
+}
+var a = (5).plus(3).minus(6);
+console.log(a,'11');
+
+</script>

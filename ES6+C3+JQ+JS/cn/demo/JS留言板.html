@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <style>* { margin: 0; padding: 0; list-style: none; } #box { width: 800px; border: 1px solid #ccc; margin: 100px auto; padding: 20px; } #my_textarea { width: 80%; height: 120px; font-size: 20px; } .box-top { margin-bottom: 20px; } #ul li { border-bottom: 1px dashed #ccc; color: red; line-height: 44px; } #ul li a { float: right; }</style></head>
+    
+    <body>
+        <div id="box">
+            <div class="box-top">
+                <label for="my_textarea">发表评论
+                    <textarea name="my_textarea" id="my_textarea" cols="30" rows="10"></textarea></label>
+                <button id="btn">发表</button></div>
+            <ul id="ul"></ul>
+        </div>
+        <script>//addEventListener是一个侦听事件并处理相应的函数。
+            window.addEventListener("load",
+            function(ev) {
+                $("btn").addEventListener("click",
+                function(ev1) {
+                    var my_textarea = $("my_textarea");
+                    // 1. 获取输入框中的内容
+                    var content = my_textarea.value;
+
+                    // 2. 判断
+                    if (content.length === 0) {
+                        alert("请输入评论的内容");
+                        return;
+                    }
+
+                    // 3. 创建li标签放入ul
+                    var li = document.createElement("li");
+                    var ul = $("ul");
+                    li.innerHTML = content + '<a href="javascript:;" rel="external nofollow" >删除</a>';
+                    ul.insertBefore(li, ul.children[0]);
+
+                    // 4. 清楚输入框内容
+                    my_textarea.value = "";
+
+                    // 5. 删除评论
+                    var remove = ul.getElementsByTagName("a");
+                    for (var i = 0; i < remove.length; i++) {
+                        var r = remove[i];
+                        r.addEventListener("click",
+                        function(evt) {
+                            this.parentNode.remove();
+                        });
+                    }
+                });
+
+                /**
+     * 根据id返回标签元素
+     * @param {string}id
+     * @returns {any}
+     */
+                function $(id) {
+                    return typeof id === "string" ? document.getElementById(id) : null;
+                }
+            });</script>
+    </body>
+
+</html>

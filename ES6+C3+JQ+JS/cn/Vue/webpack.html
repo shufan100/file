@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>webpack配置</title>
+</head>
+<body>
+	<ul>
+		<li>1：webpack的默认配置文件是webpack.config.js;</li>
+		<li>2：webpack默认只处理js文件，如果处理图片等其他文件就需要相应的loader，比如sass的话就会用到sass-loader;</li>
+		<li>Vue CLI 3 默认没有 vue.config.js ，在根目录新建一个就好，位置跟 package.json 同级。</li>
+		<li></li>
+		<li>HMR热更新 设置devServer选项中的hot字段为true</li>
+		<li>CSS热重载 style-loader 和 css-loader 已经帮我们实现了</li>
+		<li></li> 
+		<li>webpack概念：</li>
+		<li>mode: 指定打包的模式，development 或 production。</li>
+		<li>devtool：指定生成 sourceMap 的方式。</li>
+		<li>entry：配置入口文件，多文件打包的话要打包几个文件，就在 entry 中写几个入口，output 的 filename 用占位符 [name] 表示。</li>
+		<li>output: 出口。</li>
+		<li>loader：辅助打包的各种工具。</li>
+		<li>plugins：插件，loader 被用于转换某些类型的模块，而插件则可以用于执行范围更广的任务。如 HtmlWebpackPlugin，CleanWebpackPlugin。</li>
+		<li>devServer：使用 WebpackDevServer 开启热更新，提升开发效率。</li>
+
+	</ul>
+</body>
+</html>
+<script type="text/javascript">
+	//vue 的
+	const path = require('path');
+	const HtmlWebpackPlugin = require('html-webpack-plugin');
+	const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+	//添加这行
+	const webpack = require('webpack');
+
+	module.exports = {
+	  mode: 'development',
+	  devtool: 'cheap-module-eval-source-map',
+	  entry: {
+	    main: './src/index.js',
+	  },
+	  output: {
+	    filename: '[name].js',
+	    path: path.resolve(__dirname, 'dist')
+	  },
+	  devServer: {
+	    contentBase: './dist',
+	    open: true,
+	    port: 9090,
+	    //添加下面两行
+	    hot: true, //热更新
+	    hotOnly: true
+	  },
+	  plugins: [
+	    new HtmlWebpackPlugin({
+	      template: "src/index.html"
+	    }),
+	    new CleanWebpackPlugin(),
+	    //添加这行
+	    new webpack.HotModuleReplacementPlugin(),
+	  ],
+	  module: {
+	    rules: [
+	      {
+	        test: /\.(png|jpg|gif|jpeg)/,
+	        use: {
+	          loader: 'file-loader',
+	          options: {
+	            name: '[name]_[hash].[ext]',
+	            outputPath: 'images/'
+	          }
+	        }
+	      }, {
+	        test: /\.(eot|woff|svg|ttf)/,
+	        use: {
+	          loader: 'file-loader',
+	        }
+	      }, {
+	        test: /\.(css|scss)/,
+	        use: [
+	          'style-loader',
+	          {
+	            loader: 'css-loader',
+	            options: {
+	              importLoaders: 2,
+	              // modules: true
+	            }
+	          },
+	          'sass-loader',
+	          'postcss-loader'
+	        ]
+	      }
+	    ]
+	  }
+	}
+
+</script>

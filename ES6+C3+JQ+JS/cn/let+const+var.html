@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>let-const-var</title>
+</head>
+<body>
+	<p>
+		let来声明变量，用const来声明常量<br>
+		let与const作用域只限于当前代码块{}，而var则没有这种限制。<br>
+		使用let、const申明的变量作用域不会被提升<br>
+
+	</p>
+</body>
+</html>
+<script type="text/javascript">
+	
+
+//变量提升*****************************
+	let a = 'a';
+	const b = 'b';
+	var c = 'c';
+	if(true){
+		let a = 'aa'; //变量不会提升
+		const b = 'bb'; //变量不会提升
+		var c = 'cc'; //变量提升到全局
+		console.log(a,b,c)
+	}
+	console.log(a,b,c)
+
+//const 定义常量，该常量不能赋值，但该常量的属性可以赋值***************
+	const c231 = {};
+	const c232 = [];
+	  
+	c231.name = 'seven';
+	c232.push(27);
+	  
+	console.log(c231, c232);
+
+// 全局变量不再设置为顶层对象（window）的属性，有效避免全局变量污染*******
+	console.log(window.a, window.b, window.c)
+	
+</script>

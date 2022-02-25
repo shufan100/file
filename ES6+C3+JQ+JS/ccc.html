@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>成绩打印</title>
+    <!-- <link href="~/Content/css/achievementPrint.css" rel="stylesheet" /> -->
+    <style>
+       /* .Father{
+           width: 100%;
+           height: 100vh;
+          iframe
+        }
+        .iframe{
+          width: 100%;
+          height: 100%;
+        }*/
+        
+        
+    </style>
+</head>
+<body>
+  <div class="Father"> 
+    
+    <!-- <div class="ThreeC" onclick="add22"></div>
+    <button onclick="gg1()">1111</button> -->
+    <!-- <iframe id="iframes" class="iframe" src="http://192.168.1.131:3008/?from=saas" ></iframe> -->
+ </div>
+</body>
+
+
+
+
+
+
+
+
+ <script src="./js/jquery.min.js"></script>
+<script>
+//   function gg1(){
+//      // window.open('http://192.168.1.131:3008/')
+//      const targetWindow = window.open('http://192.168.1.131:3008/');
+//     // setTimeout(()=>{
+//     //      targetWindow.postMessage('来自10002的消息', 'http://localhost:10001')
+//     // }, 3000)
+// 	const iframe = document.getElementById('iframes')
+// let data = {type: 'answerResult'};
+// iframe.contentWindow.postMessage(data, '*')
+//   }
+  var arr1s = [
+          ['11','z'],
+          ['11','z'],
+          ['22','y'],
+          ['22','y'],
+          
+      ];
+const removeRepeat1 = (arr) => {
+  const obj={};
+  return arr.filter(item=>{
+    if(!obj[item.toString()]) {
+      obj[item.toString()]=item.toString();
+      return item;
+    }
+  });
+}
+const result=removeRepeat1(arr1s)
+
+console.log(result,'result')
+</script>

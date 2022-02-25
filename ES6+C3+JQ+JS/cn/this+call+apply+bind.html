@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>this/call/apply/bind</title>
+</head>
+<body>
+
+</body>
+</html>
+<script type="text/javascript">
+//1、this指向*******************
+	// 1、三种角色：1、普通函数 this指向window；2、构造函数 this指向方法；3、对象方法 this指向对象；
+	
+	// 1、普通函数````````````````````````````````` 
+		
+		function add() {
+			let a1 = 1;
+			console.log(this,"全局下的函数指向window");
+		}
+		add();
+
+	// 2、构造函数``````````````````````````````````
+		// 用 new 关键字来调用的函数，称为构造函数。构造函数首字母一般大写
+		function Person(a, b) {
+			this.a = a;
+			this.b = b;
+			console.log(this,'指向对象');
+			// this指向person（new实例新创建的对象）
+		}
+		var p1 = new Person('num123', '213121');
+		// var p2 = new Person('num123', '213121');
+		// 任何函数，只要通过 new 操作符来调用，那它就可以作为构造函数
+		// 以new这种方式调用构造函数实际上会经历以下 4 个步骤：
+		// (1) 创建一个新对象；
+		// (2) 将构造函数的作用域赋给新对象（因此 this 就指向了这个新对象）；
+		// (3) 执行构造函数中的代码（为这个新对象添加属性）；
+		// (4) 返回新对象。
+		// console.log(p1.__proto__ === Person.prototype )
+		console.log(p1,'212');
+
+	// 3、对象方法``````````````````````````````````````
+		var p2 = {
+			firstName: 'first',
+			lastName: 'last',
+			bal: function() {
+				console.log(this,'指向对象')
+				return this.firstName+''+this.lastName;
+			}
+		}
+		console.log(p2.bal());
+	// 4、函数表达式`````````````````````````````````
+		let ca = function(){
+			console.log('函数表达式是把匿名函数赋值给变量，函数表达式使用前必须赋值')
+		}
+	// 5、匿名函数```````````````````````````````````````````````
+		// function(){
+		// 	console.log('匿名函数就是未定义的函数	')
+		// }
+	// 6、普通函数(严格模式)````````````````````````````````` 
+		
+		function demo() {
+			'use strict'
+			console.log(this,"普通函数开始严格模式");
+		}
+		demo();
+
+		
+// 2、call和apply、bind***********************
+	
+	//call和apply用来改变函数调用的this指向。 （call传单个参数，apply传数组，call是apply的语法糖
+	//bind返回对应函数, 便于稍后调用； apply, call则是立即调用。除此外, 在 ES6 的箭头函数下, call 和 apply 将失效
+	 
+	//2-1、call**************
+		//call 方法第一个参数是要绑定给this的值，后面传入的是一个参数列表。当第一个参数为null、undefined的时候，默认指向window。
+		
+		var message = 'window：'
+		var obj = {
+		    message: 'My name is: '
+		}
+
+		function getName(firstName, lastName) {
+		    console.log(this.message + firstName + ' ' + lastName)
+		}
+		getName(1,2)
+		getName.call(null, 'Dot', 'Dolby') //传入null 函数内部的this指向window  
+		getName.call(obj, 'Dot', 'Dolby') //传入obj对象 函数内部的this指向obj对象  
+
+
+	//2-2、apply**************
+		//apply接受两个参数，第一个参数是要绑定给this的值，第二个参数是一个参数数组。当第一个参数为null、undefined的时候，默认指向window。
+		
+		var message2 = 'window：'
+		var obj2 = {
+		    message2: 'My name is2: '
+		}
+
+		function getName2(firstName, lastName) {
+		    console.log(this.message2 + firstName + ' ' + lastName)
+		}
+
+		getName2.apply(obj2, ['Dot2', 'Dolby2'])// 函数内this指向obj2对象
+		getName2.apply(null, ['Dot2', 'Dolby2'])//  函数内this指向window
+
+
+
+
+	// 2-3、bind******************
+		//bind 方法不会立即执行，而是返回一个改变了上下文 this 后的函数。而原函数 printName 中的 this 并没有被改变，依旧指向全局对象 window。
+		//bind做的两件事: 1、生成新的函数 2、改变了函数内this指向
+		
+		var msg = 'window:'
+		var obj = {
+			msg:'我的名字叫:'
+		}
+		function  getName(name,age) {
+			console.log(this.msg + name+' 年龄：'+age)
+		}
+		getName.bind(null)("笑笑","20");  // 函数内this指向window
+		getName.bind(obj)("笑笑","20");  // 函数内this指向对象
+
+	
+
+		
+
+</script>

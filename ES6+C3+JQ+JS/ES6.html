@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>ES6知识总结</title>
+	<link rel="stylesheet" type="text/css" href="./css/reset.css">
+</head>
+<style type="text/css">
+	html,body{
+		height: 100%;
+		padding: 10px;
+	}
+	h1{
+		text-align: center;
+		font-size: 20px;
+		font-weight: bold;
+		text-shadow: 5px 5px 5px #FF0000;
+		margin-bottom: 10px;
+	}
+</style>
+
+<body>
+	<h1>ES6知识总结</h1>
+	<button class="btn" style="background-color: red;" disabled = "disabled">发布加载</button>
+	<!-- <button onclick="btn()">ajax</button> -->
+</body>
+</html>
+<script src="./js/jquery.min.js"></script>
+<script type="text/javascript">
+	let obj = {'xxx','c11',11:[a:'xa'],'xxx1','c211',22:[a:'xa']}
+	for(let k in obj){
+		console.log(k)
+	}
+	$('.btn').on('click',function() {
+		console.log('uashjash')
+		window.onload();
+	})
+	console.log(7000*.875)
+
+	//1、声明变量  
+	//let局部声明 const常量 var全局声明
+	{	
+		var a = 1;
+		let b = 1;
+		const c = 2;
+	}
+	for(let i = 0;i<5;i++) {
+		// console.log(i)
+	}
+	function fi() {
+		let a1 = 11;
+		if(true) {
+			let a1 = 22;
+		}
+		console.log(a1) //11 这就是块级作用域，不会只在当前代码块生效，如果是var就会覆盖 结果就会为22
+	}fi();
+
+	// 结构赋值
+	let [aa,bb,cc] = [1,2,3];
+	console.log(aa)
+	console.log(bb)
+	console.log(cc)
+
+	// number,string存放在栈里，赋值修改不会改到原来的
+	// let c = '0000';
+	// let b;
+	// b = c;
+	// b = '11111';
+	// console.log(c,b)
+
+	// object /arr 存放在堆里，修改会全部修改，深拷贝才不会动到，JSON.parse(JSON.stringify(object/arr));
+	let c = {x:111};
+	let b;
+	b = JSON.parse(JSON.stringify(c)); //深拷贝 在堆里新生一个
+	// b = c; //浅拷贝 
+	b.x=222;
+	console.log(c,b)
+
+	// let c = [{x:111}];
+	// let b;
+	// b = c;
+	// b[0].x=222;
+	// console.log(c,b)
+	let v = [[1,2,1],['21']];
+	console.log(v.join(','),'2')
+
+	let arrs=[{x:111,y:222},{x:333,y:444}];
+	let obj = {x:333,y:444};
+	// let index = arrs.indexOf(obj);
+	// 
+	let indexs ='';
+	for(const [index,i] of arrs.entries()){
+		if(i.x == obj.x && i.y == obj.y){
+			indexs = index;
+		}
+	}
+	console.log(indexs,'12212')
+	// 检测对象在数组的索引
+	const inx = arrs.findIndex(function(val){
+		return val.x == obj.x && val.y == obj.y
+	})
+	console.log(inx,'inx')
+
+</script>

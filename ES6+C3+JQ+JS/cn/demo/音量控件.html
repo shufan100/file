@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>音量控件</title>
+        <style>#all { width: 500px; height: 86px; margin: 100px auto; position: relative; } #bar { width: 500px; height: 20px; border-radius: 10px; background: #9acfea; position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; cursor: pointer; } #box { width: 30px; height: 30px; background: #ec971f; position: absolute; bottom: 0; top: 0; margin: auto 0; border-radius: 50%; cursor: pointer; transition: left 0.1s linear 0s; }</style></head>
+    
+    <body>
+        <div id="all">
+            <p>当前位置0%</p>
+            <div id="bar">
+                <div id="box"></div>
+            </div>
+        </div>
+        <script>var all = document.getElementById("all"); //容器
+            var p = document.querySelector("p"); //进度百分比
+            var bar = document.getElementById("bar"); //进度显示条
+            var box = document.getElementById("box"); //进度按钮
+            var boxL, newL, moveL, mouseX, left;
+            var cha = bar.offsetWidth - box.offsetWidth;
+            var index = 0; //标记状态
+            var evt = new Event("change"); //本身的事件
+            init();
+            function init() {
+                box.addEventListener("mousedown", mouseDownclickHandler);
+                document.addEventListener("mousemove", mouseMoveclickHandler) document.addEventListener("mouseup", mouseUpclickHandler);
+                document.addEventListener("change", changeHandler);
+                bar.addEventListener("click", clickHandler);
+            }
+
+            function mouseDownclickHandler(e) {
+                index = 1;
+                boxL = box.offsetLeft;
+                mouseX = e.clientX; //鼠标按下拖动的位置
+            }
+
+            function mouseMoveclickHandler(e) {
+                if (index === 1) {
+                    moveL = e.clientX - mouseX; //鼠标移动
+                    newL = boxL + moveL; //left值
+                    //判断最小值与最大值
+                    if (newL < 0) {
+                        newL = 0;
+                    }
+                    if (newL >= cha) {
+                        newL = cha;
+                    }
+                    // 改变left值
+                    box.style.left = newL + 'px';
+                    // 计算比例
+                    var bili = newL / cha * 100;
+                    p.textContent = '当前位置' + Math.ceil(bili) + '%';
+                    evt.elem = this; //当前指向 对象
+                    document.dispatchEvent(evt); //朝谁发送 抛发
+                }
+            }
+
+            function mouseUpclickHandler(e) {
+                index = 0;
+                evt.elem = this; //当前指向 对象
+                document.dispatchEvent(evt); //朝谁发送 抛发
+            }
+
+            function clickHandler(e) {
+                left = e.clientX - all.offsetLeft - box.offsetWidth / 2;
+                if (left < 0) {
+                    left = 0;
+                }
+                if (left >= cha) {
+                    left = cha;
+                }
+                box.style.left = left + 'px';
+                bili = left / cha * 100;
+                p.innerHTML = '当前位置' + Math.ceil(bili) + '%';
+                evt.elem = this; //当前指向 对象
+                document.dispatchEvent(evt); //朝谁发送 抛发
+            }
+
+            function changeHandler(e) {
+                console.log(e);
+            }</script>
+    </body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>事件冒泡</title>
+</head>
+<body>
+	<!-- 说明:事件冒泡是IE开发团队提出来的 -->
+	<div onclick="alert('content')">
+		<div onclick="alert('div')">
+			<ul onclick="alert('ul')">
+				<li id="li">test</li>
+				<li onclick="alert('test2')">test2</li>
+			</ul>
+		</div>
+	</div>
+	<!-- 点击test页签，会从内到外执行，这就是事件冒泡机制 -->
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script type="text/javascript">
+	// 阻止事件冒泡
+	$('#li').click(function(e){
+		e.stopPropagation(); //阻止事件冒泡
+		alert('li')
+	})
+</script>

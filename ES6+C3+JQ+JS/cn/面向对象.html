@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>面向对象</title>
+</head>
+<style type="text/css">
+	.box{
+		width: 200px;
+		height: 200px;
+		background-color: yellow;
+		display: flex;
+		display:flex;
+  align-items:center;
+	}
+	.a{
+		width: 50px;
+		height: 50px;
+		background-color: red;
+	}
+</style>
+<body>
+	<h2>面向对象特点：封装性、继承性、多态性</h2>
+	<p>在面向对象程序开发思想中，每个对象都是功能中心，具有明确分工
+		面向对象编程具有灵活、代码可复用、容易维护和开发的优点，更适合多人合作的大型软件项目
+		
+		面向过程：优点》性能比面向对象高 缺点》没面向对象易维护、易复用
+		面向对象：优点》易维护、复用、扩展 缺点》性能比面向过程低
+	</p>
+	<div class="box">
+		<div class="a">	</div>
+	</div>
+
+</body>
+</html>
+<script type="text/javascript">
+// 	let c = 'TextEditor';
+// 	let ccs = c.toLowerCase()
+// 	console.log(ccs)
+	
+// 	let arr = [
+// 		{name:"小明",attr:['111','333']},
+// 		{name:"",attr:['ggg','444']},
+// 		{name:"xiao",attr:[]},
+// 	]
+// 	let arr2  = []
+// 	for(let i of arr){
+// 		if(i.attr.length>0){
+// 			arr2.push(...i.attr)
+// 		}
+// 	}
+// 	console.log(arr2,'00')
+
+// 	let obj = {kk:111,yy:999,dd:111}
+// let arr55 = []
+// 	for(const item in obj){
+// 		console.log(obj[item])
+// 		arr55.push({label:item, value:obj[item]})
+// 	}
+// 	console.log(arr55,'000')
+// 	
+
+
+function Foo() {
+	var getName = function(){console.log(1)}
+	return this
+}
+
+// Foo.getName = function(){console.log(2)} 
+Foo.getName1 = function(){console.log(2)} 
+
+// Foo.prototype.getName = function(){console.log(3)}
+Foo.prototype.getName2 = function(){console.log(3)}
+
+// var getName = function(){console.log(4)}
+
+// function getName() {
+// 	console.log(5)
+// }
+
+// Foo().getName()
+// Foo.getName2()
+// console.dir(Foo)
+// this.getName()
+
+// Foo.getName() //在函数属性上找，没有就是未定义，不会在原型上找 ，2
+// getName() //> 先函数声明提升，构造函数不会提升，4
+// Foo().getName() //>this指向window 函数内部的getName变量提升 ，1
+// getName()  //还是函数变量提升，先5再4最后1这样提升的，1
+// new Foo.getName() // Foo实例化原型__proto__.getName == prototype.getName，和第一个一样，2
+// new Foo().getName() // 实例化后改变this指向，this指向构造函数的原型，然后指向隐式原型上的方法，wo
+// new new Foo().getName() //实例两次，和实例一次是一样的
+// 
+// 2 4 1 1 2 3 3
+// 
+for (var i = 0; i <3; i++) {
+	setTimeout(()=>{
+		console.log(i)
+	},0)
+}
+
+</script>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>继承</title>
+	<link rel="stylesheet" type="text/css" href="../css/reset.css">
+</head>
+<body>
+		<button onclick="add()">hhhh</button>
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script type="text/javascript">
+	function person(name, age){
+		this.name = name;
+		this.age = age;	
+	}
+	function book(name){
+		this.name = '卡就发';
+		this.lookat = function(a){
+			console.log('计算机计算机')
+		}
+	}
+
+	person.prototype.read=function(a){console.log("I can read");}; //对象创建时会占用内存，把把方法定义到公共的方法，节省了内存
+	person.prototype.book= new book();
+	console.dir(person) //打印函数
+	let p = new person(); //实例化函数（构造函数）
+	p.read(); //构造函数调用函数在原型上加的方法
+	console.log(p.book.name); //调用继承book函数的属性
+	p.book.lookat(); //调用继承book函数的方法
+
+	console.log(p.book instanceof book);
+
+
+	
+//class类*****************************************
+	class Coder{
+		name(val){
+			return 'Coder:'+val;
+		}
+		skill(val) {
+			return this.name("调用name>")+val
+		}
+		// 用类自带的方法接收参数
+		constructor(a,b) {
+			this.a = a;
+			this.b = b;
+		}
+		add() {
+			return this.a+this.b
+		}
+	}
+	let jspa = new Coder(1,4);
+	console.log(jspa.name("ssss"))
+	console.log(jspa.skill('出差'))
+	console.log(jspa.add());
+
+// 继承上面的coder类()********************************
+	class htmler extends Coder{
+
+	}
+	let pang = new htmler;
+	// 可直接调用父类的方法
+	console.log(pang.name('继承值'))
+
+</script>

@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>高级程序知识总结</title>
+</head>
+<body>
+	<canvas id="drawing" width=" 400" height="400">A drawing of something.</canvas>
+	<form method="post" id="form1">
+		<ul>
+			<li><input type="radio" name="color" value="red">Red</li>
+			<li><input type="radio" name="color" value="green">Green</li>
+			<li><input type="radio" name="color" value="blue">Blue</li>
+		</ul>
+	</form>
+</body>
+</html>
+
+<script src="./js/jquery.min.js"></script>
+<script type="text/javascript">
+// 第四章：作用域和内存问题**************************
+	// 1、基本类型和引用类型的值
+		// ECMAScript变量可能包含两种不同的数据类型的值：基本类型值和引用类型值。基本类型值指的是简单的数据段，引用类型值指那些可能由多个值构成的对象。
+	
+		// 1-2、复制变量值
+			var num1 = 5; var num2 = num1;
+			//num1复制num2的值是开辟新的空间，完成独立的，操作互不影响
+			
+			var obj1 ={age:'20'}; var obj2 = obj1; 
+			//操作obj2会影响到obj1的值，因为都是引用堆里的值
+			var obj3 = JSON.parse(JSON.stringify(obj1)); 
+			//深拷贝后开辟新的空间内存，操作互不影响
+			// string number boolen(复制互不影响，存放栈)  object，Array(复制指针有影响，需深拷贝，存放在堆)
+			
+	// 2、执行环境及作用域
+		/* 1）执行环境定义了变量或函数有权访问的其他数据，决定了他们各自的行为。每个执行环境都有一个与之关联的变量对象，环境中定义的所有变量和函数都保存在这个对象中。
+		2）全局执行环境是最外围的一个行环境。根据ECMAScript实现所在的宿主环境不同，表示执行环境的对象也不一样。在web浏览器中，全局执行环境被认为是window对象，因此所有全局变量和函数都是作为window对象的属性和方法创建的。某个执行环境中的所有代码执行 完毕后，该环境被销毁，保存在其中的所有变量和函数定义也随之销毁（全局执行环境直到应用程序退出——例如关闭网页或浏览器——时才会被销毁）
+		3）每个函数都有自己的执行环境，当执行流进入一个函数时，函数的环境就会被推入一个环境栈中。而在函数执行之后，栈将其环境弹出，把控制权返回 给之前的执行环境。ECMAScript程序中的执行流正是由这个方便的机制控制着。
+		4）当代码在一个环境中执行时，会创建变量对象的一个作用域链。作用域链的用途，是保证对执行环境有权访问的所有变量和函数的有序访问。作用域链的前端，始终都是当前执行的代码所在环境的变量对象。如果这个环境是函数，则将其活动对象（activation object）作为变量对象。活动对象在最开始时只包含一个变量，即 arguments的下一个变量对象来自包含（外部）环境，而再下一个变量对象则来自下一个包含环境。这样，一直延续到全局执行环境；全局执行环境的变量对象始终都是作用域链中的最后一个对象。
+		5）标识符解析是沿着作用域链一级一级地搜索标识符的过程。搜索过程始终从作用域链的前端开始，然后逐级地向后回溯，直至找到标识符为止（如果找不到标识符，通常会导致错误发生）*/
+
+		var color = "blue";
+		function changeColor(){
+			var anotherColor = "red";
+
+			function swapColors(){
+				var tempColor = anotherColor;
+				anotherColor = color;
+				color = tempColor;
+				// 这里可以访问 color、anotherColor 和 tempColor
+			}
+			// 这里可以访问 color 和 anotherColor，但不能访问 tempColor
+			swapColors();
+		}
+		// 这里只能访问 color
+		changeColor();
+		/*1）以上代码共涉及 3 个执行环境： 全局环境、 changeColor() 的局部环境和 swapColors() 的局部环境。全局环境中有一个变量 color 和一个函数 changeColor() 。 changeColor() 的局部环境中有一个名为 anotherColor 的变量和一个名为 swapColors() 的函数，但它也可以访问全局环境中的变量 color 。 swapColors() 的局部环境中有一个变量 tempColor ，该变量只能在这个环境中访问到。无论全局环境还是 changeColor() 的局部环境都无权访问 tempColor 。然而，在 swapColors() 内部则可以访问其他两个环境中的所有变量，因为那两个环境是它的父执行环境。
+		2）内部环境可以通过作用域链访问所有的外部环境，但 外部环境不能访问内部环境中的任何变量和函数。这些环境之间的联系是线性、有次序的。每个环境都可以向上搜索作用域链，以查询变量和函数名；但任何环境都不能通过向下搜索作用域链而进入另一个执行环境。对于这个例子中的 swapColors() 而言，其作用域链中包含 3 个对象： swapColors() 的变量对象、 changeColor() 的变量对象和全局变量对象。 swapColors() 的局部环境开始时会先在自己的变量对象中搜索变量和函数名，如果搜索不到则再搜索上一级作用域链。 changeColor() 的作用域链中只包含两个对象：它自己的变量对象和全局变量对象。这也就是说，它不能访问 swapColors() 的环境。*/
+
+		// 2-1、延长作用域链
+			// 执行环境分为两种——全局和局部(函数)，但是还有其他延长作用域链的方法。
+			// try-catch语句的catch块；with语句；这两个语句都会在作用域链的前端添加一个变量对象。对 with 语句来说，会将指定的对象添加到作用域链中。对 catch 语句来说，会创建一个新的变量对象，其中包含的是被抛出的错误对象的声明。
+		// 2-2、没有块级作用域
+		
+		// 111、作用域链
+			function createComparisonFunction(propertyName) {
+				return function(object1, object2){
+					var value1 = object1[propertyName];
+					var value2 = object2[propertyName];
+					if (value1 < value2){
+						return -1;
+					} else if (value1 > value2){
+						return 1;
+					} else {
+						return 0;
+					}
+				};
+			}
+		// 函数声明内部的匿名函数的作用于链包含函数声明的作用域
+		// 所有的变量（包括基本类型和引用类型）都存在一个执行环境（也称为作用域）中；
+		// 执行环境有全局环境和函数执行环境之分；
+		// 每次进入一个新的执行环境，都会创建一个用于搜索变量和函数的作用域链；
+		// 函数的局部环境不仅有权访问函数作用域中的变量，而且有权访问其包含（父）环境，乃至全局环境；
+		// 全局环境只能访问在全局环境中定义的变量和函数，而不能直接访问局部环境中的任何数据；
+		
+		/* 当某个函数被调用时，会创建一个执行环境（execution context）及相应的作用域链。然后，使用arguments和其他命名参数的值
+			来初始化函数的活动对象（activation object）。但在作用域链中，外部函数的活动对象始终处于第二位，外部函数的外部函数的
+			活动对象处于第三位，……直至作为作用域链终点的全局执行环境 
+		*/
+	
+	// 小结：
+		/*JavaScript 变量可以用来保存两种类型的值：基本类型值和引用类型值。基本类型的值源自以下 5
+		种基本数据类型： Undefined 、 Null 、 Boolean 、 Number 和 String 。基本类型值和引用类型值具
+		有以下特点：
+		  基本类型值在内存中占据固定大小的空间，因此被保存在栈内存中；
+		  从一个变量向另一个变量复制基本类型的值，会创建这个值的一个副本；
+		  引用类型的值是对象，保存在堆内存中；
+		  包含引用类型值的变量实际上包含的并不是对象本身，而是一个指向该对象的指针；
+		  从一个变量向另一个变量复制引用类型的值，复制的其实是指针，因此两个变量最终都指向同
+		一个对象；
+		  确定一个值是哪种基本类型可以使用 typeof 操作符，而确定一个值是哪种引用类型可以使用
+		instanceof 操作符。
+		所有变量（包括基本类型和引用类型）都存在于一个执行环境（也称为作用域）当中，这个执
+		行环境决定了变量的生命周期，以及哪一部分代码可以访问其中的变量。以下是关于执行环境的几
+		点总结：
+		  执行环境有全局执行环境（也称为全局环境）和函数执行环境之分；
+		  每次进入一个新执行环境，都会创建一个用于搜索变量和函数的作用域链；
+		  函数的局部环境不仅有权访问函数作用域中的变量，而且有权访问其包含（父）环境，乃至全
+		局环境；
+		  全局环境只能访问在全局环境中定义的变量和函数，而不能直接访问局部环境中的任何数据；
+		  变量的执行环境有助于确定应该何时释放内存。
+		JavaScript 是一门具有自动垃圾收集机制的编程语言，开发人员不必关心内存分配和回收问题。可
+		以对 JavaScript 的垃圾收集例程作如下总结。
+		  离开作用域的值将被自动标记为可以回收，因此将在垃圾收集期间被删除。
+		  “标记清除”是目前主流的垃圾收集算法，这种算法的思想是给当前不使用的值加上标记，然
+		后再回收其内存。
+		  另一种垃圾收集算法是“引用计数”，这种算法的思想是跟踪记录所有值被引用的次数。JavaScript
+		引擎目前都不再使用这种算法；但在 IE 中访问非原生 JavaScript 对象（如 DOM 元素）时，这种
+		算法仍然可能会导致问题。
+		  当代码中存在循环引用现象时，“引用计数”算法就会导致问题。
+		  解除变量的引用不仅有助于消除循环引用现象，而且对垃圾收集也有好处。为了确保有效地回
+		收内存，应该及时解除不再使用的全局对象、全局对象属性以及循环引用变量的引用。*/
+
+// 第五章：引用类型*********************************
+	// 引用类型的值（对象）是引用类型的一个实例，在ECMAScript中，引用类型是一种数据结构，用于将数据和功能组织在一起。
+	
+	// 2、Array类型
+		// 2-1、检查数组
+			// value instanceof Array检测该值是否是数组
+			// ，ECMAScript 5 新增了 Array.isArray() 方法。这个方法的目的是最终确定某个值到底是不是数组
+			
+		// 2-2、转换方法
+			// 所有对象都具有toLocaleString()、toString()、valueOf()方法。、toString返回字符串拼接成以逗号隔开的字符串。、valueOf返回的是数组。
+			var colors = ["red", "blue", "green"]; 
+			console.log(colors.toString()); // red,blue,green
+			console.log(colors.valueOf()); // 【red,blue,green】
+
+		// 2-3、栈方法 push() 
+			// push从数组最后添加
+			var color0 = new Array(); // 创建一个数组
+			var count = color0.push("red", "green"); // 推入两项
+
+		// 2-4、队列方法  shift() trim()
+			// shift删除数组第一个但数组会减1 \trim删除字符串前后的空格
+			var item = color0.shift();  
+			var stringValue = " hello world ";
+			var trimmedStringValue = stringValue.trim();
+			console.log(stringValue); //" hello world "
+			console.log(trimmedStringValue); //"hello world"
+
+		// 2-5、重排序方法 reverse()  sort()
+			// reverse是从到小倒序，sort是从小到大顺序（注：比较都是字符串大小，
+			var values = [1, 2, 3, 4, 5];
+			values.reverse();
+			console.log(values); //5,4,3,2,1 
+
+			var values1 = [0, 1, 5, 10, 15];
+			values1.sort();
+			console.log(values1); //0,1,10,15,5
+			// 以上有问题
+			// 
+			// 从小到大
+			function compare(value1, value2) {
+				if (value1 < value2) {
+					return -1;
+				} else if (value1 > value2) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+			var value = [0, 1, 5, 10, 15];
+			value.sort(compare);
+			console.log(value); //0,1,5,10,15
+
+			// 从大到小
+			function compares(value1, value2) {
+				if (value1 < value2) {
+					return 1;
+				} else if (value1 > value2) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+			var value1 = [0, 1, 5, 10, 15];
+			value1.sort(compares);
+			console.log(value1); // 15,10,5,1,0
+
+		// 2-6、操作方法 concat() slice()  splice（） indexOf()
+			//concat()数组合并 
+			var colors1 = ["red", "green", "blue"];
+			var colors21 = colors1.concat("yellow", ["black", "brown"]);
+			console.log(colors1); //red,green,blue
+			console.log(colors21); //red,green,blue,yellow,black,brown
+
+			// slice() 接收一或二的参数为起始和结束位置，返回新数组不影响原有数组
+			var colors2 = ["red", "green", "blue", "yellow", "purple"];
+			var colors22 = colors2.slice(1);
+			var colors32 = colors2.slice(1,4);
+			console.log(colors22); //green,blue,yellow,purple
+			console.log(colors32); //green,blue,yellow
+
+			// splice() 可删除	插入  替换
+			var colors = ["red", "green", "blue"];
+			var removed = colors.splice(0,1); // 删除第一项
+			console.log(colors); // green,blue
+			console.log(removed); // red，返回的数组中只包含一项
+			removed = colors.splice(1, 0, "yellow", "orange"); // 从位置 1 开始插入两项
+			console.log(colors); // green,yellow,orange,blue
+			console.log(removed); // 返回的是一个空数组
+			removed = colors.splice(1, 1, "red", "purple"); // 插入两项，删除一项
+			console.log(colors); // green,red,purple,orange,blue
+			console.log(removed); // yellow，返回的数组中只包含一项
+
+		// 2-7、位置方法 indexOf()  lastIndexOf() 
+			// indexOf 检测当前元素在数组的索引
+			var numbers = [1,2,3,4,5,4,3,2,1];
+			console.log(numbers.indexOf(4)); //3
+			console.log(numbers.lastIndexOf(4)); //5
+			console.log(numbers.indexOf(4, 4)); //5
+			console.log(numbers.lastIndexOf(4, 4)); //3
+			var person = { name: "Nicholas" };
+			var people = [{ name: "Nicholas" }];
+			var morePeople = [person];
+			console.log(people.indexOf(person)); //-1
+			console.log(morePeople.indexOf(person)); //0
+
+		// 2-8、迭代方法 every() filter() forEach() map() some()
+			// filter方法 
+			var numbers = [1,2,3,4,5,4,3,2,1];
+			var filterResult = numbers.filter(function(item, index, array){
+				return (item > 2);
+			});
+			console.log(filterResult); //[3,4,5,4,3]
+
+			// map方法
+			var mapResult = numbers.map(function(item, index, array){
+				return item * 2;
+			});
+			console.log(mapResult); //[2,4,6,8,10,8,6,4,2]
+
+		// 2-9、归并方法 reduce()  reduceRight()
+			var values = [1,2,3,4,5];
+			var sum = values.reduce(function(prev, cur, index, array){
+				return prev + cur;
+			});
+			console.log(sum); //15
+
+			var sum = values.reduceRight(function(prev, cur, index, array){
+				return prev + cur;
+			});
+			console.log(sum); //15
+
+		// 2-10 flat() 将多维数组变成一维数组,跳过空格
+			let Arrs = [1, ,9,[2, [3]]].flat(Infinity) // [1, 9, 2, 3] 
+			console.log(Arrs,'Arrs')
+
+		//  2-11 join() 方法用于把数组中的所有元素放入一个字符串 作用数组
+			let Arrs2 = ['a','n','m'];
+			Arrs2.join('/') // 默认a,n,m a/n/m
+
+		// 2-12 split() 用于把一个字符串分割成字符串数组
+			let strings = 'adijlphyg';
+			console.log(strings.split('j'))
+
+
+	// 4、RegExp类型
+		// ECMAScript通过RegExp类型来支持正则表达式。
+		// g:全局模式，i不区分大小写模式，m多行模式 
+		
+	// 5、Function类型
+		// 函数实际上是对象。每个函数都是function类型的实例，而且都与其他引用类型一样具有属性和方法。由于函数是对象，因此函数名实际上也是一个指向函数对象的指针，不会与某个函数绑定。
+		
+		// 5-1、没有重载(深入理解)
+			// 将函数想象成指针，也有助于理解为什么ECMAScript中没有函数重载的概念。
+			// 声明两个同名的函数，下面的会覆盖上面的。——实际上覆盖了引用第一个函数的变量
+		// 5-2、函数声明与函数表达式
+			// 解析器会优先读取函数声明，函数表达式是等解析器执行到它所在的代码行才会真正被解释执行
+			// 函数声明 
+				
+				function sum22(num1, num2){
+					return num1 + num2;
+				}	
+				sum22(10,10);//正常不报错
+			// 函数表达式  后面的函数体就是匿名函数
+				// console.log(sum1(10,10)); //会报错
+				var sum1 = function(num1, num2){
+					return num1 + num2;
+				};
+				console.log(sum1(101,10));
+		// 5-3、作为值的函数
+			// 函数名本身就是变量，所以函数也可以做值来使用。要访问函数的指针而不执行函数的就话就要把函数名后面的括号去掉。
+			function callSomeFunction(func,names){
+				return func + names;
+			}
+			function getGreeting(name){
+				return "Hello, " + name;
+			}
+			var result2 = callSomeFunction(getGreeting, "Nicholas");
+			console.log(result2); //"Hello, Nicholas"
+		// 5-4、函数内部属性
+			// 在函数有两个特殊对象：arguments和this。arguments是一个类数组对象，包含着传入函数中的所有参数。
+		
+	// 7、单体内置对象
+		// 7-2、Math对象 min() max() ceil() floor() round() random()
+			// max()取最大值
+			var max = Math.max(3, 54, 32, 16);
+			console.log(max); //54
+
+			// min()取最小值
+			var arr = [99,4,2,6,2];
+			var min = Math.min(...arr);
+			console.log(min)
+
+			// ceil向上取整
+			console.log(Math.ceil(25.9)); //26
+			console.log(Math.ceil(25.5)); //26
+			console.log(Math.ceil(25.1)); //26
+
+			// round标准舍入
+			console.log(Math.round(25.9)); //26
+			console.log(Math.round(25.5)); //26
+			console.log(Math.round(25.1)); //25
+
+			// floor向下取整
+			console.log(Math.floor(25.9)); //25
+			console.log(Math.floor(25.5)); //25
+			console.log(Math.floor(25.1)); //25
+
+			// random随机数
+			var randoms = Math.random();
+			console.log(randoms) //0-1的随机数 【0,1）
+
+			// Math.abs(num) //返回 num 的绝对值
+			// Math.asin(x) //返回 x 的反正弦值
+			// Math.exp(num)  //返回 Math.E 的 num 次幂
+			// Math.atan(x)   //返回 x 的反正切值
+			// Math.log(num)  //返回 num 的自然对数
+			// Math.atan2(y,x) //返回 y/x 的反正切值
+			// Math.pow(num,power) //返回 num 的 power 次幂
+			// Math.cos(x) //返回 x 的余弦值
+			// Math.sqrt(num) //返回 num 的平方根
+			// Math.sin(x) //返回 x 的正弦值
+			// Math.acos(x) //返回 x 的反余弦值
+			// Math.tan(x) //返回 x 的正切值
+			
+	// 小结：
+		/*对象在 JavaScript 中被称为引用类型的值，而且有一些内置的引用类型可以用来创建特定的对象，
+		现简要总结如下：
+		  引用类型与传统面向对象程序设计中的类相似，但实现不同；
+		 Object 是一个基础类型，其他所有类型都从 Object 继承了基本的行为；
+		 Array 类型是一组值的有序列表，同时还提供了操作和转换这些值的功能；
+		 Date 类型提供了有关日期和时间的信息，包括当前日期和时间以及相关的计算功能；
+		 RegExp 类型是 ECMAScript 支持正则表达式的一个接口，提供了最基本的和一些高级的正则表
+		达式功能。
+		函数实际上是 Function 类型的实例，因此函数也是对象；而这一点正是 JavaScript 最有特色的地
+		方。由于函数是对象，所以函数也拥有方法，可以用来增强其行为。
+		因为有了基本包装类型，所以 JavaScript 中的基本类型值可以被当作对象来访问。三种基本包装类
+		型分别是： Boolean 、 Number 和 String 。以下是它们共同的特征：
+		  每个包装类型都映射到同名的基本类型；
+		  在读取模式下访问基本类型值时，就会创建对应的基本包装类型的一个对象，从而方便了数据
+		操作；
+		  操作基本类型值的语句一经执行完毕，就会立即销毁新创建的包装对象。
+		在所有代码执行之前，作用域中就已经存在两个内置对象： Global 和 Math 。在大多数 ECMAScript
+		实现中都不能直接访问 Global 对象；不过，Web 浏览器实现了承担该角色的 window 对象。全局变
+		量和函数都是 Global 对象的属性。 Math 对象提供了很多属性和方法，用于辅助完成复杂的数学计算
+		任务。 */
+
+// 第六章：面向对象的程序设计************************
+	// 面向对象都有类的概念，通过类可以创建任意多个具有相同属性和方法的对象。
+
+	// 2、创建对象
+		let per1 = new Object(); //创建object实例
+		let per2 = {}; //字面量写法
+
+		// 2-1、工厂模式
+			// 工厂模式：下面函数好比一个工厂，可以无数次的调用这个函数。
+			function createPerson(name, age, job){
+				var o = new Object();
+				o.name = name;
+				o.age = age;
+				o.job = job;
+				o.sayName = function(){
+					console.log(this.name);
+				};
+				return o;
+			}
+			var person11 = createPerson("Nicholas", 29, "Software Engineer");
+			var person22 = createPerson("Greg", 27, "Doctor");
+
+		// 2-2、构造函数模式
+			// 构造函数可用来创建特定类型的对象。 
+			// 和上述3次不同：没有显式的创建对象、直接将属性和方法赋给this对象、没有return语句。
+			function Person(name, age, job){ //构造函数调用的函数名首字母要大写
+				this.name = name;
+				this.age = age;
+				this.job = job;
+				this.sayName = function(){
+					console.log(this.name);
+				};
+			}
+			// 以这种方式调用构造函数经历4个步骤：1.创建一个新对象、2.将构造函数的作用域赋给新对象（this指向这个新对象）3.执行构造函数中的代码（为这个新对象添加属性）4.返回新对象 
+			var pes112 = new Person("Nicholas", 29, "Software Engineer");
+			var pes113 = new Person("Nicholas", 29, "Software Engineer");
+			// pes112和pes113分别保存着Person的一个不同的实例，这两个对象都有一个constructor （构造函数）属性，该属性指向 Person ，如下所示：
+			console.log(pes112.constructor == Person); //true
+			console.log(pes113.constructor == Person); //true
+			// 对象的 constructor 属性最初是用来标识对象类型的。检测对象类型：
+			console.log(pes112 instanceof Object); //true
+			console.log(pes112 instanceof Person); //true
+			console.log(pes113 instanceof Object); //true
+			console.log(pes113 instanceof Person); //true
+
+		// 2-3、原型模式
+			// 我们创建的每个函数都有一个prototype（原型）属性，这个属性是一个值指针，指向一个对象，而这个对象的用途是包含可以有特定可惜的所有实例共享的属性和方法。使用原型对象的好处就是可以让所有对象实例共享它所包含的属性和方法。
+			function Person(){
+			}
+			Person.prototype.name = "Nicholas";
+			Person.prototype.age = 29;
+			Person.prototype.job = "Software Engineer";
+			Person.prototype.sayName = function(){
+				console.log(this.name);
+			};
+
+			var person1 = new Person();
+			person1.sayName(); //"Nicholas"
+			person1.code = 'code11'
+
+			var person2 = new Person(); //构造函数赋给变量的是个对象
+			person2.sayName(); //"Nicholas"
+
+			//  Person 的原型属性以及 Person 现有的两个实例之间的关系：Person.prototype指向了原型对象，而Person.prototype.constructor又指回了Person。原型对象中除了包含constructor属性之外，还包含后来添加的其他属性。
+			console.log(person1.sayName == person2.sayName); //true
+			console.log(Person.prototype.code == person1.__proto__.code) //true
+			console.log(Person.prototype.code == person2.__proto__.code) //true
+		
+		// 2-4、组合使用构造函数模式和原型模式
+			// 构造函数定义实例属性，原型模式用于定义方法和共享的属性。每个实例都会有自己的一份实例属性的副本，同时又共享着对方法的引用，最大限度的节省了内存。
+			function Persons(name, age, job){
+				this.name = name;
+				this.age = age;
+				this.job = job;
+				this.friends = ["Shelby", "Court"];
+			}
+
+			Persons.prototype = {
+				constructor : Persons,
+				sayName : function(){
+					console.log(this.name);
+				}
+			}
+			
+			var pss1 = new Persons("Nicholas", 29, "Software Engineer");
+			var pss2 = new Persons("Greg", 27, "Doctor");
+
+			pss1.friends.push('Van');
+			console.log(pss1.friends); //"Shelby,Count,Van"
+			console.log(pss2.friends); //"Shelby,Count"
+			console.log(pss1.friends === pss2.friends); //false
+			console.log(pss1.sayName === pss2.sayName); //true
+			// 在这个例子中，实例属性都是在构造函数中定义的，而由所有实例共享的属性 constructor 和方法 sayName() 则是在原型中定义的。而修改了 person1.friends （向其中添加一个新字符串），并不会影响到 person2.friends ，因为它们分别引用了不同的数组。
+		
+		// 2-5、动态原型模式
+			// 动态原型模式不能使用对象字面量写原型。如果在已经创建了实例的情况下重写原型，那么就会切断现有实例与新原型之间的联系。
+			function Person11(name, age, job){
+				//属性
+				this.name = name;
+				this.age = age;
+				this.job = job;
+				// 方法
+				if (typeof this.sayName != "function"){
+					Person.prototype.sayName = function(){
+						console.log(this.name);
+					};
+				}
+			}
+			var friend1 = new Person11("Nicholas", 29, "Software Engineer");
+			// friend1.sayName();
+
+	// 3、继承
+		// 两种继承方法：接口继承，实现继承
+		// ECMAScript只支持实现继承，而实现继承主要依靠原型链来实现的。
+		
+		// 3-1、原型链	
+			// 原型链作为实现继承的主要方法。其基本思想：利用原型让一个引用类型继承另一个引用类型的属性和方法。构造函数、原型和实例的关系：每个构造函数都有一个原型对象(prototype)，原型对象都包含一个指向构造函数的指针(constructor)，而实例都包含一个指向原型对象的内部指针。那么，假如我们让原型对象等于另一个类型的实例，结果会怎么样呢？显然，此时的原型对象将包含一个指向另一个原型的指针，相应地，另一个原型中也包含着一个指向另一个构造函数的指针。假如另一个原型又是另一个类型的实例，那么上述关系依然成立，如此层层递进，就构成了实例与原型的链条。这就是所谓原型链的基本概念。
+			function SuperType() { //SuperType构造函数
+				this.property = 1111;
+			}
+			console.dir(SuperType)
+
+			function SubType(){ // SubType构造函数
+				this.subproperty = 2222;
+			}
+			//继承了SuperType，SubType.prototype原型对象等于另一个类型的实例new SuperType()，层层递进就构成了实例与原型的链条
+			SubType.prototype = new SuperType(); //SubType原型对象 等于 SuperType实例 从而SubType构造的函数的原型对象指针指向SuperType构造函数
+			console.dir(SubType)
+			// 原型链关系： SubType.prototype.constructor => SubType.__proto__.constructor => SuperType.prototype.constructor
+			// SubType.prototype.constructor = SuperType.prototype.constructor
+			
+		// 3-2、借用构造函数（很少单独使用）
+			// 在子类型构造函数的内部调用超类型构造函数。别忘了，函数只不过是在特定环境中执行代码的对象，因此通过使用 apply() 和 call() 方法也可以在（将来）新创建的对象上执行构造函数。
+			function SuperType(){
+				this.colors = ["red", "blue", "green"];
+			}
+
+			function SubType(){
+				// 继承了 SuperType
+				SuperType.call(this);
+			}
+
+			var instance1 = new SubType();
+			instance1.colors.push("black");
+			console.log(instance1.colors); //"red,blue,green,black"
+
+			var instance2 = new SubType();
+			console.log(instance2.colors); //"red,blue,green"
+
+		// 3-3、组合继承（最常用）
+			// 1）将原型链和借用构造函数的技术组合到一块，从而发挥二者之长的一种继承模式。其背后的思路是使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承。这样，既通过在原型上定义方法实现了函数复用，又能够保证每个实例都有它自己的属性。
+			// 2）组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，成为 JavaScript 中最常用的继承模式。而且， instanceof 和 isPrototypeOf() 也能够用于识别基于组合继承创建的对象。
+			// 3）缺点：都会调用两次超类型构造函数：一次是在创建子类型原型的时候，另一次是在子类型构造函数内部。
+			function SuperType(name){
+				this.name = name;
+				this.colors = ["red", "blue", "green"];
+			}
+
+			SuperType.prototype.sayName = function(){
+				console.log(this.name);
+			};
+
+			function SubType(name, age){
+				//继承属性
+				SuperType.call(this, name);
+				this.age = age;
+			}
+			//继承方法
+			SubType.prototype = new SuperType();
+			SubType.prototype.constructor = SubType;
+			SubType.prototype.sayAge = function(){
+				console.log(this.age);
+			};
+
+			var instance1 = new SubType("Nicholas", 29);
+			instance1.colors.push("black");
+			console.log(instance1.colors); //"red,blue,green,black"
+			instance1.sayName(); //"Nicholas";
+			instance1.sayAge(); //29
+
+			var instance2 = new SubType("Greg", 27);
+			console.log(instance2.colors); //"red,blue,green"
+			instance2.sayName(); //"Greg";
+			instance2.sayAge(); //27
+
+		// 3-4、原型式继承
+			//借助原型可以基于已有的对象创建新对象，同时还不必因此创建自定义类型 
+			// 再看一遍
+		
+		// 3-5、寄生式继承
+			// 寄生式继承的思路与寄生构造函数和工厂模式类似，即创建一个仅用于封装继承过程的函数，该函数在内部以某种方式来增强对象，最后再像真地是它做了所有工作一样返回对象。
+			function object(o){
+				function F(){}
+				F.prototype = o;
+				return new F();
+			}
+			function createAnother(original){
+				var clone = object(original); //通过调用函数创建一个新对象
+				clone.sayHi = function(){ //以某种方式来增强这个对象
+					console.log("hi");
+				};
+				return clone; //返回这个对象
+			}
+			// 在这个例子中， createAnother() 函数接收了一个参数，也就是将要作为新对象基础的对象。然后，把这个对象（ original ）传递给 object() 函数，将返回的结果赋值给 clone 。再为 clone 对象添加一个新方法 sayHi() ，最后返回 clone 对象。可以像下面这样来使用 createAnother() 函数：
+			var person = {
+				name: "Nicholas",
+				friends: ["Shelby", "Court", "Van"]
+			};
+			var anotherPerson = createAnother(person);
+			anotherPerson.sayHi(); //"hi"
+
+		// 3-6、寄生组合式继承
+			// 3）缺点：都会调用两次超类型构造函数：一次是在创建子类型原型的时候，另一次是在子类型构造函数内部。
+			// 再看一遍 
+	// 小结：
+		/*ECMAScript 支持面向对象（OO）编程，但不使用类或者接口。对象可以在代码执行过程中创建和
+		增强，因此具有动态性而非严格定义的实体。在没有类的情况下，可以采用下列模式创建对象。
+		  工厂模式，使用简单的函数创建对象，为对象添加属性和方法，然后返回对象。这个模式后来
+		被构造函数模式所取代。
+		  构造函数模式，可以创建自定义引用类型，可以像创建内置对象实例一样使用 new 操作符。不
+		过，构造函数模式也有缺点，即它的每个成员都无法得到复用，包括函数。由于函数可以不局
+		限于任何对象（即与对象具有松散耦合的特点），因此没有理由不在多个对象间共享函数。
+		  原型模式，使用构造函数的 prototype 属性来指定那些应该共享的属性和方法。组合使用构造
+		函数模式和原型模式时，使用构造函数定义实例属性，而使用原型定义共享的属性和方法。
+		JavaScript 主要通过原型链实现继承。原型链的构建是通过将一个类型的实例赋值给另一个构造函
+		数的原型实现的。这样，子类型就能够访问超类型的所有属性和方法，这一点与基于类的继承很相似。
+		原型链的问题是对象实例共享所有继承的属性和方法，因此不适宜单独使用。解决这个问题的技术是借
+		用构造函数，即在子类型构造函数的内部调用超类型构造函数。这样就可以做到每个实例都具有自己的
+		属性，同时还能保证只使用构造函数模式来定义类型。使用最多的继承模式是组合继承，这种模式使用
+		原型链继承共享的属性和方法，而通过借用构造函数继承实例属性。
+		此外，还存在下列可供选择的继承模式。
+		  原型式继承，可以在不必预先定义构造函数的情况下实现继承，其本质是执行对给定对象的浅
+		复制。而复制得到的副本还可以得到进一步改造。
+		  寄生式继承，与原型式继承非常相似，也是基于某个对象或某些信息创建一个对象，然后增强
+		对象，最后返回对象。为了解决组合继承模式由于多次调用超类型构造函数而导致的低效率问
+		题，可以将这个模式与组合继承一起使用。
+		  寄生组合式继承，集寄生式继承和组合继承的优点与一身，是实现基于类型继承的最有效方式。*/
+
+// 第七章：函数表达式*******************************
+	//普通函数和函数表达式区别：普通函数的函数声明会提升，可以在函数前调用，因为执行环境会先读取函数声明，而函数表达式不会。
+		// 1、普通函数
+			ass(); //因为函数声明提升，执行环境会先读取函数声明，所以先调用不会报错。
+			function ass() {
+				console.log('普通函数')			
+			}
+		// 2、构造函数
+			let func = new ass();
+		// 3、函数表达式：匿名函数(是将创建的函数赋值给一个变量)
+			var	funcName = function() {
+				console.log('函数表达式：匿名函数')
+			}
+			funcName(); //函数调用
+			// console.log(funcName) // 函数体
+			
+	// 1、递归
+		function factorial(num) {
+			if(num <= 1) {
+				return 1
+			}else{
+				return num * factorial(num-1);
+				// return num * arguments.callee(num-1); //解决办法
+			}
+		}
+
+		// 以下代码是先把factorial()函数保存在变量anotherFactorial中，然后将factorial变量设置为null,结果指向原始函数的引用只剩一个。在调用anotherFactorial()时，由于必须执行factorial()，而factorial不再是函数。所以会出错。
+		var anotherFactorial = factorial;
+		// factorial = null; //将变量设置为NULL打印会出错
+		console.log(anotherFactorial(4)); //出错	
+
+		// 解决办法：通过使用 arguments.callee代替函数名，确保无论怎么调用函数都不会出问题。但是在严格模式不能通过脚本访问 arguments.callee，会出错，一下为解决办法：
+		var factorial = (function f(num){
+			if (num <= 1){
+				return 1;
+			} else {
+				return num * f(num-1);
+			}
+		});
+
+
+	// 2、闭包
+		// 1）闭包是指有权访问另一个函数作用域中的变量的函数。2）创建闭包就是在函数内部创建另一个函数。
+		// 3）缺点：闭包会携带包含它的函数的作用域，因此会比其他函数占用更多的内存，过渡使用会导致内存占用过多。
+		function f1(x){
+           	var a=1;
+           	return function f2(y){
+               	console.log(x+y+a);
+               	console.log(x, y, a);
+           	} 
+       	}
+       	var b=f1(2);
+       	b(13);
+
+       	// 2-1、闭包与变量
+       		// 再看一遍
+
+       	// 2-2、关于this对象
+       		// 1）全局下的声明函数this指向window; 2）而当函数被作为某个对象的方法调用是，this指向那个对象；3）匿名函数的执行环境具有全局性，this指向window
+       		 
+       	// 2-3、内存泄露
+       		// 如果闭包的作用域链中保存着一个HTML元素，该元素将无法被销毁。
+
+		// 小结：
+		/*在 JavaScript 编程中，函数表达式是一种非常有用的技术。使用函数表达式可以无须对函数命名，
+		从而实现动态编程。匿名函数，也称为拉姆达函数，是一种使用 JavaScript 函数的强大方式。以下总结
+		了函数表达式的特点。
+		  函数表达式不同于函数声明。函数声明要求有名字，但函数表达式不需要。没有名字的函数表
+		达式也叫做匿名函数。
+		  在无法确定如何引用函数的情况下，递归函数就会变得比较复杂；
+		  递归函数应该始终使用 arguments.callee 来递归地调用自身，不要使用函数名——函数名可
+		能会发生变化。
+		当在函数内部定义了其他函数时，就创建了闭包。闭包有权访问包含函数内部的所有变量，原理
+		如下。
+		  在后台执行环境中，闭包的作用域链包含着它自己的作用域、包含函数的作用域和全局作用域。
+		  通常，函数的作用域及其所有变量都会在函数执行结束后被销毁。
+		  但是，当函数返回了一个闭包时，这个函数的作用域将会一直在内存中保存到闭包不存在为止。
+		使用闭包可以在 JavaScript中模仿块级作用域（JavaScript本身没有块级作用域的概念），要点如下。
+		  创建并立即调用一个函数，这样既可以执行其中的代码，又不会在内存中留下对该函数的引用。
+		  结果就是函数内部的所有变量都会被立即销毁——除非将某些变量赋值给了包含作用域（即外
+		部作用域）中的变量。
+		闭包还可以用于在对象中创建私有变量，相关概念和要点如下。
+		  即使 JavaScript 中没有正式的私有对象属性的概念，但可以使用闭包来实现公有方法，而通过公
+		有方法可以访问在包含作用域中定义的变量。
+		  有权访问私有变量的公有方法叫做特权方法。
+		  可以使用构造函数模式、原型模式来实现自定义类型的特权方法，也可以使用模块模式、增强
+		的模块模式来实现单例的特权方法。
+		JavaScript 中的函数表达式和闭包都是极其有用的特性，利用它们可以实现很多功能。不过，因为
+		创建闭包必须维护额外的作用域，所以过度使用它们可能会占用大量内存。*/
+
+// 第八章：BOM(浏览器对象模型)**********************
+	// ECMAAScript是 JavaScript的核心，但如果要在 Web中使用 JavaScript，那么 BOM（浏览器对象模型）则无疑才是真正的核心。BOM 提供了很多对象，用于访问浏览器的功能，这些功能与任何网页内容无关
+	
+	// 1、window对象
+		//BOM的核心对象是window，它表示浏览器的一个实例
+		// 1-1、全局作用域
+			/*由于 window 对象同时扮演着 ECMAScript中 Global 对象的角色，因此所有在全局作用域中声明
+			的变量、函数都会变成 window 对象的属性和方法。来看下面的例子。*/
+			var age = 29;
+			function sayAge(){
+				console.log(this.age);
+			}
+			console.log(window.age); //29
+			sayAge(); //29
+			window.sayAge(); //29
+
+		// 1-2、间歇调用和超时调用
+			//超时调用:需要使用 window 对象的 setTimeout() 方法
+			setTimeout(function() {
+				// console.log("Hello world!");
+			}, 1000);
+
+			//设置超时调用 例2：
+			var timeoutId = setTimeout(function() {
+				// console.log("Hello world!");
+			}, 1000);
+			clearTimeout(timeoutId);
+
+			//间接调用：需要使用 window 对象的 setInterval() 方法
+			setInterval (function() {
+				// console.log("Hello world!");
+			}, 10000);
+
+	//2、location对象
+		// 注： location 对象是很特别的一个对象，因为它既是 window 对象的属性，也是document 对象的属性；换句话说， window.location 和 document.location 引用的是同一个对象
+
+		// location方法：
+		// hash  "#contents"  返回URL中的hash（#号后跟零或多个字符），如果URL中不包含散列，则返回空字符串 
+		// host  "www.wrox.com:80"  返回服务器名称和端口号（如果有）
+		// hostname  "www.wrox.com"  返回不带端口号的服务器名称
+		// href  "http:/www.wrox.com" 返回当前加载页面的完整URL。而location对象的 toString()方法也返回这个值
+		// pathname  "/WileyCDA/" 返回URL中的目录和（或）文件名
+		// port  "8080" 返回URL中指定的端口号。如果URL中不包含端口号，则这个属性返回空字符串
+		// protocol  "http:" 返回页面使用的协议。通常是http:或https:
+		// search  "?q=javascript" 返回URL的查询字符串。这个字符串以问号开头
+		
+	// 4、history对象
+		// history对象保存着用户上网的历史记录，从窗口打开的那一刻起。 history 对象还有一个 length 属性，保存着历史记录的数量。
+		// 使用 go() 方法可以在用户的历史记录中任意跳转，可以向后也可以向前
+		//后退一页 history.go(-1);
+		//前进一页 history.go(1);
+		//前进两页 history.go(2);
+
+	// 小结：
+		/*浏览器对象模型（BOM）以 window 对象为依托，表示浏览器窗口以及页面可见区域。同时， window
+		对象还是 ECMAScript 中的 Global 对象，因而所有全局变量和函数都是它的属性，且所有原生的构造
+		函数及其他函数也都存在于它的命名空间下。本章讨论了下列 BOM 的组成部分。
+		  在使用框架时，每个框架都有自己的 window 对象以及所有原生构造函数及其他函数的副本。
+		每个框架都保存在 frames 集合中，可以通过位置或通过名称来访问。
+		  有一些窗口指针，可以用来引用其他框架，包括父框架。
+		 top 对象始终指向最外围的框架，也就是整个浏览器窗口。
+		 parent 对象表示包含当前框架的框架，而 self 对象则回指 window 。
+		  使用 location 对象可以通过编程方式来访问浏览器的导航系统。设置相应的属性，可以逐段
+		或整体性地修改浏览器的 URL。
+		  调用 replace() 方法可以导航到一个新 URL，同时该 URL 会替换浏览器历史记录中当前显示
+		的页面。
+		 navigator 对象提供了与浏览器有关的信息。到底提供哪些信息，很大程度上取决于用户的浏
+		览器；不过，也有一些公共的属性（如 userAgent ）存在于所有浏览器中。
+		BOM 中还有两个对象： screen 和 history ，但它们的功能有限。 screen 对象中保存着与客户端
+		显示器有关的信息，这些信息一般只用于站点分析。 history 对象为访问浏览器的历史记录开了一个
+		小缝隙，开发人员可以据此判断历史记录的数量，也可以在历史记录中向后或向前导航到任意页面。*/
+	
+// 第十章：DOM(文档对象模型)************************
+	// 注：DOM是针对HTML和XML文档的一个API(应用程序编程接口)。DOM 描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面的某一部分
+	
+	//1、节点层次
+		/*<html>
+			<head>
+				<title>Sample Page</title>
+			</head>
+			<body>
+				<p>Hello World!</p>
+			</body>
+		</html>
+		注：文档节点是每个文档的根节点。在这个例子中，文档节点只有一个子节点，即 <html> 元素，我们称之为文档元素。
+		文档元素是文档的最外层元素，文档中的其他所有元素都包含在文档元素中。每个文档只能有一个文档元素。在 HTML
+		页面中，文档元素始终都是 <html> 元素。在 XML 中，没有预定义的元素，因此任何元素都可能成为文档元素*/
+
+		// 1-1、Document文档类型
+			// 注：javaScript通过Document类型表示文档。在浏览器中，document对象是HTMLDocument(继承自Document类型)的一个实例，表示整个HTML页面。表示整个 HTML 页面。而且， document 对象是 window 对象的一个属性，因此可以将其作为全局对象来访问
+
+	// 总结：
+	
+// 第十三章：事件***********************************
+	/* javaScript与HTML之间的交互是通过事件实现的。^事件^：就是文档或浏览器窗口中发生的一些特定的交互瞬间。*/
+
+	// 1、事件流
+		// 事件流：描述的是从页面中接收事件的顺序。
+		
+		// 1-1、事件冒泡
+			// IE的事件流叫做事件冒泡，即事件开始时由最具体的元素接收，然后逐级向上传播到较为不具体的节点。
+			/*<!DOCTYPE html>
+			  <html>
+			    <head>
+			      <title>Event Bubbling Example</title>
+			    </head>
+			  <body>
+			    <div id="myDiv">Click Me</div>
+			   </body>
+			   </html>*/
+			// 点击页面中div元素，那么click事件会沿DODM树div>body>html>document向上传播，在每一级节点上都发生，直到传播到documnet对象
+		// 1-2、事件捕获
+			// 在事件捕获过程中，document对象首先接收到click事件，然后事件沿着DOM树依次向下，一直传播到事件的实际目标，即div元素。(老版本浏览器不支持，因此很少有人使用事件捕获)
+		// 1-3、DOM事件流
+			// DOM2级事件：规定的事件流包括三个阶段：事件捕获阶段、处于目标阶段、事件冒泡阶段。
+			// 在DOM事件流中，实际的目标div元素在捕获阶段不会接受事件，这意味着在捕获阶段，事件从document到HTML再到body后就停止了，下一个阶段是‘处于目标’阶段，于是事件在div上发生，并在事件处理中看成冒泡阶段的一部分，然后，冒泡阶段发生，事件又传回文档。
+			
+	// 2、事件处理程序(事件侦听器)
+		// 事件就是用户或浏览器自身执行的某种动作。诸如click、load、mouseover，而响应某个事件的函数就叫做事件处理程序。事件处理程序的名字以“on”开头、因此click事件的事件处理程序就是onclick等等。
+		
+		// 2-1、DOM2级事件处理程序
+			// DOM2级定义了两个方法，用于处理指定和删除事件处理程序的操作：addEventListtener()和removeEventListener()。所以的DOM节点都包含这两个方法，接受3个参数：要处理的事件名，作为事件处理程序的函数和一个布尔值，布尔值为true,表示在捕获阶段 调用事件处理程序；如果是false，表示在冒泡阶段调用事件处理程序。
+			/*例：var btn = document.getElementById('myBtn');
+				btn.addEventListener('click',function(event){
+					console.log('事件')
+				},false) */
+			// 大多数情况下，都是将事件处理程序添加到事件流的冒泡阶段，这样可以最大限度地兼容各种浏览器。最好只在需要在事件到达目标之前截获它的时候将事件处理程序添加到捕获阶段。如果不是特别需要，我们不建议在事件捕获阶段注册事件处理程序
+			
+	//3、事件对象
+		// 在触发DOM上的某个事件时，会产生一个事件对象event，这个对象中包含着所有与事件有关的信息。
+		
+		// 3-1、DOM中的事件对象
+			// 兼容DOM的浏览器会将一个event对象传入到事件处理程序中。
+			/*btn.onclick = function(event){
+				console.log(112)
+			}*/
+
+	// 4、事件类型 
+		// UI事件(用户与页面上元素交互触发)、焦点事件、鼠标事件、滚轮事件、文本事件、键盘事件、合成事件(输入字符时触发)、变动事件(底层DOM结构发生变化触发)、变动名称事件(当元素或者属性名变动时触发)
+		
+		// 4-1、UI事件
+			// DOMActivate、load、unload、abort、error、select、resize、scroll事件名
+		// 4-2、焦点事件
+			// blur、DOMFocusIn、DOMFocusOut、focus、focusin、focusout
+		// 4-3、鼠标与滚轮事件
+			// 鼠标按钮：click、dblclick、mousedown、mouseenter、mouseleave、mousemove、mouseout、mouseover、mouseup
+			// 鼠标滚轮：mousewheel、DOMMouseScroll
+		// 4-4、键盘与文本事件
+			// keydown、keypress、keyup、
+		// 4-5、复合事件
+			// compositionupdate、compositionend
+		// 4-6、变动事件
+			// DOMSubtreeModified、DOMNodeInserted、DOMNodeRemoved、DOMNodeInsertedIntoDocument、DOMNodeRemovedFromDocument、DOMAttrModified、DOMCharacterDataModified
+		// 4-7、HTML5事件
+			// contextmenu、beforeunload、DOMContentLoaded、readystatechange、pageshow、pagehide、hashchange
+		// 4-8、设备事件（手机、平板）
+			// orientationchange、MozOrientation、deviceorientation、devicemotion
+		// 4-9、触摸与手势事件		无
+	
+	// 5、内存和性能
+		// 在JavaScript中，添加到页面上的事件处理程序数量将直接关系到页面的整体运行性能。导致这问题的原因是多方面的。首先每个函数都有对象，都会占用内存；内存中的对象越多，性能就越差，其次，必须事先指定所有事件处理程序而导致DOM访问次数，会延迟整个页面的交互就绪时间。
+		
+		// 5-1、事件委托
+			//对时间处理程序过多的问题的解决方案就是事件委托。事件委托利用了事件冒泡，只指定一个事件处理程序，就可以管理某一类型的所有事件。例如， click 事件会一直冒泡到document 层次。也就是说，我们可以为整个页面指定一个 onclick 事件处理程序，而不必给每个可单击的元素分别添加事件处理程序。
+			
+			/*<ul id="myLinks">
+				<li id="goSomewhere">Go somewhere</li>
+				<li id="doSomething">Do something</li>
+				<li id="sayHi">Say hi</li>
+			</ul>
+
+			// 正常写每个事件//
+			var item1 = document.getElementById("goSomewhere");
+			var item2 = document.getElementById("doSomething");
+			var item3 = document.getElementById("sayHi");
+			EventUtil.addHandler(item1, "click", function(event){
+				location.href = "http://www.wrox.com";
+			});
+			EventUtil.addHandler(item2, "click", function(event){
+				document.title = "I changed the document's title";
+			});
+			EventUtil.addHandler(item3, "click", function(event){
+				console.log("hi");
+			});
+
+			// 利用事件委托==>统一处理事件//
+			如果在一个复杂的 Web应用程序中，对所有可单击的元素都采用这种方式，那么结果就会有数不清的代码用于添加事件处理程序。此时，可以利用事件委托技术解决这个问题。使用事件委托，只需在DOM 树中尽量最高的层次上添加一个事件处理程序，如下面的例子所示:
+			var list = document.getElementById("myLinks");
+			EventUtil.addHandler(list, "click", function(event){
+				event = EventUtil.getEvent(event);
+				var target = EventUtil.getTarget(event);
+				switch(target.id){
+					case "doSomething":
+						document.title = "I changed the document's title";
+						break;
+					case "goSomewhere":
+						location.href = "http://www.wrox.com";
+						break;
+					case "sayHi":
+						console.log("hi");
+						break;
+				}
+			});*/
+
+		// 5-2、移除事件处理程序
+			/*<div id="myDiv">
+				<input type="button" value="Click Me" id="myBtn">
+			</div>
+			var btn = document.getElementById("myBtn");
+			btn.onclick = function(){
+				// btn.onclick = null; //移除事件处理程序
+				//先执行某些操作
+				document.getElementById("myDiv").innerHTML = "Processing..."; //麻烦了！
+			};*/
+			
+	// 6、模拟事件
+		// 6-1、
+
+// 第十四章：表单脚本*******************************
+
+	// 1、变单的基础知识
+		// 1-1、提交表单
+			/*通用提交按钮 -->
+			<input type="submit" value="Submit Form">
+			自定义提交按钮 -->
+			<button type="submit">Submit Form</button>
+			图像按钮 -->
+			<input type="image" src="graphic.gif">*/
+
+		// 1-2、重置表单
+			/*<!-- 通用重置按钮 -->
+			<input type="reset" value="Reset Form">
+			<!-- 自定义重置按钮 -->
+			<button type="reset">Reset Form</button>*/
+
+		// 1-3、变单字段
+			var form = document.getElementById("form1");
+			//取得表单中的第一个字段
+			var field1 = form.elements[0];
+			//取得名为"textbox1"的字段
+			var field2 = form.elements["textbox1"];
+			//取得表单中包含的字段的数量
+			var fieldCount = form.elements.length;
+	
+	// 2、文本框脚本
+		// input单行文本框，textarea多行文本框
+		
+		// 2-1、选择文本
+			// select
+		
+		// 2-3、自动切换焦点
+			// 用户在第一个文本框中输入了 3 个数字之后，焦点就会切换到第二个文本框，再输入 3 个数字，焦点又会切换到第三个文本框
+			/*<input type="text" name="tel1" id="txtTel1" maxlength="3">
+			<input type="text" name="tel2" id="txtTel2" maxlength="3">
+			<input type="text" name="tel3" id="txtTel3" maxlength="4">
+			(function(){
+				function tabForward(event){
+					event = EventUtil.getEvent(event);
+					var target = EventUtil.getTarget(event);
+					if (target.value.length == target.maxLength){
+					var form = target.form;
+					for (var i=0, len=form.elements.length; i < len; i++) {
+					if (form.elements[i] == target) {
+					if (form.elements[i+1]){
+					form.elements[i+1].focus();
+					}
+					return;
+					}
+					}
+					}
+					}
+					var textbox1 = document.getElementById("txtTel1");
+					var textbox2 = document.getElementById("txtTel2");
+					var textbox3 = document.getElementById("txtTel3");
+					EventUtil.addHandler(textbox1, "keyup", tabForward);
+					EventUtil.addHandler(textbox2, "keyup", tabForward);
+					EventUtil.addHandler(textbox3, "keyup", tabForward);
+			})();*/
+
+	// 4、表单序列号
+		// 根据数据渲染表单
+	
+	// 5、富文本编辑
+		// 5-1、
+
+// 第十五章：使用Canvas绘图
+	// canvas元素负责在页面中舍得一个区域，然后通过JavaScript冬天的在这个区域中绘制图形。
+
+	// 1、基本用法
+		// 使用canvas元素必须设置width和height属性，可指定绘图的区域大小。在使用 <canvas> 元素之前，首先要检测 getContext() 方法是否存在，这一步非常重要
+		
+		/*<canvas id="drawing" width=" 200" height="200">A drawing of something.</canvas>
+
+		var drawing = document.getElementById("drawing");
+		//确定浏览器支持<canvas>元素
+		if (drawing.getContext){ 
+			var context = drawing.getContext("2d");
+			//更多代码
+		/*/
+	
+	// 2、2D上下文
+		// 使用2D绘制上下文提供的方法可以绘制一些简单的2D图形，比如矩形，弧线和路径。坐标位于canvas元素左上角，原点坐标（0,0）。所以坐标都基于这个原点计算，x值越大越靠右，y值越大越靠下。
+	
+		// 2-1、填充和描边 
+			// var drawing = document.getElementById("drawing");
+
+			// //确定浏览器支持<canvas>元素
+			// if (drawing.getContext){
+			// 	var context = drawing.getContext("2d");
+			// 	// context.fillStyle = "#0000ff"; //填充
+			// 	// context.strokeStyle = "red"; //描边
+			// }	
+
+		// 2-2、绘制矩形 
+			// 绘制矩形方法：填充:fillRect()、描边:strokeRect()、清除重叠矩形:clearRect()
+			// if (drawing.getContext){
+			// 	var context = drawing.getContext("2d");
+			// 	// 绘制红色矩形
+			// 	context.fillStyle = "#ff0000";
+			// 	context.fillRect(10, 10, 50, 50);
+
+			// 	// 绘制半透明的蓝色矩形 填充
+			// 	context.fillStyle = "rgba(0,0,255,0.5)";
+			// 	context.fillRect(30, 30, 50, 50); //x坐标，y坐标，宽，高
+
+			// 	// 描边
+			// 	context.strokeStyle = "red"; 
+			// 	context.strokeRect(30, 30, 50, 50); //x坐标，y坐标，宽，高
+
+			// 	// 在两个矩形重叠的地方清除一个小矩形
+			// 	context.clearRect(40, 40, 10, 10);
+			// }	
+
+		// 2-3、绘制路径
+			// 绘制路径需调用beginPath()方法，表示绘制新的路径。再通过下列方法实际绘制路径:
+			
+		   /* 1）arc(x, y, radius, startAnle, endAngle, counterclockwise)：xy圆心坐标、radius弧度半径、startAnle和endAngle起始和结束角度，counterclockwise为true时startAngle 和 endAngle 是否按逆时针方向计算false为顺时。
+			2）arcTo(x1, y1, x2, y2, raduis)：从上一点开始绘制一条弧线，到x2,y2为止，并给定的半径让raduis闯过x1,y1;
+			3) bezierCurveTo:(c1x, c1y, c2x, c2y, x, y)：从上一点开始绘制一条曲线到x,y为止，并且以c1x,c1y和c2x,c2y为控制点。
+			4) lineTo(x, y)：从上一点开始绘制一条直线，到x,y为止。
+			5）moveTo(x, y)：将绘图的游标移动到x,y，不画线。
+			6）quadraticCurveTo(cx, cy, x, y) ：从上一点开始绘制一条二次曲线，到 (x,y) 为止，并且以 (cx,cy) 作为控制点。
+			7）rect(x, y, width, height) ：从点 (x,y) 开始绘制一个矩形，宽度和高度分别由 width 和height 指定。这个方法绘制的是矩形路径，而不是 strokeRect() 和 fillRect() 所绘制的独立的形状。*/
+			// 绘制不带数字的钟表
+			//确定浏览器支持<canvas>元素
+			if (drawing.getContext){
+				var context = drawing.getContext("2d");
+				// 开始路径
+				context.beginPath();
+				// 绘制外圆
+				context.arc(100, 100, 99, 0, 2 * Math.PI, false);
+				// 绘制内圆
+				context.moveTo(194, 100);
+				context.arc(100, 100, 94, 0, 2 * Math.PI, false);
+				/*2-5、变换
+					// 变换原点
+					context.translate(100, 100);
+					// 旋转表针
+					context.rotate(1);
+					// 绘制分针
+					context.moveTo(0,0);
+					context.lineTo(0, -85);
+					// 绘制时针
+					context.moveTo(0, 0);
+					context.lineTo(-65, 0);
+				*/
+				// 绘制分针
+				context.moveTo(100, 100);
+				context.lineTo(100, 15);
+				// 绘制时针
+				context.moveTo(100, 100);
+				context.lineTo(35, 100);
+				// 设置阴影
+				// context.shadowOffsetX = 5;
+				// context.shadowOffsetY = 5;
+				// context.shadowBlur = 4;
+				// context.shadowColor = "rgba(0, 0, 0, 0.5)";
+				// 描边路径
+				context.stroke();
+				// x 和 y 坐标作为参数，用于在路径被关闭之前确定画布上的某一点是否位于路径上
+				if (context.isPointInPath(100, 100)){
+					console.log("Point (100, 100) is in the path.");
+				}
+			}
+
+		// 2-4、绘制文本
+			// 绘制文本主要有两个方法： fillText() 和 strokeText() 。这两个方法都可以接收 4 个参数：要绘制的文本字符串、x 坐标、y 坐标和可选的最大像素宽度。而且，这两个方法都以下列 3 个属性为基础
+
+			/* 1）font：表示文本样式，大小及字体，10px Arial
+			   2）textAlihn：表示文本对齐方法，start,end,left,right,center，建议使用start和end稳定
+			   3）textBaseline：表示文本的基数。top,hanging,middle,alphabetic,ideographic,bottom*/
+			if (drawing.getContext){
+				var context = drawing.getContext("2d");
+				// 正常
+				context.font = "bold 14px Arial";
+				context.textAlign = "center";
+				context.textBaseline = "middle";
+				context.fillText("12", 100, 20);
+				// 起点对齐
+				context.textAlign = "start";
+				context.fillText("12", 100, 40);
+				// 终点对齐
+				context.textAlign = "end";
+				context.fillText("12", 100, 60);
+			}
+
+		// 2-5、变换
+			// 通过上下文的变换，可以把处理后的图像绘制到画布上。
+			
+			/* 1）rotate(angle):围绕原点旋转图像angle弧度。
+			   2）scale(scaleX, scaleY)：缩放图像，在x方向乘于scaleX，在y乘于scaleY，默认为都为0。
+			   3）translate(x,y):将坐标的原点移动到x,y。
+			   4）transform(m1_1, m1_2, m2_1, m2_2, dx, dy):直接修改变换矩阵，方式是乘以如下矩阵：
+			    m1_1 m1_2 dx
+				m2_1 m2_2 dy
+				0     0   1
+			   5）setTransform(m1_1, m1_2, m2_1, m2_2, dx, dy) ：将变换矩阵重置为默认状态，然后再调用 transform() 。*/
+
+			if (drawing.getContext){
+				// var context = drawing.getContext("2d");
+				// // //开始路径
+				// context.beginPath();
+				// // //绘制外圆
+				// context.arc(300, 300, 99, 0, 2 * Math.PI, false);
+				// // //绘制内圆
+				// context.moveTo(394, 300);
+				// context.arc(300, 300, 95, 0, 3 * Math.PI, false);
+				// // //变换原点
+				// context.translate(300, 300);
+				// // // 旋转表针
+				// context.rotate(1);
+				// // //绘制分针
+				// context.moveTo(0,0);
+				// context.lineTo(0, -85);
+				// // //绘制时针
+				// context.moveTo(0, 0);
+				// context.lineTo(-65, 0);
+				// // //描边路径
+				// context.stroke();
+
+			 	// context.fillStyle = "#ff0000";
+				// context.save();
+				// context.fillStyle = "#00ff00";
+				// context.translate(100, 100);
+				// context.save();
+				// context.fillStyle = "#0000ff";
+				// context.fillRect(0, 0, 100, 200); //从点(100,100)开始绘制蓝色矩形
+				// context.restore();
+				// context.fillRect(10, 10, 100, 200); //从点(110,110)开始绘制绿色矩形
+				// context.restore();
+				// context.fillRect(0, 0, 100, 200); //从点(0,0)开始绘制红色矩形
+			}
+
+		// 2-6、绘制图像
+			// 2-5有写
+			
+		// 2-7、阴影
+			// 2D 上下文会根据以下几个属性的值，自动为形状或路径绘制出阴影。这些属性都可以通过 context对象来修改。只要在绘制前为它们设置适当的值，就能自动产生阴影。
+			
+			/* shadowColor ：用 CSS 颜色格式表示的阴影颜色，默认为黑色。
+			 shadowOffsetX ：形状或路径 x 轴方向的阴影偏移量，默认为 0。
+			 shadowOffsetY ：形状或路径 y 轴方向的阴影偏移量，默认为 0。
+			 shadowBlur ：模糊的像素数，默认 0，即不模糊.*/
+
+			if (drawing.getContext){
+				var context = drawing.getContext("2d");
+
+				// 设置阴影
+				context.shadowOffsetX = 5;
+				context.shadowOffsetY = 5;
+				context.shadowBlur = 4;
+				context.shadowColor = "rgba(0, 0, 0, 0.5)";
+				//绘制红色矩形
+				context.fillStyle = "#ff0000";
+				context.fillRect(10, 10, 50, 50);
+				//绘制蓝色矩形
+				context.fillStyle = "rgba(0,0,255,1)";
+				context.fillRect(30, 30, 50, 50);
+			}
+
+		// 2-8、渐变
+			// 渐变由 CanvasGradient 实例表示，很容易通过 2D 上下文来创建和修改。要创建一个新的线性渐变，可以调用 createLinearGradient() 方法。这个方法接收 4 个参数：起点的 x 坐标、起点的 y 坐标、终点的 x 坐标、终点的 y 坐标。调用这个方法后，它就会创建一个指定大小的渐变，并返回CanvasGradient 对象的实例。
+
+			if (drawing.getContext){
+				var context = drawing.getContext("2d");
+
+				var gradient = context.createLinearGradient(100, 100, 150, 150);
+				gradient.addColorStop(0, "red");
+				gradient.addColorStop(1, "black");
+
+				// //绘制红色矩形
+				// context.fillStyle = "#ff0000";
+				// context.fillRect(100, 100, 50, 50);
+				//绘制渐变矩形
+				context.fillStyle = gradient;
+				context.fillRect(100, 100, 50, 50);
+			}
+
+		// 2-9、模式
+			// 模式其实就是重复的图像，可以用来填充或描边图形。
+			
+			//需要注意的是，模式与渐变一样，都是从画布的原点(0,0)开始的。将填充样式（ fillStyle ）设置为模式对象，只表示在某个特定的区域内显示重复的图像，而不是要从某个位置开始绘制重复的图像
+			if (drawing.getContext){
+				var context = drawing.getContext("2d");
+
+				// var image = document.images[0],
+				// pattern = context.createPattern(image, "repeat");
+				// //绘制矩形
+				// context.fillStyle = pattern;
+				// context.fillRect(10, 10, 150, 150);
+			}
+
+		// 2-10、使用图像数据
+			// 2D 上下文的一个明显的长处就是，可以通过 getImageData() 取得原始图像数据。这个方法接收4 个参数：要取得其数据的画面区域的 x 和 y 坐标以及该区域的像素宽度和高度。例如，要取得左上角坐标为(10,5)、大小为 50×50 像素的区域的图像数据，可以使用以下代码
+
+			// 再看一遍
+
+		// 2-11、合成
+			// globalAlpha设置透明度，globalCompositeOperation合成操作，有很多属性。
+			if (drawing.getContext){
+				var context = drawing.getContext("2d");
+				// context设置要在绘制前设置好，只作用设置下的东西
+				
+				//修改全局透明度
+				// context.globalAlpha = 0.3; //以下的都作用到
+				
+				// 设置合成操作  有很多属性
+				context.globalCompositeOperation = "destination-over"; //先绘制的图形位于先绘制的下方，之前给图形设置了阴影，那么现在阴影在上方，矩形在下方
+				
+				//绘制红色矩形
+				context.fillStyle = "#ff0000";
+				context.fillRect(200, 200, 50, 50);
+				//修改全局透明度
+				context.globalAlpha = 0.5; //只作用以下蓝色矩形
+				//设置合成操作
+				//绘制蓝色矩形
+				context.fillStyle = "rgba(0,0,255,1)";
+				context.fillRect(200, 300, 50, 50);
+			}
+
+	// 3、WebGL
+		// WebGL是针对canvas的3D上下文。
+
+		// 3-1、类型化数组
+			// 1）WebGL 涉及的复杂计算需要提前知道数值的精度，而标准的 JavaScript 数值无法满足需要。因此WebGL 引入了一个概念，叫类型化数组（typed arrays）。类型化数组也是数组，只不过其元素被设置为特定类型的值。
+			//2）类型化数组的核心就是一个名为 ArrayBuffer 的类型。每个 ArrayBuffer 对象表示的只是内存中指定的字节数，但不会指定这些字节用于保存什么类型的数据。通过 ArrayBuffer 所能做的，就是为了将来使用而分配一定数量的字节。例如，下面这行代码会在内存中分配 20B。
+			var buffer = new ArrayBuffer(20);
+
+
+
+
+</script>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>	Promise</title>
+</head>
+<body>
+
+</body>
+</html>
+<script type="text/javascript">
+
+	const p = new Promise( (resolve, reject)=>{  // Pending(进行中)
+	console.log('pending') //同步
+	if( false ) { 
+		resolve(' 成功！ ') //resolve返回的值是then返回值的形参
+	} else { 
+		reject(' 失败！ ') //reject返回的值是catch返回值的形参
+	}
+})
+p.then(res=>{  // Rejected(成功状态)
+	console.log(res) 
+	console.log(' 成功返回 ' )
+})
+p.catch(err=>{  //Resolved(失败状态)
+	console.log(err) 
+	console.log(' 失败返回 ' )
+})
+console.log(p)
+	
+</script>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>色块拖动沿着轨迹移动</title>
+        <style>div { width: 50px; height: 50px; background-color: deepskyblue; position: absolute; border: 2px solid #656565; }</style>
+        <script src="../../js/Method.js"></script>
+    </head>
+    
+    <body>
+        <div></div>
+        <script>var elem;
+            var state = 0; //当前的状态 初始0——拖动录制1——回放2
+            var arr = []; //存放我们的行走路径的 数组
+            var list = []; //存放我们的行走路径的 数组
+            var index = 0;
+            init();
+            function init() {
+                elem = document.querySelector("div");
+                Method.dragElem(elem);
+                elem.addEventListener("mousedown", mouseHandler);
+                elem.addEventListener("mouseup", mouseHandler);
+                setInterval(animation, 16);
+            }
+
+            function mouseHandler(e) { //当前的状态 初始0——拖动录制1——回放2
+                if (e.type === "mousedown") { //鼠标按下
+                    state = 1;
+                } else if (e.type === "mouseup") { //鼠标抬起
+                    createElemShadow();
+                    state = 2;
+                }
+            }
+
+            function createElemShadow() {
+                var bool = false;
+                if (list.length === 0) bool = true;
+                for (var i = 0; i < 5; i++) {
+                    if (bool) list.push(elem.cloneNode(false));
+                    list[i].style.opacity = 1 - i * 0.2;
+                    document.body.appendChild(list[i])
+                }
+            }
+
+            function animation() {
+                if (!state) return;
+                if (state === 1) {
+                    record();
+                } else if (state === 2) {
+                    play();
+                }
+            }
+
+            function record() {
+                var rect = elem.getBoundingClientRect();
+                arr.push({
+                    x: rect.x,
+                    y: rect.y
+                });
+            }
+
+            function play() {
+                /* if(index>=arr.length-1){
+        state=0;
+        return;
+      }*/
+                index++;
+                var point = arr[index];
+                if (point) {
+                    elem.style.left = point.x + "px";
+                    elem.style.top = point.y + "px";
+                    elem.style.backgroundColor = Method.divColor();
+                }
+                var bool = false;
+                for (var i = 0; i < list.length; i++) {
+                    if (!arr[index - i * 2]) continue;
+                    list[i].style.left = arr[index - i * 2].x + "px";
+                    list[i].style.top = arr[index - i * 2].y + "px";
+                    list[i].style.backgroundColor = Method.divColor();
+                    bool = true;
+                }
+                if (!bool) {
+                    state = 0;
+                    for (var j = 0; j < list.length; j++) {
+                        list[j].remove();
+                    }
+                }
+            }</script>
+    </body>
+
+</html>

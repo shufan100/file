@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+ 	<head>
+	 	<meta charset="UTF-8">
+	 	<title>Canvas动态粒子连线</title>
+	</head>
+ 
+	 <body>
+	 	<canvas id="myCanvas" style="border: 1px solid #ddd; display: block;margin: 20px auto;"></canvas>
+	 </body>
+
+	 <script>
+		var myCanvas = document.getElementById("myCanvas");
+		myCanvas.width = "800";
+		myCanvas.height = "800";
+		var cxt = myCanvas.getContext("2d");
+		cxt.fillStyle="#ddd";
+		var points =new Array();
+		//绘制60个粒子
+		for(var i=0;i<100;i++){
+			drawlizi();
+		}
+		setInterval(movelizi,100);
+		 
+		//绘制静态粒子
+		function drawlizi(){
+		 	var x = generate_random(3,797);
+			var y = generate_random(3,797);
+			var speedx = generate_random(-4,4);
+			var speedy = generate_random(-4,4);
+			//防止出现不移动的粒子
+			while(speedx==0&&speedy==0){
+			 	speedx = generate_random(-4,4);
+			 	speedy = generate_random(-4,4);
+			}
+			var point={
+				x_index:x,
+				y_index:y,
+				x_speed:speedx,
+				y_speed:speedy
+			};
+		 	points.push(point);
+		 	cxt.beginPath();
+		 	cxt.arc(x,y,3,0,360);
+		 	cxt.closePath();
+		 	cxt.fill();
+		}
+		 
+		 //粒子移动
+		function movelizi(){
+		 	cxt.clearRect(0, 0,myCanvas.width,myCanvas.height);
+		 	for(var i=0;i<points.length;i++) {
+			 	points[i].x_index = points[i].x_index+points[i].x_speed;
+			 	points[i].y_index = points[i].y_index+points[i].y_speed;
+			 	cxt.beginPath();
+			 	cxt.arc(points[i].x_index,points[i].y_index,3,0,360);
+			 	cxt.closePath();
+			 	cxt.fill();
+		 		//判断超过界限删除并再生
+		 		if((points[i].x_index<3||points[i].y_index<3)||(points[i].x_index>797||points[i].y_index<3)||(points[i].x_index<3||points[i].y_index>797)||(points[i].x_index>797||points[i].y_index>797)){
+		 			points.splice(i,1);
+		 			drawlizi();
+		 		}
+		 	}
+		 //相近的粒子进行连线
+		 for (var i=0;i<points.length;i++) {
+		 for (var j=0;j<points.length;j++) {
+		 if(i!=j)
+		 {
+		 var one_x = points[i].x_index;
+		 var one_y = points[i].y_index;
+		 var two_x = points[j].x_index;
+		 var two_y = points[j].y_index;
+		 // 根据两点间的距离公式，小于界限值便进行连线
+		 var jl = Math.sqrt(Math.pow(one_x-two_x,2)+Math.pow(one_y-two_y,2));
+		 if(jl<100)
+		 {
+		 cxt.strokeStyle="#ddd";
+		 cxt.moveTo(one_x,one_y);
+		 cxt.lineTo(two_x,two_y);
+		 cxt.stroke();
+		 }
+		 }
+		 }
+		 }
+		 }
+		 //生成两个数之间的随机数
+		 function generate_random(min,max){
+		 return Math.floor(Math.random()*(max-min)+min);
+		 } 
+	 </script>
+
+ 
+</html>
