@@ -1,6 +1,8 @@
 function jspang() {
     let web:string = 'Hello World'
-    console.log(web)
+    let num:number;
+    num = 99
+    console.log(web,num)
 }
 jspang()
 
