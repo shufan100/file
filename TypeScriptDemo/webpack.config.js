@@ -1,10 +1,19 @@
 // webpack配置
 const path = require('path'); // nodejs中的一个模块，作用：用来拼接路径
 
+// 打包生成html文件配置
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+
+
 // webpack中的所有配置信息都应该写在这里面
 module.exports = {
   // 指定入口文件
   entry: './src/index.ts',
+
+  // 设置环境
+  mode: 'production',
 
   // 打包文件所在目录（项目打包完要放在哪个文件夹下）
   output: {
@@ -24,7 +33,18 @@ module.exports = {
 
       }
     ]
-  }
+  },
+
+  // 配置webpage插件
+  plugins: [
+    // build先清空dist文件夹
+    new CleanWebpackPlugin(),
+    // build会自动生成html文件
+    new HTMLWebpackPlugin({
+      // title: "自定义title",  // 不用src的html模板，自己生成html文件
+      template: "./src/index.html",// 用这个就用src的html模板
+    })
+  ]
 
 
 }

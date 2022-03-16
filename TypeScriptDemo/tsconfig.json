@@ -17,16 +17,16 @@
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
     "target": "es6",                     /* 用来指定ts被编译为的es版本: 'ES3' (默认), 'ES5', 'ES6/ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
-    "module": "es6",                     /* 指定要使用的模块化的规范（将引入的文件编译成什么版本）: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015/es6', 'es2020', or 'ESNext'. */
-    // "lib": [],                        /* 用来指定项目中要使用的库. */
-    "allowJs": true,                     /* 是否对src下的js文件进行编译，默认为不编译. */
-    "checkJs": true,                     /* 检测js代码是否符合语法规范. */
+    // "module": "es6",                     /* 指定要使用的模块化的规范（将引入的文件编译成什么版本）: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015/es6', 'es2020', or 'ESNext'. */
+    // // "lib": [],                        /* 用来指定项目中要使用的库. */
+    // "allowJs": true,                     /* 是否对src下的js文件进行编译，默认为不编译. */
+    // "checkJs": true,                     /* 检测js代码是否符合语法规范. */
     // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     // "declaration": true,                   /* Generates corresponding '.d.ts' file. */
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
     // "sourceMap": true,                     /* Generates corresponding '.map' file. */
     // "outFile": "./dist/app.js",       /* 将代码合并为一个文件 ,设置outFile后所有的全局作用域中的代码合并到同一个文件中. */
-    "outDir": "./dist",                  /* 用来指定编译后文件所在的目录(编译后就会生成一个dist文件). */
+    // "outDir": "./dist",                  /* 用来指定编译后文件所在的目录(编译后就会生成一个dist文件). */
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "composite": true,                     /* Enable project compilation */
     // "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
@@ -37,7 +37,7 @@
     // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
 
     /* Strict Type-Checking Options */
-    "strict": true,                      /* 所有严格模式检查的总开关，底下的不用写了. */
+    "strict": false,                      /* 所有严格模式检查的总开关，底下的不用写了. */
     // "noImplicitAny": true,            /* 不允许隐式的any类型出现. */
     // "strictNullChecks": true,         /* 严格模式检查空值. */
     // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
@@ -60,7 +60,7 @@
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
     // "types": [],                           /* Type declaration files to be included in compilation. */
     // "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
-    "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    // "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
     // "allowUmdGlobalAccess": true,          /* Allow accessing UMD globals from modules. */
 
@@ -75,7 +75,7 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
 
     /* Advanced Options */
-    "skipLibCheck": true,                     /* Skip type checking of declaration files. */
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
+    // "skipLibCheck": true,                     /* Skip type checking of declaration files. */
+    // "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   }
 }
