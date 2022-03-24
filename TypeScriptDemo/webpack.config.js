@@ -40,9 +40,9 @@ module.exports = {
                 [
                   '@babel/preset-env',  //指定环境的插件
                   {     //配置信息
-                    targets: { // 要兼容的浏览器版本
-                      'chrome': '88',
-                      'ie': '11'  //不支持const,箭头函数,没有Promise
+                    targets: { // 要兼容的浏览器版本(编译和)
+                      'chrome': '58',
+                      // 'ie': '11'  //不支持const,箭头函数,没有Promise
                     },//如果引用了Promise，但ie11没有，就引用corejs里的Promise的方法
                     'corejs': '3', //指定corejs的版本
                     'useBuiltIns': 'usage', //使用corejs的方式'usage' 表示按需加载
@@ -64,7 +64,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     // build会自动生成html文件
     new HTMLWebpackPlugin({
-      title: "自定义title",  // 不用src的html模板，自己生成html文件
+      title: "TypeSctiptDemo",  // 不用src的html模板，自己生成html文件
       // template: "./src/index.html",// 用这个就用src的html模板
     })
   ],
