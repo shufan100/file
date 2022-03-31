@@ -41,6 +41,7 @@ function Promise(executor){
 
     // 处理throw抛出的异常
     try{
+        // resolve 和 reject 两个函数作为参数传递给executor(executor 函数在Promise构造函数返回所建 promise 实例对象前被调用)
     	// 同步调用（执行器函数）
 		executor(resolve,reject)
     }catch(e){//e是catch捕获throw
