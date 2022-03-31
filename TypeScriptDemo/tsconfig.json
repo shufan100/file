@@ -31,6 +31,7 @@
     // "composite": true,                     /* Enable project compilation */
     // "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
     "removeComments": true,              /* 是否移除注释. */
+    "noEmitOnError": true,               /* 有错误的ts不进行编译. */
     // "noEmit": true,                   /* 不生成编译后的文件. */
     // "importHelpers": true,                 /* Import emit helpers from 'tslib'. */
     // "downlevelIteration": true,            /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
