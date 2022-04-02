@@ -48,7 +48,6 @@ function Promise(executor){
     	reject(e)
     }
 	
-
 }
 // 2、给promise原型添加then方法
 	// 因为then方法是p调用的，this指向p实例对象

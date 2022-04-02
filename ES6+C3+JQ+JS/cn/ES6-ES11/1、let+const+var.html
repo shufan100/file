@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>let-const-var</title>
+</head>
+<body>
+	<div class="box">
+		<div class="items">1</div>
+		<div class="items">2</div>
+		<div class="items">3</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+
+//************ let *************
+	// 1、不可重复声明、
+		let a = 1;
+		// let a = 2;
+	// 2、块级作用域 (包括if else while for 函数的花括号都是)
+		// { let k = 1}  console.log(k)
+	// 3、不存在变量提升
+	// 4、不影响作用域链
+	
+
+	const items = document.getElementsByClassName('items')
+	for(var i =0; i < items.length; i++){
+		items[i].onclick = function(){
+			this.style.color = 'red'  // var定义i
+			// items[i].style.color = 'red'  // let定义i
+		}
+
+	}
+	console.log(window.i) //使用var定义 i === 3  =>因为i是全局变量，循环走完==2，但是但是还会i++自增，所有i==3
+
+
+//************ const *************
+	// 1、值不可修改的常量
+	// 2、常量一般大写(潜规则)
+	// 3、初始化一定要赋值
+		// const A = 1;
+	// 4、块级作用域
+	// 5、对于数组和对象的元素修改，不算做对常量的修改，不会报错
+		const ARR = [1,2]
+		ARR[2] = 3
+		console.log(ARR)
+
+	
+
+
+
+	
+//变量提升*****************************
+// 	let a = 'a';
+// 	const b = 'b';
+// 	var c = 'c';
+// 	if(true){
+// 		let a = 'aa'; //变量不会提升
+// 		const b = 'bb'; //变量不会提升
+// 		var c = 'cc'; //变量提升到全局
+// 		console.log(a,b,c)
+// 	}
+// 	console.log(a,b,c)
+
+// //const 定义常量，该常量不能赋值，但该常量的属性可以赋值***************
+// 	const c231 = {};
+// 	const c232 = [];
+	  
+// 	c231.name = 'seven';
+// 	c232.push(27);
+	  
+// 	console.log(c231, c232);
+
+// // 全局变量不再设置为顶层对象（window）的属性，有效避免全局变量污染*******
+// 	console.log(window.a, window.b, window.c)
+	
+</script>
