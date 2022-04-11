@@ -1,6 +1,6 @@
-console.log('模块demo')
+console.log('-----------demo自定义模块------------------')
 
-exports.title = '模块demo'
+exports.title = 'demo自定义模块'
 module.exports.add = (a,b)=> a+b
 // module.exports === exports = true
 
