@@ -66,58 +66,68 @@ Server.on('request', (req, res) => { // 2、给服务器实例绑定一个reques
   // res.end(data)  // 把响应的内容给客户端
 
   // 3、实例
-  let content = '<h1>404 Not found!</h1>'
+  let content = '<h1>404 Not found!</h1>';
   if (req.url === '/' || req.url === '/index.html') {
-    content = '<h1>首页</h1>'
+    content = '<h1>首页</h1>';
   }
   if (req.url === '/about.html') {
-    content = '<h1>关于作者</h1>'
+    content = '<h1>关于作者</h1>';
   }
-  res.setHeader('Content-Type', 'text/html;charset=utf-8')
-  res.end(content)
-
-})
+  res.setHeader('Content-Type', 'text/html;charset=utf-8');
+  res.end(content);
+});
 // 3、启动服务器 server.listen(端口，回调)
-// Server.listen(8081,()=>{
-//   console.log('server running at http://192.168.1.163:8081')
-// })
-
-
+// Server.listen(8081, () => {
+//   console.log('server running at http://192.168.1.163:8081');
+// });
 
 // **********模块化***********
 // 1、提高代码的 复用性
 // 2、提高代码的 可维护性
 // 3、可实现  按需加载
 
-// console.log(arguments.callee + '','-----1111')
-// 外面包裹的函数：function (exports, require, module, __filename, __dirname) {}
-// 1、exports：该对象用来将变量或函数暴露给外部
-// 2、require：函数，用来引入外部的模块
-// 3、module：当前模块属性，module:{ exports,path....}
-// 4、__filename：当前模块的完整路径
-// 5、__dirname：当前模块所在的文件夹完整路径
-// console.log(module, 'module')
-
-
-// 1、外界用require()方法 导入自定义模块时，等到的就是module.exports所指向的对象
-let obj = require('./demo1.js')
+// let obj = require('./demo1.js')
 // console.log(obj)
-// console.log(obj.add(11,33),obj.title)
+// // console.log(obj.add(11,33),obj.title)
 
-// 2、全局对象global、和window类似（Node没window）
-// console.log(global)
+// console.log(global.adds(19,21))
+// console.log('-------------------------------')
 
-const sfdates = require('../sf-date/index')
-const result = sfdates.dateFormat(new Date())
+// // console.log(arguments.callee + '')
+// // 1、exports：该对象用来将变量或函数暴露给外部
+// // 2、require：函数，用来引入外部的模块
+// // 3、module：module代表的是当前的模块本身，exports就是module的属性
+// // 4、__filename：当前模块的完整路径
+// // 5、__dirname：当前模块所在的文件夹完整路径
+// // console.log(__filename,'---')  //当前模块的完整路径
+// // console.log(__dirname)  //当前模块所在的文件夹完整路径
 
+console.log(global.adds(19, 21));
 
+// express框架
+// 打开文件 r只读，w写入
+// var fd = fs.openSync('text.txt', 'w'); //
+// // 同步向文件中写入内容
+// fs.writeFileSync(fd, '我是舒梵！');
+// // 关闭文件
+// fs.closeSync(fd);
 
+// fs：读取文件内容——————————————————————————————————————————————
+fs.readFile('./text.txt', 'utf8', function (err, dataStr) {
+  if (err) return console.log(`读取文件失败${err}`); //失败结果--读取成功返回null
 
+  console.log(`读取文件成功${dataStr}`); //成功结果--读取失败返回undefined
+});
 
-// // express框架
-//   // // 打开文件 r只读，w写入
-//   // var fd = fs.openSync('text.txt','w')  //
-//   // // 同步向文件中写入内容
-//   // fs.writeFileSync(fd,'我是舒梵！')
-//   // // 关闭文件
-//   // fs.closeSync(fd)
+// fs：写入文件内容——————————————————————————————`————————————————
+// fs.writeFile('f:./text11.txt', 'Hello Nodejs', function (err) {
+fs.writeFile('/text11.txt', 'Hello Nodejs', function (err) {
+  if (err) return console.log(`文件写入失败${err}`);
+  console.log(err); //文件写入成功 null
+});
+
+// 整理成绩文本例子
+fs.readFile('/成绩.txt', 'utf8', function (err, dataStr) {
+  if (err) return console.log(`读取文件失败${err}`);
+  console.log(dataStr);
+});
