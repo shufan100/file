@@ -12,6 +12,8 @@ router.post('/user/add', (req, res) => {
   res.send({ username: '11111' });
 });
 router.get('/user', (req, res) => {
+  console.log('@@@ ~ file: router.js ~ line 15 ~ req', req.ip)
+
   res.send({
     data: {
       id: '001',

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据代理</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  // 需求：通过obj2对象代理obj1对象中的属性的操作（读、写）
+  let obj1 = {x:100}
+  let obj2 = {y:200}
+
+  Object.defineProperty(obj2,'x',{
+
+    // 1）obj1.x修改 和 2）读取 obj2.x 时，是读取obj1.x的属性
+    get(){
+      return obj1.x
+    },
+    // 3）obj2.x修改 时，将obj2.x修改后的value赋值给obj1.x
+    set(value){
+      obj1.x = value
+    }
+
+  })
+
+
+</script>
