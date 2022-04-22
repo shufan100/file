@@ -93,7 +93,7 @@
 
 // Promise.resolve使用(返回成功的Promise对象)-------------------------------------
 	// 如果传入的参数 非promise类型的对象，则返回的结果为promise对象  ,fulfilled、resolved都是成功回调
-	const p1 = Promise.resolve('resolve值')
+	const p1 = Promise.resolve('resolve值11')
 	console.log(p1)
 	
 	// 如果传入的参数 为promise类型的对象，则将参数Promise返回的结果返回，其结果返回为promise对象
@@ -105,7 +105,6 @@
 	const p3 = Promise.resolve(new Promise((resolve,reject)=>{
 		reject(false)
 	}))
-	p3.catch(err=>{ })
 	console.log(p3)
 
 // Promise.reject使用(返回失败的Promise对象)-------------------------------------
@@ -208,32 +207,32 @@
 
 // ***************async+await*********************
 	async function main(){ 
-        // return false;  //如果返回值是一个非Pormise类型的数据，
-        return new Promise((resolve,reject)=>{ //如果返回值是一个Pormise对象
+        // return 123;  //返回值是123的Pormise，
+        return new Promise((resolve,reject)=>{ //返回值是ok的Pormise，
             resolve('ok')        
         })
     }
     const m = main()  
+    m.then(res=>{})
     console.log(m)  //promiase对象
 
 
-    async function main2(){
+    async function main22(){
     	// 1、右侧为其它值
     	const res = await false;
     	// 2、右侧为promis对象 --成功
     	const res2 = await new Promise((resolve,reject)=>{  resolve('success1111') })
-    	console.log(res,res2)  // false  success1111
+    	console.log(res,res2,'---成功--')  // false  success1111
 
     	// 3、右侧为promis对象 --失败
     	try{
     		var res3 = await new Promise((resolve,reject)=>{  reject('error1111') })
     	}catch(e){
-    		console.log(e) //error1111
+    		console.log(e,'---失败--') //error1111
     	}
 
-    	
     }
-    main2()
+    main22()
 
 
     async function main3(){

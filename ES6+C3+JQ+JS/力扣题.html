@@ -8,29 +8,73 @@
 </body>
 </html>
 <script type="text/javascript">
-	//
-	/**
-	 * 两数之和
-	 * @param {number[]} nums
-	 * @param {number} target
-	 * @return [0,1]
-	 */
 
-	// 去重
 
-	function unique(arr){
-    	var newArr = [];
-	    for(var i = 0; i < arr.length; i++){
-	        for(var j = i+1; j < arr.length; j++){
-	            if(arr[i] == arr[j]){
-	                ++i;
-	            }
-	        }
-	        newArr.push(arr[i]);
-	    }
-	    return newArr;
-	}
-	var arr = [1,1,2];
-	var newArr = unique(arr);
-	console.log(newArr);
+/**回文
+ * @param {number} x
+ * @return {boolean}
+ */
+var isPalindrome = function(x) {
+	let newx = String(x).split('').reverse().join('')*1
+	console.log(x === newx)
+	return x === newx
+};
+isPalindrome(12899821)
+isPalindrome(-121)
+isPalindrome(10)
+
+// 
+/**返回不同 单词翻译 的数量
+ * @param {string[]} words
+ * @return {number}
+ */
+
+var uniqueMorseRepresentations = function(words) {
+
+    let arr = words.map(i=> fn(i))
+    console.log(arr)
+    console.log([...new Set(arr)]);
+};
+uniqueMorseRepresentations(["gin","zen","gig","msg"])
+ 
+ function fn(str){
+      let obj = { 
+        'a':".-",
+        'b':"-...",
+        'c':"-.-.",
+        'd':"-..",
+        'e':".",
+        'f':"..-.",
+        'g':"--.",
+        'h':"....",
+        'i':"..",
+        'j':".---",
+        'k':"-.-",
+        'l':".-..",
+        'm':"--",
+        'n':"-.",
+        'o':"---",
+        'p':".--.",
+        'q':"--.-",
+        'r':".-.",
+        's':"...",
+        't':"-",
+        'u':"..-",
+        'v':"...-",
+        'w':".--",
+        'x':"-..-",
+        'y':"-.--",
+        'z':"--.."
+    }
+     let arr = str.split('')
+     let newstr = ''
+     for(let i of arr){
+         newstr += obj[i]
+     }
+     return newstr
+
+
+ }
+
+
 </script>
