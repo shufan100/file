@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router(); // 创建路由对象
-
+const { dateFormat } = require('../../node插件/sf-date')
 //········ 接口1··············
 router.get('/userInfo', (req, res) => {
   // req:响应对象  res:响应数据
@@ -47,14 +47,21 @@ router.post('/list', (req, res) => {
 });
 
 //········ 接口5··············
-router.get('/list/detail/:ids', (req, res) => {
+router.post('/list/detail/:id/:title', (req, res) => {
   console.log(req.query);
   console.log(req.params);
   res.send({
     data: {
-      id: 1,
+      msg: '返回给客户端的数据',
+      detailID: req.params.id,
       text: '小红',
     },
+    params: {
+      msg: '接收客户端的参数！！！',
+      ...req.params
+    },
+    date: `接口请求服务器时间：${req.startTime}`,
+    date2: `服务器响应时间：${dateFormat(new Date())}`,
     method: 'get',
     code: '200',
     msg: '请求成功！',
