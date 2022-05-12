@@ -1,5 +1,6 @@
 // 1、引用
 const express = require('express');
+const history = require('connect-history-api-fallback')
 // 2、创建 web 服务器
 const app = express();
 
@@ -49,16 +50,23 @@ app.use(function (err, req, res, next) {
 
 
 // 1、托管静态资源------------------打包----------------------------------------------
-app.use(express.static(`${__dirname}/static`)); //不带文件夹
+// 用于解决history部署会把路由当资源发送给服务器得处理办法
+app.use(history())
+// app.use(express.static(`${__dirname}/vueStatic`)); //不带文件夹(vue3.0项目)
+app.use(express.static(`${__dirname}/reactStatic`)); //不带文件夹(react项目)
+
 // app.use('/static', express.static('./static')); //带文件夹名
+// app.use('/static', express.static('./reactStatic')); //带文件夹名
+
+
 
 
 // 启动服务器--------------------------------------------------------------------
-app.listen(9000, err => {
+app.listen(3010, err => {
   if (err) return console.log(`服务器启动失败 ${err}`);
   console.log('服务器启动成功! ！！');
   // 改成自己电脑ip
-  console.log('running at http://192.168.1.163:9000');
+  console.log('running at http://192.168.1.163:3010');
 });
 
 

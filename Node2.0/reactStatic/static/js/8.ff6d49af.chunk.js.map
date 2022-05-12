@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/page/Abouts/index.jsx"],"names":["About"],"mappings":"gIAAA,+DAEe,SAASA,IACtB,OAAO","file":"static/js/8.ff6d49af.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nexport default function About() {\r\n  return <div>作者</div>;\r\n}\r\n"],"sourceRoot":""}

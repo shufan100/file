@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/page/Nested/menu2-2/menu3-3/menu4-2/index.jsx"],"names":["Menu4_2"],"mappings":"iIAAA,+DAEe,SAASA,IACtB,OACE","file":"static/js/22.dd395122.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nexport default function Menu4_2 () {\r\n  return (\r\n    <div>4菜单2222</div>\r\n  );\r\n}\r\n"],"sourceRoot":""}
