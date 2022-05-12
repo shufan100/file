@@ -52,7 +52,7 @@ app.use(function (err, req, res, next) {
 // 1、托管静态资源------------------打包----------------------------------------------
 // 用于解决history部署会把路由当资源发送给服务器得处理办法
 app.use(history())
-// app.use(express.static(`${__dirname}/vueStatic`)); //不带文件夹(vue3.0项目)
+// app.use(express.static(`${__dirname}/vuestatic`)); //不带文件夹(vue3.0项目)
 app.use(express.static(`${__dirname}/reactStatic`)); //不带文件夹(react项目)
 
 // app.use('/static', express.static('./static')); //带文件夹名
