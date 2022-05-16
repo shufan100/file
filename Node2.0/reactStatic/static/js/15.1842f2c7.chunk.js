@@ -1,0 +1,2 @@
+(this["webpackJsonpreact-adtd-project"]=this["webpackJsonpreact-adtd-project"]||[]).push([[15],{370:function(t,e,n){"use strict";n.r(e),n.d(e,"default",(function(){return p}));var r=n(11),c=n(12),a=n(13),u=n(14),i=n(0),o=n(7),p=function(t){Object(a.a)(n,t);var e=Object(u.a)(n);function n(){return Object(r.a)(this,n),e.apply(this,arguments)}return Object(c.a)(n,[{key:"render",value:function(){return Object(o.jsx)("div",{children:"form\u8868\u5355"})}}]),n}(i.Component)}}]);
+//# sourceMappingURL=15.1842f2c7.chunk.js.map

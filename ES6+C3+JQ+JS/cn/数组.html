@@ -14,8 +14,6 @@
 //******************数组循环***************************//
 	
 
-
-
 //for in 遍历对象**********************************
 	let arr = [];
 	let obj = {name:"侠客",age:'12',sex:"男"};
@@ -141,9 +139,9 @@
 			var result = [];
 			var obj11 = {};
 			for(var i =0; i<arr1s.length; i++){
-			    if(!obj11[arr1s[i].contact_id]){
+			    if(!obj11[arr1s[i].age]){
 			     	result.push(arr1s[i]);
-			     	obj11[arr1s[i].contact_id] = true;
+			     	obj11[arr1s[i].age] = true;
 			   	}
 			}
 			
@@ -181,4 +179,49 @@
 	        }
 		}
 		console.log(objss)
+
+		let obj1112 = {
+	        a:1,
+	        b:1,
+	        c:1,
+	        d:{
+	          	a:1
+	        }
+	    }
+      	let oldStr = JSON.parse(JSON.stringify(obj1112)) 
+      	obj1112.a = 2
+    	obj1112.d.a = 2
+
+		// let newStr = JSON.stringify(obj1112)
+
+		console.log(oldStr,obj1112)
+
+		let allChoosed =[
+			{kid: 1,price:22,k:3},
+			{kid: 2,price:22221,k:3},
+		]
+
+		let categoryPrices = allChoosed.map(item => ({
+        kid: item.kid,
+        price: parseFloat(item.price),
+      }))
+		console.log(categoryPrices)
+
+		let arr44 = [
+			{id:1,key:'a',name:'shu'},
+			{id:2,key:'a',name:'shu'},
+			{id:3,key:'b',name:'shu'},
+			{id:4,key:'b',name:'fan'},
+		]
+		let obj2 = {}
+		const ar = arr44.filter(i=>{
+			if(!obj2[i.name]){
+				obj2[i.name] = true
+				return i
+			}
+			
+		})
+		// console.log(ar)
+
+
 </script>
