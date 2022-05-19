@@ -18,15 +18,24 @@
 	function f2(){
 		var cc = '111'
 		var nn = '函数内部变量值'; //函数内部变量值外部读取不到局部变量nn
+		var a,b = 2
+		var fun = function(a,b){
+			console.log(this)
+				return a+b
+		}
 		function f3(){
-			// console.log(nn) ///根据作用域链可读取到局部变量nn
-			return cc;
+			return {
+				nn,
+				fun,
+				num:fun(1,2)
+			}; ///根据作用域链可读取到局部变量nn
 		}
 		return f3; //想要外部拿到局部变量直接return
 	}
 	let result2 = f2();
-let name = result2()
-	console.log(name)
+	let {nn,fun,num} = result2()
+	console.log(nn,fun(11,22),num)
+	// result2 = null //释放闭包的内存，防止内存泄露
 
 	
 </script>

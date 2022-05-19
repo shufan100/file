@@ -32,35 +32,72 @@
 	console.log(p.book instanceof book);
 
 
+	function User1(username, password) {
+		this.username = username;
+		this.password = password;
+		this.lgoin = function() {
+			console.log('登陆1111')
+		}
+	}
+
+	function Admin1() {
+		this.deletePerson = function(){
+			console.log('删除111')
+		}
+	}
+
+	// Obejct原型是系统默认的，所有的引用类型都可以调用Object原型上的方法
+		Object.prototype.login = function() {
+			console.log('Object原型上的login的方法')   // 指向Obejct原型是系统默认的，所有的对象上面都是Object的prototype
+		}
+		
+		Admin1.prototype = new User1('admin1',111)
+		let admin1 = new Admin1()
+
+		console.log(admin1)
+		admin1.login()   
+		// 'Object原型上的login的方法'     
+		//  先在Admin方法上找，没有再去继承的User方法找，再没有就去Object的方法找，最终找不到就报错
+
+		// 不管是数组，日期对象，对象，它们的原型都指向Object的prototype
+		let arr = [1,2,3]
+		arr.login() //  'Object原型上的login的方法'
+
+
+	console.error('-------')
+
+
 	
-//class类*****************************************
-	class Coder{
-		name(val){
-			return 'Coder:'+val;
+//class继承*****************************************
+	class User {
+		constructor(username, password) {
+			this.username = username;
+			this.password = password;
 		}
-		skill(val) {
-			return this.name("调用name>")+val
-		}
-		// 用类自带的方法接收参数
-		constructor(a,b) {
-			this.a = a;
-			this.b = b;
-		}
-		add() {
-			return this.a+this.b
+		name="shuf"
+		login() {
+			console.log('登陆')
 		}
 	}
-	let jspa = new Coder(1,4);
-	console.log(jspa.name("ssss"))
-	console.log(jspa.skill('出差'))
-	console.log(jspa.add());
-
-// 继承上面的coder类()********************************
-	class htmler extends Coder{
-
+	User.prototype.age = 19
+	class Admin extends User {
+		work='IT'
+		deletePerson() {
+			console.log('deletePerson方法')
+		}
 	}
-	let pang = new htmler;
-	// 可直接调用父类的方法
-	console.log(pang.name('继承值'))
+	User.prototype.address = '厦门'
+
+	let admin = new Admin('admin',123456)
+
+
+
+	admin.deletePerson()
+	admin.login()
+	console.log(admin.username, admin.password, admin.name, admin.work)
+	console.log(admin.address,admin.age)
+	console.dir(Admin)
+	console.log(admin)
+
 
 </script>
