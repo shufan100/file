@@ -88,7 +88,16 @@
 	let accs = function(){
 		console.log(1123)
 	}
-	accs();
+  accs();
+  
+  Number.prototype.plus = function (n) {
+  return this + n;
+}
+Number.prototype.minus = function (n) {
+  return this - n;
+}
+var a = (5).plus(3).minus(6);
+console.log(a,'11');
 	
 // 2、作用域、作用域链****************************************************************************************************************************************
 	/* 1、作用域是针对变量的。2、作用域分为两种：全局作用域、函数作用域。

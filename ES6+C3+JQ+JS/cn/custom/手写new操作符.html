@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手写new操作符</title>
+  </head>
+  <body></body>
+  <script>
+    /**
+     * fn:函数
+     * args：接收所有参数
+     */
+    function myNew(fn, ...args) {
+      // 写法：let obj = Object.create(原型):创建一个新对象,将现在有的对象，提供给新创建的对象的__proto__
+      let obj = Object.create(fn.prototype) //创建一个对象，将现在函数的原型对象  提供给  新创建的对象的隐式原型对象（obj.__proto__ = fn.prototype ）
+      console.log(obj, 'Person{}==空的实例对象')
+      let res = fn.call(obj, ...args) //通过call将this指向Person空的实例对象，并接收多个参数加到空的对象内，并返回res带参数的实例对象
+      if (res & (typeof res === 'object')) {
+        console.log(res)
+        return res
+      }
+      return obj
+    }
+
+    // 使用
+    function Person(name, age) {
+      this.name = name
+      this.age = age
+    }
+    Person.prototype.say = function () {
+      console.log(this.age)
+    }
+    let p = myNew(Person, 'lihua', 'zhansan')
+    console.log(p)
+    console.log(p.name)
+    p.say()
+
+    // js封装
+    // let p1 = new Person('shu', 18)
+    // console.log(p1)
+    // console.log(p1.name)
+    // p1.say()
+  </script>
+</html>

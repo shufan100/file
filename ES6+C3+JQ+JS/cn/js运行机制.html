@@ -1,44 +1,42 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title></title>
-</head>
-<body>
-
-</body>
+  <head>
+    <title></title>
+  </head>
+  <body></body>
 </html>
 <script type="text/javascript">
-// 一、异步（宏队列）
-	// 1、 计数器（setTimeout,setInterval）
-	// 2、 ajax
-	// 3、 读取文件
-	
-// 二、单线程
-	// js是单线程、一个任务完成后才能执行另一个任务
+  // 一、异步（宏队列）
+  // 1、 计数器（setTimeout,setInterval）
+  // 2、 ajax
+  // 3、 读取文件
 
-// 三、process.nextTick 和 setImmediate 方法
+  // 二、单线程
+  // js是单线程、一个任务完成后才能执行另一个任务
 
-	// setImmediate(()=>{
-	//   console.log(0)
-	// })
-	// console.log(1)
-	// process.nextTick(()=>{
-	//   console.log(2)
-	// })
-	// console.log(3)
-	// setTimeout(()=>{console.log(4)},0)
-	// console.log(5)
+  // 三、process.nextTick 和 setImmediate 方法
 
-	// // 1，同步 2，nextTick 3,异步 4，setImmediate
-	// // 如果是for循环也是先走完循环再走后面得，也算是同步
-	// for (var i = 0; i < 2000; i++) {
-	// 	console.log(1)
-	// }
-	// setTimeout(()=>{console.log(2)},0)
-	// setTimeout(()=>{console.log(3)},0)
-	// console.log(4) 
+  // setImmediate(()=>{
+  //   console.log(0)
+  // })
+  // console.log(1)
+  // process.nextTick(()=>{
+  //   console.log(2)
+  // })
+  // console.log(3)
+  // setTimeout(()=>{console.log(4)},0)
+  // console.log(5)
 
-/** 四、宏队列，微队列
+  // // 1，同步 2，nextTick 3,异步 4，setImmediate
+  // // 如果是for循环也是先走完循环再走后面得，也算是同步
+  // for (var i = 0; i < 2000; i++) {
+  // 	console.log(1)
+  // }
+  // setTimeout(()=>{console.log(2)},0)
+  // setTimeout(()=>{console.log(3)},0)
+  // console.log(4)
+
+  /** 四、宏队列，微队列
 		宏队列：
 			1、计时器，ajax, 读取文件
 		微队列：
@@ -51,56 +49,86 @@
 	  4、宏任务 
 	  5、setImmediate（计数器放在运行栈内，第一次栈内的事情循环加载完后就会触发）
 **/
-	// 输出：2、5、6、8、7、3、1、4
-// 	setImmediate(()=>{
-// 	  console.log(1)
-// 	})
-// 	console.log(2)
-// 	setTimeout(()=>{console.log(3)},0)//第一次放入任务队列中，事件循环加载，然后走setImmediate
-// 	setTimeout(()=>{console.log(4)},100)//100毫秒后第二次放入任务队列中，所以这个打印再在setImmediate后
-// 	console.log(5)
-// 	new Promise((resolve)=>{
-// 	  console.log(6) // 同步
-// 	  resolve() 	// 加这个，promise才会走then方法
-// 	}).then(()=>{
-// 	  console.log(7)
-// 	})
-// 	process.nextTick(()=>{
-// 	  console.log(8)
-// 	})
+  // 输出：2、5、6、8、7、3、1、4
+  // 	setImmediate(()=>{
+  // 	  console.log(1)
+  // 	})
+  // 	console.log(2)
+  // 	setTimeout(()=>{console.log(3)},0)//第一次放入任务队列中，事件循环加载，然后走setImmediate
+  // 	setTimeout(()=>{console.log(4)},100)//100毫秒后第二次放入任务队列中，所以这个打印再在setImmediate后
+  // 	console.log(5)
+  // 	new Promise((resolve)=>{
+  // 	  console.log(6) // 同步
+  // 	  resolve() 	// 加这个，promise才会走then方法
+  // 	}).then(()=>{
+  // 	  console.log(7)
+  // 	})
+  // 	process.nextTick(()=>{
+  // 	  console.log(8)
+  // 	})
 
+  // let b = null
+  // console.log(typeof(b))
+  //
 
-// let b = null
-// console.log(typeof(b))
-// 
+  // 例子1
+  // const p = new Promise(resolve => {
+  //   console.log(1) //同步
+  //   resolve('nihao') //resolve返回的值是then返回值的形参，一定要加这个，不然不会执行then
+  // })
+  // console.log(p) //promise对象
+  // p.then(data => {
+  //   console.log(data)
+  //   console.log(2)
+  // })
 
-const p = new Promise(resolve=>{
-	console.log(1) //同步
-	resolve('nihao') //resolve返回的值是then返回值的形参，一定要加这个，不然不会执行then
-})
-console.log(p) //promise对象
-p.then(data=>{
-	console.log(data)
-	console.log(2) 
-})
+  // async function fun1() {
+  //   let data = await fun2()
+  //   console.log(data) //then中执行的代码
+  // }
+  // async function fun2() {
+  //   console.log(22)
+  //   return 11
+  // }
+  // fun1()
 
-async function fun1() {
-	let data = await fun2()
-	console.log(data) //then中执行的代码
-}
-async function fun2() {
-	console.log(22)
-	return 11
-}
-fun1()
+  console.error('-------------')
+  /** 事件循环
+   * 1、同步（Promise的penning）
+   * 2、nextTick
+   * 3、微任务（Promise的then）
+   * 4、宏任务（ajax,setTimeout,setInterval,读文件）
+   */
 
-Number.prototype.plus = function (n) {
-  return this + n;
-}
-Number.prototype.minus = function (n) {
-  return this - n;
-}
-var a = (5).plus(3).minus(6);
-console.log(a,'11');
+  // 例子22
+  setTimeout(function () {
+    console.log(0) // 宏任务8
+  }, 0)
+  async function async1() {
+    console.log(2) // 同步1
+    const data = await async2()
+    console.log(3) // 微任务 .then5
+    return data
+  }
+  async function async2() {
+    return new Promise(resolve => {
+      console.log(4) // 同步2
+      resolve('async2的结果')
+    }).then(res => {
+      console.log(5) // 微任务 .then3
+      return res
+    })
+  }
+  async1().then(res => {
+    console.log(6) //微任务 .then6
+    console.log(res) ////async2的结果7
+  })
+  new Promise(function (resolve) {
+    console.log(7) //同步 3
+  }).then(function () {
+    console.log(8)
+  })
 
+  //2 4 5 3 6 async2的结果 7 0
+  // 2 4 7 5 3 6 async2的结果  0
 </script>
