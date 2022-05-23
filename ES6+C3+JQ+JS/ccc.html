@@ -80,30 +80,10 @@ var num = (5).plus(3).minus(6);
 console.log(num);
 
 
-//存在栈内存中，修改不影响
-var a=b=c=d=[5]
-c[0] = 10
-// 存在堆内存中 ，修改会全部修改
-var a1=b1=c1=d1=5
-c1 = 10
-//c2的堆内存的指针改变了，其他的不会变
-var a2=b2=c2=d2=[5]
-c2 = [11]
-console.log('栈内存',a,b,c,d)
-console.log('堆内存（改变）',a1,b1,c1,d1)
-console.log('堆内存（不改变）',a2,b2,c2,d2)
 
 
-// 函数内部中的变量不会变量提升
-function fun (){
-  var ac = 1
-  console.log(ac) //1
-}fun()
-console.log(ac) //undefined ,因为变量提升了，但是没赋值
-var ac = 100
-console.log(ac)
-let obj = null
-console.log(obj )
+
+
 
 
 let _typeof = function (data) {
