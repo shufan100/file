@@ -1,103 +1,97 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>继承</title>
-	<link rel="stylesheet" type="text/css" href="../css/reset.css">
-</head>
-<body>
-		<button onclick="add()">hhhh</button>
-</body>
+  <head>
+    <title>继承</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+  </head>
+  <body>
+    <button onclick="add()">hhhh</button>
+  </body>
 </html>
 <script src="../js/jquery.min.js"></script>
 <script type="text/javascript">
-	function person(name, age){
-		this.name = name;
-		this.age = age;	
-	}
-	function book(name){
-		this.name = '卡就发';
-		this.lookat = function(a){
-			console.log('计算机计算机')
-		}
-	}
+  function person(name, age) {
+    this.name = name
+    this.age = age
+  }
+  function book(name) {
+    this.name = '卡就发'
+    this.lookat = function (a) {
+      console.log('计算机计算机')
+    }
+  }
 
-	person.prototype.read=function(a){console.log("I can read");}; //对象创建时会占用内存，把把方法定义到公共的方法，节省了内存
-	person.prototype.book= new book();
-	console.dir(person) //打印函数
-	let p = new person(); //实例化函数（构造函数）
-	p.read(); //构造函数调用函数在原型上加的方法
-	console.log(p.book.name); //调用继承book函数的属性
-	p.book.lookat(); //调用继承book函数的方法
+  person.prototype.read = function (a) {
+    console.log('I can read')
+  } //对象创建时会占用内存，把把方法定义到公共的方法，节省了内存
+  person.prototype.book = new book()
+  console.dir(person) //打印函数
+  let p = new person() //实例化函数（构造函数）
+  p.read() //构造函数调用函数在原型上加的方法
+  console.log(p.book.name) //调用继承book函数的属性
+  p.book.lookat() //调用继承book函数的方法
 
-	console.log(p.book instanceof book);
+  console.log(p.book instanceof book)
 
+  function User1(username, password) {
+    this.username = username
+    this.password = password
+    this.lgoin = function () {
+      console.log('登陆1111')
+    }
+  }
 
-	function User1(username, password) {
-		this.username = username;
-		this.password = password;
-		this.lgoin = function() {
-			console.log('登陆1111')
-		}
-	}
+  function Admin1() {
+    this.deletePerson = function () {
+      console.log('删除111')
+    }
+  }
 
-	function Admin1() {
-		this.deletePerson = function(){
-			console.log('删除111')
-		}
-	}
+  // Obejct原型是系统默认的，所有的引用类型都可以调用Object原型上的方法
+  Object.prototype.login = function () {
+    console.log('Object原型上的login的方法') // 指向Obejct原型是系统默认的，所有的对象上面都是Object的prototype
+  }
 
-	// Obejct原型是系统默认的，所有的引用类型都可以调用Object原型上的方法
-		Object.prototype.login = function() {
-			console.log('Object原型上的login的方法')   // 指向Obejct原型是系统默认的，所有的对象上面都是Object的prototype
-		}
-		
-		Admin1.prototype = new User1('admin1',111)
-		let admin1 = new Admin1()
+  Admin1.prototype = new User1('admin1', 111)
+  let admin1 = new Admin1()
 
-		console.log(admin1)
-		admin1.login()   
-		// 'Object原型上的login的方法'     
-		//  先在Admin方法上找，没有再去继承的User方法找，再没有就去Object的方法找，最终找不到就报错
+  console.log(admin1)
+  admin1.login()
+  // 'Object原型上的login的方法'
+  //  先在Admin方法上找，没有再去继承的User方法找，再没有就去Object的方法找，最终找不到就报错
 
-		// 不管是数组，日期对象，对象，它们的原型都指向Object的prototype
-		let arr = [1,2,3]
-		arr.login() //  'Object原型上的login的方法'
+  // 不管是数组，日期对象，对象，它们的原型都指向Object的prototype
+  let arr = [1, 2, 3]
+  arr.login() //  'Object原型上的login的方法'
 
+  console.error('-------')
 
-	console.error('-------')
+  //class继承*****************************************
+  class User {
+    constructor(username, password) {
+      this.username = username
+      this.password = password
+    }
+    name = 'shuf'
+    login() {
+      console.log('登陆')
+    }
+  }
+  User.prototype.age = 19
+  class Admin extends User {
+    work = 'IT'
+    deletePerson() {
+      console.log('deletePerson方法')
+    }
+  }
+  User.prototype.address = '厦门'
 
+  let admin = new Admin('admin', 123456)
 
-	
-//class继承*****************************************
-	class User {
-		constructor(username, password) {
-			this.username = username;
-			this.password = password;
-		}
-		name="shuf"
-		login() {
-			console.log('登陆')
-		}
-	}
-	User.prototype.age = 19
-	class Admin extends User {
-		work='IT'
-		deletePerson() {
-			console.log('deletePerson方法')
-		}
-	}
-	User.prototype.address = '厦门'
-
-	let admin = new Admin('admin',123456)
-
-
-
-	admin.deletePerson()
-	admin.login()
-	console.log(admin.username, admin.password, admin.name, admin.work)
-	console.log(admin.address,admin.age)
-	console.dir(Admin)
-	console.log(admin)
-
-
+  admin.deletePerson()
+  admin.login()
+  console.log(admin.username, admin.password, admin.name, admin.work)
+  console.log(admin.address, admin.age)
+  console.dir(Admin)
+  console.log(admin)
 </script>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>防抖</title>
+  </head>
+  <style>
+    #container {
+      width: 100%;
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      color: #fff;
+      background-color: #444;
+      font-size: 30px;
+    }
+  </style>
+  <body>
+    <div id="container"></div>
+    <button id="button">btn</button>
+    <p>防抖的原理：你尽管触发事件，但是我一定在事件触发 n 秒后才执行，如果你在一个事件触发的 n 秒内又触发了这个事件，那我就以新的事件的时间为准，n 秒后才执行，总之，就是要等你触发完事件 n 秒内不再触发事件，我才执行，真是任性呐!</p>
+  </body>
+</html>
+<script type="text/javascript">
+  var count = 1
+  var container = document.getElementById('container')
+  container.innerHTML = 0
+
+  function getUserAction() {
+    container.innerHTML = count++
+    console.log(this)
+  }
+
+  // container.onmousemove = getUserAction; //现在移动会触发很多次方法
+  // 第一版防抖
+  function debounce1(func, wait) {
+    var timeout
+    return function () {
+      clearTimeout(timeout)
+      timeout = setTimeout(func, wait)
+    }
+  }
+  // container.onmousemove = debounce1(getUserAction, 500);
+
+  // 第四版
+  function debounce4(func, wait, immediate) {
+    var timeout
+
+    return function () {
+      var context = this
+      var args = arguments
+
+      if (timeout) clearTimeout(timeout)
+      if (immediate) {
+        // 如果已经执行过，不再执行
+        var callNow = !timeout
+        timeout = setTimeout(function () {
+          timeout = null
+        }, wait)
+        if (callNow) func.apply(context, args)
+      } else {
+        timeout = setTimeout(function () {
+          func.apply(context, args)
+        }, wait)
+      }
+    }
+  }
+  // container.onmousemove = debounce4(getUserAction, 500);
+
+  // 第六版 //鼠标移入马上触发，每停1秒后可再触发
+  function debounce(func, wait, immediate) {
+    var timeout, result
+
+    var debounced = function () {
+      var context = this
+      var args = arguments
+
+      if (timeout) clearTimeout(timeout)
+      if (immediate) {
+        // 如果已经执行过，不再执行
+        var callNow = !timeout
+        timeout = setTimeout(function () {
+          timeout = null
+        }, wait)
+        if (callNow) result = func.apply(context, args)
+      } else {
+        timeout = setTimeout(function () {
+          func.apply(context, args)
+        }, wait)
+      }
+      return result
+    }
+
+    // debounced.cancel = function() {
+    //     clearTimeout(timeout);
+    //     timeout = null;
+    // };
+    //
+    if (timeout) {
+      clearTimeout(timeout)
+      timeout = null
+    }
+
+    return debounced
+  }
+
+  var setUseAction = debounce(getUserAction, 1000, true)
+
+  container.onmousemove = setUseAction
+
+  // 利用按钮取消不可触发
+  document.getElementById('button').addEventListener('click', function () {
+    setUseAction.cancel()
+  })
+</script>

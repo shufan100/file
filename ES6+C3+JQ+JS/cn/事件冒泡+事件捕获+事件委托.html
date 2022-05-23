@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- 事件捕获 -->
     <div class="divs">
       <h1>事件捕获</h1>
@@ -81,81 +81,107 @@
 </html>
 <script src="../js/jquery.min.js"></script>
 <script type="text/javascript">
-// 说明:事件冒泡是IE开发团队提出来的
+  // 说明:事件冒泡是IE开发团队提出来的
   // 1、什么是事件冒泡？
-      // ---事件会从最点击的元素开始发生，一直向上传播，直到document对象，这就是事件冒泡。
+  // ---事件会从最点击的元素开始发生，一直向上传播，直到document对象，这就是事件冒泡。
   // 2、什么是事件捕获？
-      // ---与事件冒泡相反，事件捕获会从最外层开始发生，直到最具体的元素。
+  // ---与事件冒泡相反，事件捕获会从最外层开始发生，直到最具体的元素。
   // 3、什么是事件委托（事件代理）？
-      // 原理---不给子节点绑定事件，给父节点绑定事件，通过事件冒泡的原理设置每个子节点。
-      // 优点---1、减少内存消耗和dom操作，提高性能。在JavaScript中，添加到页面上的事件处理程序数量将直接关系到页面的整体运行性能，
-                // 因为需要不断的操作dom，那么引起浏览器的重绘和回流的可能就越多，页面交互的时间也就变的越长，这也就是为什么要减少
-                // dom操作的原因。每一个事件处理函数，都是一个对象，多一个事件处理函数，内存中就会多占一部分空间。如果要用事件委托，
-                // 就会将所有的操作放到js程序里面，只对它的父级进行操作，与dom的操作就只需要交互一次，这样就能大大的减少与dom的交互次数，
-                // 提高性能。
-      // 优点---2、动态绑定事件 因为事件绑定在父级元素，所以新增的元素也能触同样的事件。
+  // 原理---不给子节点绑定事件，给父节点绑定事件，通过事件冒泡的原理设置每个子节点。
+  // 优点---1、减少内存消耗和dom操作，提高性能。在JavaScript中，添加到页面上的事件处理程序数量将直接关系到页面的整体运行性能，
+  // 因为需要不断的操作dom，那么引起浏览器的重绘和回流的可能就越多，页面交互的时间也就变的越长，这也就是为什么要减少
+  // dom操作的原因。每一个事件处理函数，都是一个对象，多一个事件处理函数，内存中就会多占一部分空间。如果要用事件委托，
+  // 就会将所有的操作放到js程序里面，只对它的父级进行操作，与dom的操作就只需要交互一次，这样就能大大的减少与dom的交互次数，
+  // 提高性能。
+  // 优点---2、动态绑定事件 因为事件绑定在父级元素，所以新增的元素也能触同样的事件。
 
   // 添加事件：addEventListener:接收3个参数：1事件，2函数，3布尔值（false事件冒泡默认，true事件捕获）
   // 移除事件：romveEventListener
 
   // *事件冒泡 ----------------------------------------------------------------------------------------------
-    // (点击当前元素：从当前元素开始一层层的向上触发事件，直到document)
- const li11 = document.getElementById('li11')
- li11.addEventListener( 'click', function (e) {
-    alert('事件1')
-    e.stopPropagation() //阻止事件冒泡
-  },false)
+  // (点击当前元素：从当前元素开始一层层的向上触发事件，直到document)
+  const li11 = document.getElementById('li11')
+  li11.addEventListener(
+    'click',
+    function (e) {
+      alert('事件1')
+      e.stopPropagation() //阻止事件冒泡
+    },
+    false
+  )
   const li22 = document.getElementById('li22')
-  li22.addEventListener( 'click', function () {
-    alert('事件2')
-  },false)
+  li22.addEventListener(
+    'click',
+    function () {
+      alert('事件2')
+    },
+    false
+  )
 
-// *事件捕获----------------------------------------------------------------------------------------------
+  // *事件捕获----------------------------------------------------------------------------------------------
   // （点击当前元素：从document开始一层层的向下触发事件，直到当前点击的元素）
- const main = document.getElementById('main')
- const box = document.getElementById('box')
- const ul = document.getElementById('ul')
- const li1 = document.getElementById('li1')
-const li2 = document.getElementById('li2')
+  const main = document.getElementById('main')
+  const box = document.getElementById('box')
+  const ul = document.getElementById('ul')
+  const li1 = document.getElementById('li1')
+  const li2 = document.getElementById('li2')
 
-  main.addEventListener( 'click', function () {
-    alert('main')
-  },true)
-  box.addEventListener( 'click', function () {
-    alert('box')
-  },true)
-  ul.addEventListener( 'click', function () {
-    alert('ul')
-  },true)
-  li1.addEventListener( 'click', function () {
-    alert('li1')
-  },true)
-  li2.addEventListener( 'click', function () {
-    alert('li2')
-  },true)
+  main.addEventListener(
+    'click',
+    function () {
+      alert('main')
+    },
+    true
+  )
+  box.addEventListener(
+    'click',
+    function () {
+      alert('box')
+    },
+    true
+  )
+  ul.addEventListener(
+    'click',
+    function () {
+      alert('ul')
+    },
+    true
+  )
+  li1.addEventListener(
+    'click',
+    function () {
+      alert('li1')
+    },
+    true
+  )
+  li2.addEventListener(
+    'click',
+    function () {
+      alert('li2')
+    },
+    true
+  )
 
-// *事件委托----------------------------------------------------------------------------------------------
-// 动态添加li标签
-  var btn = document.getElementById('btn');
-  var uls = document.getElementById("uls");
-    btn.onclick = function () {
-        var li = document.createElement('li');
-        // 新增li的内容为ul当前子元素的个数
-        li.textContent = uls.children.length;
-        uls.appendChild(li);
-    }
+  // *事件委托----------------------------------------------------------------------------------------------
+  // 动态添加li标签
+  var btn = document.getElementById('btn')
+  var uls = document.getElementById('uls')
+  btn.onclick = function () {
+    var li = document.createElement('li')
+    // 新增li的内容为ul当前子元素的个数
+    li.textContent = uls.children.length
+    uls.appendChild(li)
+  }
 
   // 给父级绑定事件，利用事件冒泡点击子元素触发父元素方法
   uls.onclick = function (event) {
-      event = event || window.event;
-      var target = event.target;
-      console.log(target,'target')
-      // 获取目标元素
-      if (target.nodeName == 'LI') {
-          alert(target.innerHTML);
-      }
+    event = event || window.event
+    var target = event.target
+    console.log(target, 'target')
+    // 获取目标元素
+    if (target.nodeName == 'LI') {
+      alert(target.innerHTML)
+    }
   }
-
-
-  
 </script>
+

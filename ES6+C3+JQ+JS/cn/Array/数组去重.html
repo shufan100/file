@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数组去重</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  // es6去重 只对单个元素————————————————————————————————————1
+  var arr1 = ['a', 'a', 30, 'b', 'b', 'b', 'c', 'e', 'f', 1, 2, 2, 3, 3, 3]
+  let newArr = [...new Set(arr1)]
+  console.log('es6去重:', newArr)
+
+  var arr = [
+    { id: 1, name: 'zhangs', age: 18, contact_id: 1 },
+    { id: 2, name: 'zhangs', age: 18, contact_id: 2 },
+    { id: 3, name: 'zhangs', age: 18, contact_id: 3 },
+    { id: 4, name: 'zhangs', age: 4444, contact_id: 4 },
+    { id: 5, name: 'zhangs', age: 18, contact_id: 3 },
+    { id: 6, name: 'zhangs', age: 18, contact_id: 40 },
+    { id: 7, name: 'zhangs', age: 18, contact_id: 40 }
+  ]
+  // es3去重————————————————————————————————————
+  function unique(arr) {
+    let newArr = []
+    let obj = {}
+    for (let i = 0; i < arr.length; i++) {
+      if (!obj[arr[i].contact_id]) {
+        newArr.push(arr[i])
+        obj[arr[i].contact_id] = true
+      }
+    }
+    return newArr
+  }
+  console.log('es3去重1:', unique(arr))
+
+  // es3去重————————————————————————————————————
+  function unique2(arr) {
+    let obj = {}
+    return arr.filter(i => {
+      if (!obj[i.contact_id]) {
+        obj[i.contact_id] = true
+        return true
+      }
+    })
+  }
+  console.log('es3去重2:', unique2(arr))
+</script>
