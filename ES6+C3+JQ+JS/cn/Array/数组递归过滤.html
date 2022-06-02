@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>数组递归过滤</title>
+</head>
+<body>
+
+</body>
+</html>
+<script type="text/javascript">
+
+// 一般用于菜单路由权限控制
+
+const menuList = [
+  {
+    key: '/home',
+    label: '首页',
+  },
+  {
+    label: '表单相关',
+    key: 'formCom',
+    children: [
+      {
+        label: '表格',
+        key: '/formCom/table'
+      },
+      {
+        label: '表单',
+        key: '/formCom/form'
+      },
+      {
+        label: '富文本',
+        key: '/formCom/markdown'
+      }
+    ]
+  },
+  {
+    label: '权限管理',
+    key: 'permissions',
+    children: [
+      {
+        label: 'admin页面',
+        key: '/permissions/admin',
+        roles: ['admin']
+      },
+      {
+        label: 'editor页面',
+        key: '/permissions/editor',
+        roles: ['editor']
+      },
+      {
+        label: 'guest页面',
+        key: '/permissions/guest',
+        roles: ['guest']
+      }
+    ]
+  },
+  {
+    label: '路由嵌套',
+    key: 'nested',
+    children: [
+      {
+        label: '菜单2-1',
+        key: '/nested/menu2_1'
+      },
+      {
+        label: '菜单2-2',
+        key: 'menu2_2',
+        children: [
+          {
+            label: '菜单3-1',
+            key: '/nested/menu2_2/menu3_1'
+          },
+          {
+            label: '菜单3-2',
+            key: '/nested/menu2_2/menu3_2'
+          },
+          {
+            label: '菜单3-3',
+            key: 'menu3_3',
+            children: [
+              {
+                label: '菜单4-1',
+                key: '/nested/menu2_2/menu3_3/menu4_1'
+              },
+              {
+                label: '菜单4-2',
+                key: '/nested/menu2_2/menu3_3/menu4_2'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    label: '案例',
+    key: 'demo',
+    children: [
+      {
+        label: '类式组件写法',
+        key: '/demo/classWriting'
+      },
+      {
+        label: '函数式组件写法',
+        key: '/demo/funWriting'
+      },
+      {
+        label: '生命周期',
+        key: 'lifeCycle',
+        children: [
+          {
+            label: '生命周期(类)',
+            key: '/demo/lifeCycle/lifeCycleClass'
+          },
+          {
+            label: '生命周期(函数)',
+            key: '/demo/lifeCycle/lifeCycleFun'
+          }
+        ]
+      },
+      {
+        label: 'Props写法',
+        key: '/demo/propsWriting'
+      },
+      {
+        label: 'Redux写法',
+        key: '/demo/reduxWriting'
+      },
+      {
+        label: 'Route写法',
+        key: '/demo/routeWriting'
+      }
+    ]
+  },
+  {
+    label: '用户管理',
+    key: '/user',
+  },
+  {
+    label: '作者',
+    key: '/abouts',
+  }
+]
+
+// 两层循环过滤
+// for (let i = 0; i < menuList.length; i++) {
+// 	let children = menuList[i].children
+// 	if(children){
+// 		for (let j = 0; j < children.length; j++) {
+// 			if(children[j].roles && children[j].roles[0]=== 'admin'){
+// 				console.log(children[j])
+// 				children.splice(j, 1)
+// 				j--
+// 			}
+// 		}
+// 	}
+// }
+// 
+
+// 多层，递归过滤
+function filterArr(arr){
+	for (let i = 0; i < arr.length; i++) {
+		let children = arr[i].children
+		if(children){
+			filterArr(children)
+		}
+		if(arr[i].roles && arr[i].roles[0]=== 'editor'){
+			console.log(arr[i])
+			arr.splice(i, 1)
+			i--
+		}
+	}
+}
+filterArr(menuList)
+
+
+console.log(menuList)
+</script>
