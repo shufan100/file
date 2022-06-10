@@ -8,9 +8,13 @@
 </body>
 </html>
 <script type="text/javascript">
+// 什么是递归？
+//    递归：一个在函数内部调用其本身，那么这个函数就是递归。
+//    优点：结构清晰、可读性强
+//    缺点：效率低、调用栈可能溢出、其实每一次函数在调用时会在内存栈中分配空间，而每个进程栈内存是有限的，当调用的层次太多是，就会超出栈的容量，从而导致栈溢出
+
 
 // 一般用于菜单路由权限控制
-
 const menuList = [
   {
     key: '/home',
@@ -142,23 +146,28 @@ const menuList = [
     key: '/abouts',
   }
 ]
-
 // 两层循环过滤
-// for (let i = 0; i < menuList.length; i++) {
-// 	let children = menuList[i].children
-// 	if(children){
-// 		for (let j = 0; j < children.length; j++) {
-// 			if(children[j].roles && children[j].roles[0]=== 'admin'){
-// 				console.log(children[j])
-// 				children.splice(j, 1)
-// 				j--
-// 			}
-// 		}
-// 	}
-// }
-// 
+/**
+ * @param  {} 
+ * @return {}
+ 
+    for (let i = 0; i < menuList.length; i++) {
+      let children = menuList[i].children
+      if(children){
+        for (let j = 0; j < children.length; j++) {
+          if(children[j].roles && children[j].roles[0]=== 'admin'){
+            console.log(children[j])
+            children.splice(j, 1)
+            j--
+          }
+        }
+      }
+    }
 
-// 多层，递归过滤
+ */
+
+
+// 递归 (过滤不符合条件的数据)
 function filterArr(arr){
 	for (let i = 0; i < arr.length; i++) {
 		let children = arr[i].children
@@ -174,6 +183,42 @@ function filterArr(arr){
 }
 filterArr(menuList)
 
-
 console.log(menuList)
+
+
+// 递归（数组相同type整合）
+let arrs = [
+    { name: 2121, type: '站外' },
+    { name: 343, type: '站外' },
+    { name: 65, type: '站外' },
+    { name: 21, type: '电压' },
+    { name: 98, type: '电压' },
+    { name: 54, type: '站外' }
+  ]
+
+  let arr = []
+  let obj = {}
+  for (var i = 0; i < arrs.length; i++) {
+    if (!obj[arrs[i].type]) {
+      obj[arrs[i].type] = []
+      obj[arrs[i].type].push(arrs[i])
+    } else {
+      obj[arrs[i].type].push(arrs[i])
+    }
+  }
+  console.log(obj)
+
+  let result = []
+  let fun = function (ary) {
+    for (let i = 0; i < ary.length; i++) {
+      let item = ary[i]
+      if (Array.isArray(ary[i])) {
+        fun(item)
+      } else {
+        result.push(item)
+      }
+    }
+  }
+  fun(arrs)
+  console.log(result,'result')
 </script>

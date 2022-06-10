@@ -9,43 +9,103 @@
   <body></body>
 </html>
 <script>
-  // es6去重 只对单个元素————————————————————————————————————1
   var arr1 = ['a', 'a', 30, 'b', 'b', 'b', 'c', 'e', 'f', 1, 2, 2, 3, 3, 3]
+  
+  // es6去重 只对单个元素————————————————————————————————————1
   let newArr = [...new Set(arr1)]
   console.log('es6去重:', newArr)
 
+  function uniqueFilter(arr){
+    return arr.filter(function(item,index,arr){
+      return arr.indexOf(item,0) === index
+    })
+  }
+console.log('Filter去重:',uniqueFilter(arr1))
+
+
+// 针对数组对象元素内部的字段去重
   var arr = [
-    { id: 1, name: 'zhangs', age: 18, contact_id: 1 },
-    { id: 2, name: 'zhangs', age: 18, contact_id: 2 },
-    { id: 3, name: 'zhangs', age: 18, contact_id: 3 },
-    { id: 4, name: 'zhangs', age: 4444, contact_id: 4 },
-    { id: 5, name: 'zhangs', age: 18, contact_id: 3 },
-    { id: 6, name: 'zhangs', age: 18, contact_id: 40 },
-    { id: 7, name: 'zhangs', age: 18, contact_id: 40 }
+    { id: 1, name: 'zhangs', age: 18, contact: 1 },
+    { id: 2, name: 'zhangs', age: 18, contact: 2 },
+    { id: 3, name: 'zhangs', age: 18, contact: 3 },
+    { id: 4, name: 'zhangs', age: 4444, contact: 4 },
+    { id: 5, name: 'zhangs', age: 18, contact: 3 },
+    { id: 6, name: 'zhangs', age: 18, contact: 40 },
+    { id: 7, name: 'zhangs', age: 18, contact: 40 }
   ]
   // es3去重————————————————————————————————————
   function unique(arr) {
     let newArr = []
     let obj = {}
     for (let i = 0; i < arr.length; i++) {
-      if (!obj[arr[i].contact_id]) {
+      if (!obj[arr[i].contact]) {
         newArr.push(arr[i])
-        obj[arr[i].contact_id] = true
+        obj[arr[i].contact] = true
       }
     }
     return newArr
   }
   console.log('es3去重1:', unique(arr))
 
-  // es3去重————————————————————————————————————
+  // es6去重————————————————————————————————————
   function unique2(arr) {
     let obj = {}
     return arr.filter(i => {
-      if (!obj[i.contact_id]) {
-        obj[i.contact_id] = true
+      if (!obj[i.contact]) {
+        obj[i.contact] = true
         return true
       }
     })
   }
   console.log('es3去重2:', unique2(arr))
+
+
+
+// 排序
+let numList = [9,1,4,5,31,7,43,4,2,1,8]
+
+
+// 快速排序
+function quickSort(list){
+  let arr = JSON.parse(JSON.stringify(list))
+  if(arr.length<=1){
+    return arr
+  }
+  let pivotIndex = Math.floor(arr.length / 2)
+  let pivot = arr.splice(pivotIndex,1)[0]
+
+  let left = []
+  let right = []
+  
+  for (var i = 0; i < arr.length; i++) {
+    if(arr[i]<pivot){
+      left.push(arr[i])
+    }else{
+      right.push(arr[i])
+    }
+  }
+  return quickSort(left).concat([pivot],quickSort(right))
+}
+console.log(quickSort(numList))
+
+console.log(numList)
+
+// 冒泡排序
+function newSort(arr){
+  for (var i = 0; i < arr.length; i++) {
+    if(arr[i] < arr[i-1]){
+      let guard = arr[i]
+      let j = i-1
+      arr[i] = arr[j]
+      while(j>0 && guard < arr[j]){
+        arr[j+1] = arr[j]
+        j--
+      }
+      arr[j+1] = guard
+    }
+  }
+}
+newSort(numList)
+console.log(numList)
+
 </script>
