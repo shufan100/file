@@ -1,7 +1,8 @@
-// 类型的别名
+// type：类型的别名
 type myType = number | boolean
 let b: myType = 1
 b = false
+
 
 // Any:表示任何类型(不建议使用)
 let notSure: any

@@ -5,17 +5,19 @@
 let fun0 = (a: number, b: number): number => a + b
 let fun1 = (a: string, b: string): string => a + b
 let fun2 = (a: string, b: string): object => ({ a, b })
-let fun4 = (a: string, b: number): any => ({ a, b })
 let fun3 = (a: string, b: string): void => {}
+let fun4 = (a: string, b: number): any => ({ a, b })
+let fun5 = (a: string, b: string): boolean => true
 
-//函数---匿名函数
+//函数---匿名函数 (
+//注意，参数不能多传，也不能少传 必须按照约定的类型来)
 let nfun = function (x: number, y: number): object {
   return { x, y }
 }
 
-//函数---普通函数
-function myAdd1(data: { id: number; tid?: string; [xxx: string]: any }): string {
-  return data.id + data.age
+//函数---普通函数 (tid可选参数)
+function myAdd1(data: { id: number, tid?: string, [key: string]: any }, name: string = "我是默认值"): string {
+  return data.id + data.age + name
 }
 // --------------------------------------接口-------------------------------------------------------
 
