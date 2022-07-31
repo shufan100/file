@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/page/Nested/menu2-1/index.jsx"],"names":["Menu1_1"],"mappings":"iIAAA,+DAEe,SAASA,IACtB,OACE","file":"static/js/18.7487d980.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nexport default function Menu1_1 () {\r\n  return (\r\n    <div>\r\n      二级菜单\r\n    </div>\r\n  );\r\n}\r\n"],"sourceRoot":""}

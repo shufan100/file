@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/page/FormCom/Table/index.jsx"],"names":["Table"],"mappings":"iIAAA,+DAEe,SAASA,IACtB,OACE","file":"static/js/17.97135656.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nexport default function Table () {\r\n  return (\r\n    <div>\r\n      ddddddddd\r\n    </div>\r\n  );\r\n}"],"sourceRoot":""}

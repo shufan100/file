@@ -154,7 +154,7 @@
 
   // 成功all：3个都成功，则返回3个promise返回值的数组（新的promise）
   const result = Promise.all([promise1, promise2, promise3])
-  console.log('result>>>', result) //成功：[{name:'tom',age:19}, '成功数据1111', [1,2,3,4] ]
+  console.log('result>>>111', result) //成功：[{name:'tom',age:19}, '成功数据1111', [1,2,3,4] ]
 
   // 失败all：有一个promise失败就返回失败的promise的值（新的promise）
   const result2 = Promise.all([promise1, promise2, promise4])

@@ -18,7 +18,7 @@ let Arr4 = [12, 'fsfs', { name: '2121', age: false }]
 
 
 
-// 数组泛型 (规则 Array<类型>)
+// 数组泛型 (规则: Array<类型>)
 let ListNumber: Array<number> = [1, 2, 3]
 let ListSring: Array<string> = ['1', '2', '3']
 let ListBool: Array<boolean> = [false, true, false]

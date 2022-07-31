@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/page/User/index.jsx"],"names":["User"],"mappings":"iIAAA,gEAEe,SAASA,IACtB,OACE,0DAIH,C","file":"static/js/47.2df0ab76.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nexport default function User () {\r\n  return (\r\n    <div>\r\n      用户管理\r\n    </div>\r\n  );\r\n}\r\n"],"sourceRoot":""}

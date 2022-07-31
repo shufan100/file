@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/page/FormCom/Markdown/index.jsx"],"names":["Markdown"],"mappings":"iIAAA,+DAEe,SAASA,IACtB,OACE","file":"static/js/16.a1e2b484.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nexport default function Markdown () {\r\n  return (\r\n    <div>\r\n      富文本\r\n    </div>\r\n  );\r\n}\r\n"],"sourceRoot":""}

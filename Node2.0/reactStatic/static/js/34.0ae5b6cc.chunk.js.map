@@ -1,0 +1,1 @@
+{"version":3,"sources":["views/page/BasisCom/Markdown/index.jsx"],"names":["Markdown"],"mappings":"iIAAA,gEAEe,SAASA,IACtB,OACE,oDAIH,C","file":"static/js/34.0ae5b6cc.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nexport default function Markdown () {\r\n  return (\r\n    <div>\r\n      富文本\r\n    </div>\r\n  );\r\n}\r\n"],"sourceRoot":""}

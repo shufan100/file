@@ -1,2 +1,0 @@
-(this["webpackJsonpreact-adtd-project"]=this["webpackJsonpreact-adtd-project"]||[]).push([[22],{376:function(t,c,e){"use strict";e.r(c),e.d(c,"default",(function(){return n}));e(0);var r=e(7);function n(){return Object(r.jsx)("div",{children:"4\u83dc\u53552222"})}}}]);
-//# sourceMappingURL=22.dd395122.chunk.js.map

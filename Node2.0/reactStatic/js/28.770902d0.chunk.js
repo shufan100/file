@@ -1,0 +1,2 @@
+(this["webpackJsonpreact-adtd-project"]=this["webpackJsonpreact-adtd-project"]||[]).push([[28],{752:function(t,n,c){"use strict";c.r(n),c.d(n,"export_txt_to_zip",(function(){return a}));var e=c(753),o=c.n(e);function a(t,n,c,e){var a=new o.a,r=c||"file",i=e||"file",p=n,f="".concat(t,"\r\n");p.forEach((function(t){var n;n=t.toString(),f+="".concat(n,"\r\n")})),a.file("".concat(r,".txt"),f),a.generateAsync({type:"blob"}).then((function(t){saveAs(t,"".concat(i,".zip"))}),(function(t){alert("\u5bfc\u51fa\u5931\u8d25")}))}c(692)}}]);
+//# sourceMappingURL=28.770902d0.chunk.js.map

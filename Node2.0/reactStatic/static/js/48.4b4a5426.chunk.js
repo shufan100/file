@@ -1,0 +1,2 @@
+(this["webpackJsonpreact-adtd-project"]=this["webpackJsonpreact-adtd-project"]||[]).push([[48],{780:function(t,e,a){"use strict";a.r(e),a.d(e,"default",(function(){return n}));a(0);var c=a(12);function n(){return Object(c.jsx)("div",{className:"adminPage",children:"admin\u9875\u9762\u6743\u9650"})}}}]);
+//# sourceMappingURL=48.4b4a5426.chunk.js.map

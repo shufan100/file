@@ -5,7 +5,7 @@
 // readonly，内部，继承内可以，外部不可用 -- 只读
 // 可以将calss类当接口用
 // 给calss类添加存取器（get,set）
-// static，定义静态属性和方法，类无需new，直接调用
+// static，定义静态属性和方法，类无需new，直接调用,内部、外部、继承可用 --可修改
 
 
 // 1在TypeScript是不允许直接在constructor 定义变量的 需要在constructor上面先声明
@@ -67,7 +67,8 @@ class Pag extends Tag {
 const pag = new Pag()
 pag.name = '雄安'
 // console.log(pag.says())
-console.log(pag)
+console.log(Pag.nb)
+
 
 
 
