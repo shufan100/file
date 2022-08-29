@@ -7,23 +7,7 @@
   </head>
   <body></body>
   <script>
-    /**
-     * fn:函数
-     * args：接收所有参数
-     */
-    function myNew(fn, ...args) {
-      // 写法：let obj = Object.create(原型):创建一个新对象,将现在有的对象，提供给新创建的对象的__proto__
-      let obj = Object.create(fn.prototype) //创建一个对象，将现在函数的原型对象  提供给  新创建的对象的隐式原型对象（obj.__proto__ = fn.prototype ）
-      console.log(obj, 'Person{}==空的实例对象')
-      let res = fn.call(obj, ...args) //通过call将this指向Person空的实例对象，并接收多个参数加到空的对象内，并返回res带参数的实例对象
-      if (res & (typeof res === 'object')) {
-        console.log(res)
-        return res
-      }
-      return obj
-    }
-
-    // 使用
+    // Person构造函数  （被new的函数叫做构造函数）
     function Person(name, age) {
       this.name = name
       this.age = age
@@ -31,15 +15,32 @@
     Person.prototype.say = function () {
       console.log(this.age)
     }
-    let p = myNew(Person, 'lihua', 'zhansan')
-    console.log(p)
-    console.log(p.name)
-    p.say()
 
-    // js封装
-    // let p1 = new Person('shu', 18)
-    // console.log(p1)
-    // console.log(p1.name)
-    // p1.say()
+    /** 手写new操作符
+     * fn:函数
+     * args：接收所有参数
+     */
+    function myNew(fn, ...args) {
+      // 1、创建一个对象，
+      // 2、obj隐式原型 指向 构造函数的显式原型（obj.__proto__ = fn.prototype ）
+      let obj = Object.create(fn.prototype)
+      // 3、执行构造函数，this指向空对象
+      fn.apply(obj, args) // apply:传数组  // fn.call(obj, ...args) // call:传多个字段
+      // 4.返回对象
+      return obj
+    }
+
+    // 自定义new函数
+    let p = myNew(Person, 'fan', 18)
+    console.log(p, '实例对象p')
+    console.log(p.name, p.age)
+    p.say()
+    console.warn('----------------')
+
+    // js封装的new
+    let p1 = new Person('shu', 16)
+    console.log(p1, '实例对象p1')
+    console.log(p1.name, p1.age)
+    p1.say()
   </script>
 </html>
