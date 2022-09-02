@@ -30,11 +30,13 @@
   function Fun() {
     console.log(this) // 指向new构造函数的实例对象fun1
     this.name = '熊明'
+    this.age = 100
   }
 
   const funObj = new Fun() //new Fun构造函数，返回实例对象
 
   Fun.prototype.code = '33453' // 在构造函数自身的prototype显示原型对象添加code属性
+  Fun.prototype.age = '198' // 在构造函数自身的prototype显示原型对象添加code属性
   funObj.__proto__.age = '199' // 在实例对象的__proto__隐式原型对象添加age属性
 
   console.dir(Fun) // 构造函数
@@ -48,7 +50,7 @@
   console.log(obj.age)
 
   /*1、原型链是针对构造函数的。++++++++++++++++++++++++++++++++++++++++
-	5、**原型链：我们创建了一个函数，然后通过new这个函数赋值给一个变量，那么这个被new出来的实例对象就会继承创建的函数的属性，然后如果我访问new出来的这个函数的某个属性，但是我并没有在这个new出来的函数中定义这个变量，那么它就会往上（向创建出它的函数中）查找，这个查找的过程就叫做原型链。
+  5、**原型链：当我们new一个构造函数，会返回一个新的实例对象，这个实例对象继承构造函数得prototype原型属性；当我们访问实例对象上的属性时，如果没有这个属性，它就会往上（创建出它的函数中）查找，查找得过程就叫原型链。
 	*/
   function A() {}
   A.prototype.name = '追梦子'
