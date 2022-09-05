@@ -1,4 +1,4 @@
-// 启动node服务
+// 启动node服务 nodemon index.js
 // 1、引用
 const express = require('express')
 const history = require('connect-history-api-fallback')
