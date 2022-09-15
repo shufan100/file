@@ -34,4 +34,17 @@
   let { nn, fun, num } = result2()
   console.log(nn, fun(11, 22), num)
   // result2 = null //释放闭包的内存，防止内存泄露
+  // 
+  // 
+  // 
+  // 
+  // 
+  let arr = [1,2,3]
+  const a = arr.filter(it=> it<3).map(i=>({
+		id:i,
+		title:'111'
+	}))
+  	
+
+  console.log(a)
 </script>
