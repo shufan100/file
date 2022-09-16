@@ -1,9 +1,12 @@
 // webpack配置文件
 const path = require('path')
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 
 module.exports = {
   // 入口文件
-  entry: './src/main.js',
+  entry: ['./src/main.js', './src/index.html'], //写html才能使用热更新
   /** entry完整写法
       entry:{
         main:'./src/main.js'
@@ -12,7 +15,8 @@ module.exports = {
   // 输出
   output: {
     path: path.resolve(__dirname, 'dist'), // 输出路径
-    filename: './js/bundle.js' //编译后的文件
+    filename: './js/bundle.js', //编译后的文件
+
   },
   // 模式（告知 webpack 使用相应模式的内置优化）
   mode: 'development', // node development production:默认
@@ -61,21 +65,69 @@ module.exports = {
         }
         ,
       },
-      // 使用url-loader 处理样式文件中的图片
+
+      // url-loader处理 css 中的图片路径：webpack4
+      // {
+      //   test: /\.(png|jpg|gif)$/,
+      //   use: [
+      //     {
+      //       loader: 'url-loader',
+      //       options: {
+      //         limit: 8192, // 8kb 以下的图片转base64
+      //         outputPath: 'iamges', // 图片输出目录
+      //         // publicPath: '../dist/images', //决定图片的url路径
+      //         name: '[hash:5].[ext]' // 修改文件名称，取hash值得前5位， [ext]文件扩展名
+      //       }
+      //     }
+      //   ]
+      // }
+      // 处理 css 中的图片路径：webpack5 
       {
-        test: /\.(png|jpg|gif)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              // limit: 8192, // 8kb 以下的图片转base64
-              // outputPath: 'iamges', // 图片输出目录
-              // publicPath: '../dist/images', //决定图片的url路径
-              // name: '[hash:5].[ext]' // 修改文件名称，取hash值得前5位， [ext]文件扩展名
-            }
+        test: /\.(jpg|png|gif)$/,
+        type: "asset",
+        //解析
+        parser: {
+          //超过13kb转base64
+          dataUrlCondition: {
+            maxSize: 13 * 1024, // 13kb
           }
-        ]
+        },
+        generator: {
+          //与output.assetModuleFilename是相同的,这个写法引入的时候也会添加好这个路径
+          filename: 'images/[name][hash:6][ext]',
+          // publicPath: ''
+        },
+      },
+      // 处理 html 中的图片路径
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
+      // 处理字体图标资源：webpack5
+      {
+        test: /\.(ttf|svg|woff|eot)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'font/[hash:10][ext][query]'
+        }
       }
     ]
+  },
+  // 配置webpack插件(plugins)
+  plugins: [
+    new CleanWebpackPlugin(),  //build先清空dist文件夹
+    new HTMLWebpackPlugin({// build会自动生成html文件
+      template: './src/index.html' // 使用自己的html文件
+    })
+  ],
+  // 自动化编译运行
+  devServer: {
+    open: false, //自动打开浏览器新标签
+    port: 3000, // 端口
+    hot: true, // 开启html热模更新
+    // compress:true //启动gzip压缩
   }
+  // optimization: {
+  //   runtimeChunk: 'single'
+  // }
 }

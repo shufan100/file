@@ -73,9 +73,58 @@ npm install less less-loader css-loader style-loader -D  // 安装相关依赖
     2、通过core-js进行按需使用polyfill
 ```
 
-### 6、 使用 url-loader 处理样式中引入的图片路径问题
+### 6、 webpack4 使用 url-loader 处理样式中引入的图片路径问题
 
 ```javascript
+//  webpack4
   1. npm install file-loader url-loader -D
-  url-loader是对象file-loader的上层封装，使用时必须配合file-loader使用
+  2. url-loader是对象file-loader的上层封装，使用时必须配合file-loader使用
+//  webpack5
+  1. 使用asset,不需要loader，weboack5默认会处理图片
+```
+
+### 7、 处理 html 中图片的路径问题
+
+```javascript
+  1、npm install html-loader -D
+  2、配置
+```
+
+### 7、 处理其他资源
+
+```javascript
+  1、无需安装插件，直接配置
+```
+
+### 8、 生成 html
+
+```javascript
+  1、npm install html-webpack-plugin -D
+  2、引用
+  3、plugin插件使用
+  4、devServer配置hot属性
+```
+
+### 8、 自动编译打包运行 + HRM 热模更新
+
+```javascript
+  1、npm install webpack-dev-server -D
+  2、配置devServer
+  3、package.json配置自动打包运行命令
+  注：不会生成dist文件,数据存在内存中，关闭服务器，资源就被释放了
+// 热更新
+  1、devServer配置hot
+  2、entry添加index.html，热更新就能监听到
+  注：html+js无法做到局部更新，只能全刷新，css可以热更新
+```
+
+npm i clean-webpack-plugin -D
+
+### 9、build 前先清空 dist
+
+```javascript
+  1、npm i clean-webpack-plugin -D
+  2、引入
+  3、配置plugin
+
 ```
