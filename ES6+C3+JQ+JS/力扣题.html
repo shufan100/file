@@ -1,80 +1,136 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>力扣题</title>
-</head>
-<body>
-
-</body>
+  <head>
+    <title>力扣题</title>
+  </head>
+  <body></body>
 </html>
 <script type="text/javascript">
+  /**回文
+   * @param {number} x
+   * @return {boolean}
+   */
+  var isPalindrome = function (x) {
+    let newx = String(x).split('').reverse().join('') * 1
+    // console.log(x === newx)
+    return x === newx
+  }
+  isPalindrome(12899821)
+  isPalindrome(-121)
+  isPalindrome(10)
 
+  //
+  /**返回不同 单词翻译 的数量
+   * @param {string[]} words
+   * @return {number}
+   */
 
-/**回文
- * @param {number} x
- * @return {boolean}
- */
-var isPalindrome = function(x) {
-	let newx = String(x).split('').reverse().join('')*1
-	console.log(x === newx)
-	return x === newx
-};
-isPalindrome(12899821)
-isPalindrome(-121)
-isPalindrome(10)
+  var uniqueMorseRepresentations = function (words) {
+    let arr = words.map(i => fn(i))
+    // console.log(arr)
+    // console.log([...new Set(arr)])
+  }
+  uniqueMorseRepresentations(['gin', 'zen', 'gig', 'msg'])
 
-// 
-/**返回不同 单词翻译 的数量
- * @param {string[]} words
- * @return {number}
- */
-
-var uniqueMorseRepresentations = function(words) {
-
-    let arr = words.map(i=> fn(i))
-    console.log(arr)
-    console.log([...new Set(arr)]);
-};
-uniqueMorseRepresentations(["gin","zen","gig","msg"])
- 
- function fn(str){
-      let obj = { 
-        'a':".-",
-        'b':"-...",
-        'c':"-.-.",
-        'd':"-..",
-        'e':".",
-        'f':"..-.",
-        'g':"--.",
-        'h':"....",
-        'i':"..",
-        'j':".---",
-        'k':"-.-",
-        'l':".-..",
-        'm':"--",
-        'n':"-.",
-        'o':"---",
-        'p':".--.",
-        'q':"--.-",
-        'r':".-.",
-        's':"...",
-        't':"-",
-        'u':"..-",
-        'v':"...-",
-        'w':".--",
-        'x':"-..-",
-        'y':"-.--",
-        'z':"--.."
+  function fn(str) {
+    let obj = {
+      a: '.-',
+      b: '-...',
+      c: '-.-.',
+      d: '-..',
+      e: '.',
+      f: '..-.',
+      g: '--.',
+      h: '....',
+      i: '..',
+      j: '.---',
+      k: '-.-',
+      l: '.-..',
+      m: '--',
+      n: '-.',
+      o: '---',
+      p: '.--.',
+      q: '--.-',
+      r: '.-.',
+      s: '...',
+      t: '-',
+      u: '..-',
+      v: '...-',
+      w: '.--',
+      x: '-..-',
+      y: '-.--',
+      z: '--..'
     }
-     let arr = str.split('')
-     let newstr = ''
-     for(let i of arr){
-         newstr += obj[i]
-     }
-     return newstr
+    let arr = str.split('')
+    let newstr = ''
+    for (let i of arr) {
+      newstr += obj[i]
+    }
+    return newstr
+  }
 
+  // 排序
+  const source = [
+    null,
+    { id: function () {}, name: 'test7' },
+    { id: '6', name: 'test7' },
+    { id: 1, name: 'test6' },
+    { id: 6, name: 'test2' },
+    { id: 3, name: 'test56' },
+    { id: 2, name: 'test7' },
+    { id: 9, name: 'test1' },
+    { id: 4, name: 'test0' }
+  ]
+  // const arr = source
+  //   .reduce((list, item, index, oldArr) => {
+  //     if (item && typeof item.id === 'number') {
+  //       list.push(item)
+  //       // list.sort(function (a, b) {
+  //       //   return a.id - b.id
+  //       // })
+  //     }
+  //     return list
+  //   }, [])
+  //   .sort((a, b) => a.id - b.id)
+  //   .map(i => i.name)
 
- }
+  const arr = source
+    .filter(item => item && typeof item.id === 'number')
+    .sort((a, b) => a.id - b.id)
+    .map(i => i.name)
+  console.log(arr)
 
+  const object = {
+    a: {
+      b: {
+        c: '',
+        d: ''
+      },
+      e: {
+        f: {
+          g: ''
+        }
+      }
+    },
+    h: ''
+  }
+  // console.log(object)
 
+  function fn11(obj) {
+    let arr = []
+    fun(obj)
+    function fun(obj, str = '') {
+      for (let key in obj) {
+        if (typeof obj[key] === 'string') {
+          // console.log(str + key, '111')
+          arr.push(str + key)
+        } else {
+          fun(obj[key], str + key)
+        }
+      }
+    }
+    return arr
+  }
+
+  console.log(fn11(object))
 </script>
