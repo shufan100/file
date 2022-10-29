@@ -122,7 +122,6 @@
     function fun(obj, str = '') {
       for (let key in obj) {
         if (typeof obj[key] === 'string') {
-          // console.log(str + key, '111')
           arr.push(str + key)
         } else {
           fun(obj[key], str + key)
