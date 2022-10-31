@@ -17,7 +17,10 @@
   <body>
     <div id="container"></div>
     <button id="button">btn</button>
-    <p>防抖的原理：你尽管触发事件，但是我一定在事件触发 n 秒后才执行，如果你在一个事件触发的 n 秒内又触发了这个事件，那我就以新的事件的时间为准，n 秒后才执行，总之，就是要等你触发完事件 n 秒内不再触发事件，我才执行，真是任性呐!</p>
+    <p>
+      防抖的原理：你尽管触发事件，但是我一定在事件触发 n 秒后才执行，如果你在一个事件触发的 n 秒内又触发了这个事件，那我就以新的事件的时间为准，n 秒后才执行，总之，就是要等你触发完事件 n
+      秒内不再触发事件，我才执行，真是任性呐!
+    </p>
   </body>
 </html>
 <script type="text/javascript">
@@ -32,11 +35,11 @@
 
   // container.onmousemove = getUserAction; //现在移动会触发很多次方法
   // 第一版防抖
-  function debounce1(func, wait) {
+  function debounce1(func, time) {
     var timeout
     return function () {
       clearTimeout(timeout)
-      timeout = setTimeout(func, wait)
+      timeout = setTimeout(func, time)
     }
   }
   // container.onmousemove = debounce1(getUserAction, 500);
