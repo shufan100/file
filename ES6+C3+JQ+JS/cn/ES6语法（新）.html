@@ -14,6 +14,27 @@
   <body></body>
 </html>
 <script>
+  // ??（非空运算符）
+  // ?? 和 || 差不多，但??会将0和''也作为值返回
+  let a = 0 ?? 'sf' //0
+  let a2 = null ?? 'sf' // sf
+  let a3 = '' ?? 'sf' //''
+  let a4 = false ?? 'sf' //false
+  console.log(a, a2, a3, a4)
+
+  // // ??=（空赋值运算符）
+  let aa = 0
+  let b = '你好'
+  let c = null
+  let d = 123
+  b ??= aa // b = “你好”
+  c ??= d // c = '123'
+
+  //  ?.（链判断）
+  let obj = { c: 11 }
+  console.log(obj?.a) // undefined
+  console.log(obj?.c) // 11
+
   let s = 'hello world!'
   // startsWith：判断参数是否在原字符串的头部
   s.startsWith('hello') //true
