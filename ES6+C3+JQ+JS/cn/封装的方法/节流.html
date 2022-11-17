@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>节流</title>
+  </head>
+  <style>
+    #container {
+      width: 100%;
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      color: #fff;
+      background-color: #444;
+      font-size: 30px;
+    }
+  </style>
+  <body>
+    <div id="container"></div>
+    <p>节流的原理： 如果你持续触发事件，每隔一段时间，只执行一次事件。 根据首次是否执行以及结束后是否执行，效果有所不同，实现的方式也有所不同。 我们用 leading 代表首次是否执行，trailing 代表结束后是否再执行一次。 关于节流的实现，有两种主流的实现方式，一种是使用时间戳，一种是设置定时器。</p>
+  </body>
+</html>
+<script type="text/javascript">
+  var count = 1
+  var container = document.getElementById('container')
+  container.innerHTML = 0
+
+  function getUserAction() {
+    container.innerHTML = count++
+  }
+
+  function throttle(func, wait) {
+    var timeout
+    var previous = 0
+
+    return function () {
+      context = this
+      args = arguments
+      if (!timeout) {
+        timeout = setTimeout(function () {
+          timeout = null
+          func.apply(context, args)
+        }, wait)
+      }
+    }
+  }
+  container.onmousemove = throttle(getUserAction, 1000)
+</script>

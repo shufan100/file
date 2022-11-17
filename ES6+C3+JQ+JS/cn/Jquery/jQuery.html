@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>jQuery知识点</title>
+    <link rel="stylesheet" type="text/css" href="./css/reset.css" />
+  </head>
+
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+      padding: 10px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      text-shadow: 5px 5px 5px #ff0000;
+      margin-bottom: 20px;
+    }
+    .h2Class {
+      color: red;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
+
+  <body>
+    <h1>jQuery知识总结</h1>
+    <h2>动态添加class</h2>
+    <a href="">1111</a>
+  </body>
+</html>
+<script src="./js/jquery.min.js"></script>
+<script type="text/javascript">
+  //1、动态添加class 删除是removeClass
+  $('h2').addClass('h2Class')
+  //2、动态添加标签
+  $('<div>动态向body添加div标签</div>').appendTo('body')
+  let arr = [1, 2, 3, 4, 2]
+  let index = arr.indexOf(3)
+  const val = arr.reduce((num1, num2) => {
+    return num1 + num2
+  })
+
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === 2) {
+      arr.splice(i, 1)
+      i-- //删除后使得遍历不会缺少项，同时不用考虑位置变化了
+    }
+  }
+  console.log(arr)
+
+  function aa() {
+    var n = 5
+    if (true) {
+      var n = 10
+    }
+    console.log(n) // 5
+  }
+  aa()
+  console.log(n)
+</script>
