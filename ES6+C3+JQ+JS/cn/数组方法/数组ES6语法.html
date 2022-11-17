@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>递归</title>
+  </head>
+  <body></body>
+</html>
+<script type="text/javascript">
+  let arrs = [
+    { name: 2121, type: '站外1' },
+    { name: 343, type: '站外2' },
+    { name: 65, type: '站外3' },
+    { name: 21, type: '电压4' },
+    { name: 98, type: '电压5' },
+    { name: 54, type: '站外6' }
+  ]
+  // arrs.push('ff')
+  // arrs.unshift('222')
+  // arrs.shift()
+  // let arr = arrs.pop()
+  // arrs.splice(0,1)
+  // arrs.splice(0,1,'09')
+  // arrs.splice(0,0,111)
+  // arrs.splice(arrs.length,0,111)
+  // let arr = arrs.slice(0,2)
+  // let arrs2 = [1,2,3]
+  // let arr = arrs.concat(arrs2)
+  let arrs2 = [11, 2, 3, 8, 4]
+  //
+  // let arr = arrs2.sort()
+  // let arr2 = arrs2.sort((a,b)=> a-b)
+  // let arr3 = arrs2.sort((a,b)=> b-a)
+
+  // let arr = arrs2.toString()
+  // let Arr = arrs.join('/')
+  // let Arr = arrs2.includes(11)
+  // let Arr = arrs2.indexOf(3)
+  // let Arr = arrs2.lastIndexOf(3)
+  // let Arr = Math.max(...arrs2)
+  // let Arr = Math.min(...arrs2)
+  // let Arr = [...arrs,...arrs2]
+  // const [first, ...middle] = [1, 2, 3, 4, 5];
+  // let map = new Map([
+  // 	  [1, 'one'],
+  // 	  [2, 'two'],
+  // 	  [3, 'three'],
+  // ]);
+
+  // let Arr = [...map.keys()]; // [1, 2, 3]
+  // let Arr = Array.of(8, 'df', 8)
+  let arr = ['k', 1, [3, 4, 'd'], 'd']
+  let Arr = arr.flat() // ['k',1,3,4,'d','d']
+  console.log(Arr)
+
+  // es6 获取数组最大最小值————————————————————————————————————
+  var arro = [0, 8, 3, 46]
+  // var max = Math.max.apply(null,arro);//46
+  var max = Math.max(...arro) //46
+  var min = Math.min(...arro) //46
+  console.log(max, min, 'max')
+</script>
