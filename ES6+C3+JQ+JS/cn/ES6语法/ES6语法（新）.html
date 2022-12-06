@@ -1,11 +1,3 @@
-<!--
- * @Author: shufan100 1549248097@qq.com
- * @Date: 2022-11-03 14:50:48
- * @LastEditors: shufan100 1549248097@qq.com
- * @LastEditTime: 2022-11-03 19:35:31
- * @FilePath: \file\ES6+C3+JQ+JS\cn\ES6语法（新）.html
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <!DOCTYPE html>
 <html>
   <head>
@@ -31,9 +23,9 @@
   c ??= d // c = '123'
 
   //  ?.（链判断）
-  let obj = { c: 11 }
-  console.log(obj?.a) // undefined
-  console.log(obj?.c) // 11
+  let obj1 = { c: 11 }
+  console.log(obj1?.a) // undefined
+  console.log(obj1?.c) // 11
 
   let s = 'hello world!'
   // startsWith：判断参数是否在原字符串的头部
@@ -95,11 +87,11 @@
   items.size //7
 
   // WeakSet：值只能是对象、数组
-  const a = [
+  const a1 = [
     [1, 2],
     [3, 4]
   ]
-  const ws = new WeakSet(a) // WeakSet {[1, 2], [3, 4]}
+  const ws = new WeakSet(a1) // WeakSet {[1, 2], [3, 4]}
 
   // Map：Map数据结构；对象；键值可为任何类型；正常对象键值只能是字符串
   const map = new Map([

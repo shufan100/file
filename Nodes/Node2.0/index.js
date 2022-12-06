@@ -48,16 +48,19 @@ app.use(function (err, req, res, next) {
 // 1、托管静态资源------------------打包----------------------------------------------
 // 用于解决history部署会把路由当资源发送给服务器得处理办法
 app.use(history())
-app.use(express.static(`${__dirname}/vuestatic`)); //不带文件夹(vue3.0项目)
+// console.log(__dirname, '__dirname')
+app.use(express.static(`${__dirname}/base`)); //主工程
+// app.use(express.static(`${__dirname}/vuestatic`)); //不带文件夹(vue3.0项目)
 // app.use(express.static(`${__dirname}/reactStatic`)) //不带文件夹(react项目)
 
 // app.use('/static', express.static('./static')); //带文件夹名
 // app.use('/static', express.static('./reactStatic')); //带文件夹名
+// app.use('/base', express.static('./base')); //带文件夹名
 
 // 启动服务器--------------------------------------------------------------------
 app.listen(3011, err => {
   if (err) return console.log(`服务器启动失败 ${err}`)
   console.log('服务器启动成功! ！！')
   // 改成自己电脑ip
-  console.log('running at http://192.168.1.163:3011')
+  console.log('running at http://172.30.13.91:3011')
 })

@@ -1,0 +1,1 @@
+System.register(["./index-legacy.3cb5b087.js"],(function(e){"use strict";var i,n,t;return{setters:[function(e){i=e.A,n=e.o,t=e.j}],execute:function(){e("default",i({},[["render",function(e,i){return n(),t("h1",null,"欢迎使用 Hi Micro Admin dataMigration")}],["__file","E:/project/主工程/fin-main-app/src/views/dataMigration/index.vue"]]))}}}));
