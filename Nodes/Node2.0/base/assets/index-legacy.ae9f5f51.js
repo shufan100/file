@@ -1,0 +1,1 @@
+System.register(["./index-legacy.056db433.js"],(function(e){"use strict";var s;return{setters:[function(e){s=e.bD}],execute:function(){e("s",(function(e){return s({showClose:!0,message:e,type:"success"})})),e("w",(function(e){return s({showClose:!0,message:e,type:"warning"})}))}}}));

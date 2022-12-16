@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>堆内存+栈内存+深浅拷贝</title>
   </head>
-  <body></body>
+  <body>
+    <h1>堆内存+栈内存+深浅拷贝</h1>
+  </body>
 </html>
 <script>
   /**什么是浅拷贝？
@@ -37,4 +39,15 @@
   console.log('堆内存（改变）', a1, b1, c1, d1) // [10] [10] [10] [10]
   console.log('堆内存（不改变）', a2, b2, c2, d2) // [5] [5] [11] [5]
   console.log('堆内存（不改变）', C1) // [5]
+
+  console.time()
+  // for (let i = 0; i < 100000; i++) {
+    function fn(){
+      // const element = array[i];
+      console.log(1)
+      fn()
+    }
+    fn()
+  // }
+  console.timeEnd()
 </script>

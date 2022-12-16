@@ -74,6 +74,11 @@ console.warn('------------------------------------------------------------------
   }
   console.log('es6-Filter数组对象去重2:', unique2(arr))
 
+  
+    function unique3(arr) {
+      const res = new Map()
+      return arr.filter(i => !res.has(i.id) && res.set(i.id, 1))
+    }
 
 
 

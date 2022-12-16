@@ -1,1 +1,0 @@
-import{A as c,h as n,a0 as p,G as u,j as i,o as _}from"./index.f8dd1a1d.js";const f=n({setup(l){const{currentRoute:r,replace:t}=p(),{params:a,query:o}=u(r),{path:e}=a,s=Array.isArray(e)?e.join("/"):e;return t({path:"/"+s,query:o}),(m,d)=>(_(),i("div"))}});var y=c(f,[["__file","E:/project/\u4E3B\u5DE5\u7A0B/fin-main-app/src/layout/redirect.vue"]]);export{y as default};

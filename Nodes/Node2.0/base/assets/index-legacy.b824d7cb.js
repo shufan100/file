@@ -1,1 +1,0 @@
-System.register(["./index-legacy.3cb5b087.js"],(function(e){"use strict";var t;return{setters:[function(e){t=e.A}],execute:function(){e("default",t({},[["__file","E:/project/主工程/fin-main-app/src/views/mineApply.vue/index.vue"]]))}}}));

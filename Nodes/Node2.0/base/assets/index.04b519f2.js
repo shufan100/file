@@ -1,1 +1,0 @@
-import{A as e,o as a,j as n}from"./index.f8dd1a1d.js";const r={};function i(t,c){return a(),n("h1",null,"\u6B22\u8FCE\u4F7F\u7528 Hi Micro Admin dataMigration")}var s=e(r,[["render",i],["__file","E:/project/\u4E3B\u5DE5\u7A0B/fin-main-app/src/views/dataMigration/index.vue"]]);export{s as default};
