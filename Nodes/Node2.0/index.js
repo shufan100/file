@@ -1,3 +1,11 @@
+/*
+ * @Author: shufan100 1549248097@qq.com
+ * @Date: 2022-11-17 10:59:47
+ * @LastEditors: shufan100 1549248097@qq.com
+ * @LastEditTime: 2023-02-13 18:54:37
+ * @FilePath: \file\Nodes\Node2.0\index.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 // 启动node服务 nodemon index.js
 // 1、引用
 const express = require('express')
@@ -49,18 +57,20 @@ app.use(function (err, req, res, next) {
 // 用于解决history部署会把路由当资源发送给服务器得处理办法
 app.use(history())
 // console.log(__dirname, '__dirname')
-app.use(express.static(`${__dirname}/base`)); //主工程
-// app.use(express.static(`${__dirname}/vuestatic`)); //不带文件夹(vue3.0项目)
-// app.use(express.static(`${__dirname}/reactStatic`)) //不带文件夹(react项目)
 
-// app.use('/static', express.static('./static')); //带文件夹名
-// app.use('/static', express.static('./reactStatic')); //带文件夹名
-// app.use('/base', express.static('./base')); //带文件夹名
+/**  项目部署在根路径下 */
+// app.use(express.static(`${__dirname}/vue3.0Dist`)) //不带文件夹(vue3.0项目)ok
+app.use(express.static(`${__dirname}/vue3.2Dist`)) //不带文件夹(vue3.2项目) ok
+// app.use(express.static(`${__dirname}/reactDist`)) //不带文件夹(react项目) ok
+
+/**  项目部署在二级路径下 */
+// app.use('/static', express.static('./reactDist')); //带文件夹名
+// app.use('/static', express.static('./vue3.2Dist')); //带文件夹名
 
 // 启动服务器--------------------------------------------------------------------
 app.listen(3011, err => {
   if (err) return console.log(`服务器启动失败 ${err}`)
   console.log('服务器启动成功! ！！')
   // 改成自己电脑ip
-  console.log('running at http://172.30.13.91:3011')
+  console.log('running at http://172.30.107.66:3011')
 })
