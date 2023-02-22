@@ -41,7 +41,7 @@
   'x'.padStart('abc', 6) //'abcabx'
 
   // padStart：用于尾部补全
-  'x'.padEnd(5,'nm') //'xnmnmn'
+  'x'.padEnd(5, 'nm') //'xnmnmn'
 
   const s1 = '  abc  '
   // trim：去除头尾空格
@@ -170,36 +170,4 @@
    *    Reflect.apply(target, thisArg, args)
    *    Reflect.construct(target, args)
    */
-
-  // Promise:
-  let p1 = Promise.resolve('ok')
-  let p2 = Promise.reject('err')
-  let p3 = Promise.reject('err2')
-  //  --Promise.try()
-  // --finally：不接受任何参数；执行完then或catch后执行；
-  // Promise.prototype.finally()
-  new Promise((resolve, reject) => {
-    resolve('resolvesss')
-  })
-    .then(res => console.log('then:', res))
-    .catch(error => {})
-    .finally(() => console.log('finally:', 111))
-
-  //  --Promise.all([])：所有s实例都成功才返回；有一个Promise错就返回错的Promise，可将promies接收一个catch
-  Promise.all([p1, p2.catch(e => e)]).then(res => {
-    console.log('Promise.all():', res) // ['ok', 'err']
-  })
-
-  //  --Promise.allSettled([])：等所有实例不管成功还是失败都执行完，再调用
-  Promise.allSettled([p1, p2]).then(res => {
-    console.log('Promise.allSettled():', res) // [ {status:'fulfilled',value:'ok'}, {status:'rejected',value:'err'} ]
-  })
-
-  //  --Promise.any([])：只有有一个实例成功，就返回成功；
-  Promise.any([p2, p3]).catch(err => {
-    console.log('Promise.any():', err) // AggregateError: All promises were rejected
-  })
-  Promise.any([p2, p1]).then(res => {
-    console.log('Promise.any():', res) // 'ok'
-  })
 </script>
