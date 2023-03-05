@@ -2,11 +2,12 @@
  * @Author: shufan100 1549248097@qq.com
  * @Date: 2022-11-17 10:59:47
  * @LastEditors: shufan100 1549248097@qq.com
- * @LastEditTime: 2023-02-13 18:54:37
+ * @LastEditTime: 2023-02-18 17:12:28
  * @FilePath: \file\Nodes\Node2.0\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 // 启动node服务 nodemon index.js
+
 // 1、引用
 const express = require('express')
 const history = require('connect-history-api-fallback')
