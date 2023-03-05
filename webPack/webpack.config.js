@@ -1,20 +1,22 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const terserWebpackPlugin = require('terser-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+// const terserWebpackPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   /** ----------------------------------1、entry 入口---------------------------------------------- */
-  entry: ['./src/main.js', './src/index.html'], //写html才能使用热更新
+  entry: ['./src/main.js', './public/index.html'], //写html才能使用热更新
   // entry完整写法
   // entry:{ main:'./src/main.js'  }
 
   /** ----------------------------------2、output 输出---------------------------------------------- */
   output: {
     path: path.resolve(__dirname, 'dist'), // 输出路径
-    filename: './js/bundle.js' //编译后的文件
     // pubilcPatch:'/'
+    filename: 'static/js/bundle.js', //编译后的文件
+    clean: true //在生成文件之前清空 output 目录 webpack5新增
   },
 
   /** ----------------------------------3、mode 模式---------------------------------------------- */
@@ -28,25 +30,73 @@ module.exports = {
     rules: [
       // 解析less（不完美：是style内联样式）
       {
-        test: /\.less$/, // 匹配所有的less文件
+        test: /\.less$/, // 只检测.less文件  /\.css$/ 只会检测.css文件
+        // laoder: 'less-loader'  // 只能使用一个loader
         use: [
-          MiniCssExtractPlugin.loader,
+          // use: 执行顺序从下到上（从右到左）
+          MiniCssExtractPlugin.loader, // 将css打包成.css文件引入
           // 'style-loader', // 用于在html文档中创建一个style标签，将样式塞进去
-          'css-loader', // 将less编译后的css转换成为commonJs的一个模块
+          'css-loader', // 将css转换成为commonJs的一个模块
+          /* ------------ 处理css的兼容性（必须放在css-loader后面、package.json文件配置browserslist属性） ------------*/
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [['postcss-preset-env']]
+              }
+            }
+          },
           'less-loader' //  将less编译为css，但不生成单独的css文件，在内存中
         ]
       },
-      // js 语法检查
+
+      // url-loader处理 css 中的图片路径：webpack4
+      // {
+      //   test: /\.(png|jpg|gif)$/,
+      //   use: [
+      //     {
+      //       loader: 'url-loader',
+      //       options: {
+      //         limit: 8192, // 8kb 以下的图片转base64
+      //         outputPath: 'iamges', // 图片输出目录
+      //         // publicPath: '../dist/images', //决定图片的url路径
+      //         name: '[hash:5].[ext]' // 修改文件名称，取hash值得前5位， [ext]文件扩展名
+      //       }
+      //     }
+      //   ]
+      // }
+      // 处理 css 中的图片路径：webpack5     url-loader\file-loader已经内置webpack5里了
       {
-        test: /\.js$/, // 匹配所有的js文件
-        exclude: /node_modules/, // 不包括node_modules里面的js
-        enforce: 'pre', //提前加载使用
-        use: ['eslint-loader']
-        // options: {
-        //   transpileOnly: true // 会缓存在内存，减少构建时间
-        // }
+        test: /\.(jpg|png|gif)$/,
+        type: 'asset',
+        //解析
+        parser: {
+          //超过13kb转base64
+          dataUrlCondition: {
+            maxSize: 13 * 1024 // 13kb
+          }
+        },
+        generator: {
+          //指定图片打包存放的位置
+          filename: 'static/images/[name][hash:6][ext][query]' // 输出图片的名称
+          // publicPath: ''
+        }
       },
-      // js 语法转换（es6 --> es5）
+      // 处理 html 中的图片路径
+      {
+        test: /\.html$/i,
+        loader: 'html-loader'
+      },
+      // 处理字体图标资源：webpack5
+      {
+        test: /\.(ttf|svg|woff|eot|map3|map4|avi)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/font/[hash:10][ext][query]'
+        }
+      },
+
+      // js兼容性 babel-loader （es6 --> es5）
       {
         test: /\.js$/, // 匹配所有的js文件
         exclude: /node_modules/, // 不包括node_modules里面的js
@@ -72,50 +122,15 @@ module.exports = {
         }
       },
 
-      // url-loader处理 css 中的图片路径：webpack4
-      // {
-      //   test: /\.(png|jpg|gif)$/,
-      //   use: [
-      //     {
-      //       loader: 'url-loader',
-      //       options: {
-      //         limit: 8192, // 8kb 以下的图片转base64
-      //         outputPath: 'iamges', // 图片输出目录
-      //         // publicPath: '../dist/images', //决定图片的url路径
-      //         name: '[hash:5].[ext]' // 修改文件名称，取hash值得前5位， [ext]文件扩展名
-      //       }
-      //     }
-      //   ]
-      // }
-      // 处理 css 中的图片路径：webpack5
+      // js 语法检查 eslint-loader
       {
-        test: /\.(jpg|png|gif)$/,
-        type: 'asset',
-        //解析
-        parser: {
-          //超过13kb转base64
-          dataUrlCondition: {
-            maxSize: 13 * 1024 // 13kb
-          }
-        },
-        generator: {
-          //与output.assetModuleFilename是相同的,这个写法引入的时候也会添加好这个路径
-          filename: 'images/[name][hash:6][ext]'
-          // publicPath: ''
-        }
-      },
-      // 处理 html 中的图片路径
-      {
-        test: /\.html$/i,
-        loader: 'html-loader'
-      },
-      // 处理字体图标资源：webpack5
-      {
-        test: /\.(ttf|svg|woff|eot)$/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'font/[hash:10][ext][query]'
-        }
+        test: /\.js$/, // 匹配所有的js文件
+        exclude: /node_modules/, // 不包括node_modules里面的js
+        enforce: 'pre', //提前加载使用
+        use: ['eslint-loader']
+        // options: {
+        //   transpileOnly: true // 会缓存在内存，减少构建时间
+        // }
       }
     ]
   },
@@ -123,16 +138,25 @@ module.exports = {
   /** ----------------------------------5、plugins 插件---------------------------------------------- */
   // 作用：作用在项目构建完使用
   plugins: [
-    new CleanWebpackPlugin(), //build先清空dist文件夹
+    /**  1、编译前先清空dist文件夹 */
+    // new CleanWebpackPlugin(),
+
+    /**  2、使用自己的html文件 */
     new HTMLWebpackPlugin({
-      // 1、build会自动生成html文件
-      template: './src/index.html' // 使用自己的html文件
+      // 1、打包后的html:1、结构和原来一致；2.自动引入打包输出的资源
+      template: path.resolve(__dirname, 'public/index.html') // 使用自己的html文件
       // 2、压缩html
       // minfly: {}
     }),
+
+    /**  3、将所有的css文件打包成一个css文件 */
+    // 会将所有的css文件打包成一个css文件
     new MiniCssExtractPlugin({
-      filename: 'css/[name].css' // 配置生成css文件的名字和文件路径
-    })
+      filename: 'static/css/[name].css' // 配置生成css文件的名字和文件路径
+    }),
+
+    /** 4、压缩css */
+    new CssMinimizerPlugin()
   ],
 
   /** ----------------------------------devServer 自动化编译运行---------------------------------------------- */
@@ -161,15 +185,15 @@ module.exports = {
 
   /** ----------------------------------optimization 优化---------------------------------------------- */
   optimization: {
-    minimize: true // 压缩js代码，默认true
+    minimize: true, // 压缩js代码，默认true
     //配置生产环境的压缩方案: js / css 覆盖默认压缩工具(minimizer)
-    // minimizer: [
-    //   new terserWebpackPlugin({
-    //     cache: true, // 开启缓存
-    //     parallel: true, //开启多进程打包
-    //     sourceMap: true //启动source-map
-    //   })
-    // ]
+    minimizer: [
+      // new terserWebpackPlugin({
+      //   cache: true, // 开启缓存
+      //   parallel: true, //开启多进程打包
+      //   sourceMap: true //启动source-map
+      // })
+    ]
     // runtimeChunk: 'single' //会生成一个唯一单独的runtime.js文件，就是manifest。
     //   //   splitChunks: {
     //   //     chunks: "all",        //async对异步引入的代码分割 initial对同步引入代码分割 all对同步异步引入的分割都开启

@@ -5,8 +5,9 @@ import module3 from './js/module3'
 import a from './json/test.json'
 // 在入口文件引入样式
 import './css/index.less'
+import './css/index2.less'
 // 其它资源
-import './font/iconfont.less'
+// import './font/iconfont.less'
 
 console.log(sum(1, 2))
 console.log(sub(3, 2))
