@@ -40,13 +40,14 @@ console.log(threads, 'cpu核数')
 module.exports = {
   /** ----------------------------------1、entry 入口---------------------------------------------- */
   entry: ['./src/main.js', './public/index.html'], //写html才能使用热更新
-  // entry:{ main:'./src/main.js'  }  // entry完整写法
+  // entry:{ main:'./src/main.js'  }  // entry完整写法  //1个入口只会生成一个js文件，多个入口打包就生成多个文件
 
   /** ----------------------------------2、output 输出---------------------------------------------- */
   output: {
     path: path.resolve(__dirname, 'dist'), // 输出路径
     // pubilcPatch:'/'
-    filename: 'static/js/bundle.js', //编译后的文件
+    filename: 'static/js/[name].js', //入口文件打包输出文件名
+    chunkFilename: 'static/js/[name].js', //打包其他文件输出的文件名
     clean: true //在生成文件之前清空 output 目录 webpack5.20.0+
   },
 
@@ -205,7 +206,7 @@ module.exports = {
     alias: {
       $css: path.resolve(__dirname, 'src/css')
     },
-    // 尝试按顺序解析这些后缀名
+    // 自动补全文件扩展名
     extensions: ['.js', '.json', '.ts', '.jsx', '.css', '...'], //'...' 访问默认拓展名
     // 告诉 webpack 解析模块时应该搜索的目录
     modules: [path.resolve(__dirname, './node_modules'), 'node_modules']
@@ -256,101 +257,120 @@ module.exports = {
       // })
     ],
     // runtimeChunk: 'single', //会生成一个唯一单独的runtime.js文件，就是manifest。
-    /** 分包 */
+    /** 代码分割配置 */
     splitChunks: {
+      // 这里的配置是cacheGroups里所有的配置
       chunks: 'all', // async对异步引入的代码分割  initial对同步引入代码分割  all对同步异步引入的分割都开启
-      minSize: 2 * 1024, // 分割的chunk最小为30kb
-      minChunks: 1, // 要提取的chunk最少被引用1次
-      maxAsyncRequests: 5, // 按需加载时的最大并行请求数。默认30
-      maxInitialRequests: 3, // 入口js文件最大并行请求数量 入口点的最大并行请求数。
-      automaticNameDelimiter: '~' //chunk的来源和名称生成 之间的连接符
-      //缓存组，将所有加载模块放在缓存里面一起分割打包
-      // cacheGroups: {
-      //   //自定义打包模块
-      //   vendor: {
-      //     name: 'vendor',
-      //     chunks: 'initial',
-      //     priority: -10, //优先级，先打包到哪个组里面，值越大，优先级越高
-      //     reuseExistingChunk: false,
-      //     test: /node_modules\/(.*)\.js/
-      //   },
-      //   styles: {
-      //     name: 'styles',
-      //     test: /\.(scss|css)$/,
-      //     chunks: 'all',
-      //     minChunks: 1,
-      //     reuseExistingChunk: true,
-      //     enforce: true
-      //   },
-      //   // 第三方组件
-      //   libs: {
-      //     // 指定chunks名称
-      //     name: 'chunk-libs',
-      //     //符合组的要求就给构建venders
-      //     test: /[\\/]node_modules[\\/]/,
-      //     //priority:优先级：数字越大优先级越高，因为默认值为0，所以自定义的一般是负数形式,决定cacheGroups中相同条件下每个组执行的优先顺序。
-      //     priority: 10,
-      //     // 仅限于最初依赖的第三方
-      //     chunks: 'initial'
-      //   },
-      //   elementUI: {
-      //     // 将elementUI拆分为单个包
-      //     name: 'chunk-elementUI',
-      //     // 重量需要大于libs和app，否则将打包到libs或app中
-      //     priority: 20,
-      //     // 为了适应cnpm
-      //     test: /[\\/]node_modules[\\/]_?element-ui(.*)/
-      //   },
-      //   //公共组件
-      //   commons: {
-      //     name: 'chunk-commons',
-      //     // can customize your rules
-      //     test: resolve('src/components'),
-      //     minChunks: 3,
-      //     priority: 30,
-      //     //这个的作用是当前的chunk如果包含了从main里面分离出来的模块，则重用这个模块，这样的问题是会影响chunk的名称。
-      //     reuseExistingChunk: true,
-      //     //最大初始化加载次数，一个入口文件可以并行加载的最大文件数量，默认3
-      //     maxInitialRequests: 3,
-      //     //表示在分离前的最小模块大小，默认为0，最小为30000
-      //     minSize: 0
-      //   },
-      //   echarts: { // split echarts libs
-      //     name: 'chunk-echarts',
-      //     test: /[\\/]node_modules[\\/]_?echarts(.*)/,
-      //     priority: 40,
-      //     chunks: 'async',
-      //     reuseExistingChunk: true
-      //   },
-      //   monaco: { // split monaco libs
-      //     name: 'chunk-monaco',
-      //     test: /[\\/]node_modules[\\/]_?monaco(.*)/,
-      //     priority: 40,
-      //     chunks: 'async',
-      //     reuseExistingChunk: true
-      //   },
-      //   'project-components': { // split project libs
-      //     name: 'chunk-project-components',
-      //     test: resolve('src/views/project'),
-      //     priority: 50,
-      //     chunks: 'async',
-      //     reuseExistingChunk: true
-      //   },
-      //   'teachers-components': { // split teacher libs
-      //     name: 'chunk-teachers-components',
-      //     test: resolve('src/views/teachers'),
-      //     priority: 60,
-      //     chunks: 'async',
-      //     reuseExistingChunk: true
-      //   },
-      //   'utils': { // split utils libs
-      //     name: 'chunk-utils',
-      //     test: resolve('src/utils'),
-      //     priority: 70,
-      //     chunks: 'async',
-      //     reuseExistingChunk: true
-      //   },
-      // }
+      // minSize: 20000, // 分割的chunkjs文件最小为30kb
+      // minRemainingSize: 0, // 确保拆分后剩余的最小 chunk 体积为零的模块
+      // minChunks: 1, //提取的chunk最少被引用1次，满足条件才会代码分割
+      // maxAsyncRequests: 5, // 按需加载时的最大并行请求数。默认30
+      // maxInitialRequests: 3, // 入口js文件最大并行请求数量。默认30
+      // automaticNameDelimiter: '~', //chunk的来源和名称生成 之间的连接符
+      // enforceSizeThreshold:50000, // 超过50kb一定会单独打包。强制执行拆分的体积阈值和其他限制（minRemainingSize，maxAsyncRequests，maxInitialRequests）将被忽略。
+
+      //缓存组，哪个模块要打包到一个组
+      cacheGroups: {
+        // defaultVendors: {
+        //   // 组名
+        //   test: /[\\/]node_modules[\\/]/, // 需要打包到一起的模块priority: -10，// 权重(越大越高)
+        //   priority: -10, //权重（越大越高）
+        //   reuseExistingChunk: true // 如果当前 chunk 包含已从主 bundle 中拆分出的模块，则它将被重用，而不是生成新的模块
+        // },
+
+        // 修改配置
+        //   //自定义打包模块
+        //   vendor: {
+        //     name: 'vendor',
+        //     chunks: 'initial',
+        //     priority: -10, //优先级，先打包到哪个组里面，值越大，优先级越高
+        //     reuseExistingChunk: false,
+        //     test: /node_modules\/(.*)\.js/
+        //   },
+        //   styles: {
+        //     name: 'styles',
+        //     test: /\.(scss|css)$/,
+        //     chunks: 'all',
+        //     minChunks: 1,
+        //     reuseExistingChunk: true,
+        //     enforce: true
+        //   },
+        //   // 第三方组件
+        //   libs: {
+        //     // 指定chunks名称
+        //     name: 'chunk-libs',
+        //     //符合组的要求就给构建venders
+        //     test: /[\\/]node_modules[\\/]/,
+        //     //priority:优先级：数字越大优先级越高，因为默认值为0，所以自定义的一般是负数形式,决定cacheGroups中相同条件下每个组执行的优先顺序。
+        //     priority: 10,
+        //     // 仅限于最初依赖的第三方
+        //     chunks: 'initial'
+        //   },
+        //   elementUI: {
+        //     // 将elementUI拆分为单个包
+        //     name: 'chunk-elementUI',
+        //     // 重量需要大于libs和app，否则将打包到libs或app中
+        //     priority: 20,
+        //     // 为了适应cnpm
+        //     test: /[\\/]node_modules[\\/]_?element-ui(.*)/
+        //   },
+        //   //公共组件
+        //   commons: {
+        //     name: 'chunk-commons',
+        //     // can customize your rules
+        //     test: resolve('src/components'),
+        //     minChunks: 3,
+        //     priority: 30,
+        //     //这个的作用是当前的chunk如果包含了从main里面分离出来的模块，则重用这个模块，这样的问题是会影响chunk的名称。
+        //     reuseExistingChunk: true,
+        //     //最大初始化加载次数，一个入口文件可以并行加载的最大文件数量，默认3
+        //     maxInitialRequests: 3,
+        //     //表示在分离前的最小模块大小，默认为0，最小为30000
+        //     minSize: 0
+        //   },
+        //   echarts: { // split echarts libs
+        //     name: 'chunk-echarts',
+        //     test: /[\\/]node_modules[\\/]_?echarts(.*)/,
+        //     priority: 40,
+        //     chunks: 'async',
+        //     reuseExistingChunk: true
+        //   },
+        //   monaco: { // split monaco libs
+        //     name: 'chunk-monaco',
+        //     test: /[\\/]node_modules[\\/]_?monaco(.*)/,
+        //     priority: 40,
+        //     chunks: 'async',
+        //     reuseExistingChunk: true
+        //   },
+        //   'project-components': { // split project libs
+        //     name: 'chunk-project-components',
+        //     test: resolve('src/views/project'),
+        //     priority: 50,
+        //     chunks: 'async',
+        //     reuseExistingChunk: true
+        //   },
+        //   'teachers-components': { // split teacher libs
+        //     name: 'chunk-teachers-components',
+        //     test: resolve('src/views/teachers'),
+        //     priority: 60,
+        //     chunks: 'async',
+        //     reuseExistingChunk: true
+        //   },
+        //   'utils': { // split utils libs
+        //     name: 'chunk-utils',
+        //     test: resolve('src/utils'),
+        //     priority: 70,
+        //     chunks: 'async',
+        //     reuseExistingChunk: true
+        //   },
+        // 相同的配置会覆盖上面的配置、没有写的配置会使用上面的配置
+        default: {
+          minSize: 0,
+          minChunks: 2, // 提取的chunk最少被引用2次（会覆盖上面的minChunks）
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
     }
   }
 }
