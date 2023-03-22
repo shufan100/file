@@ -6,137 +6,154 @@
   <body></body>
 </html>
 <script type="text/javascript">
-    /**回文
-     * @param {number} x
-     * @return {boolean}
-     */
-    var isPalindrome = function (x) {
-      let newx = String(x).split('').reverse().join('') * 1
-      // console.log(x === newx)
-      return x === newx
+  /**回文
+   * @param {number} x
+   * @return {boolean}
+   */
+  var isPalindrome = function (x) {
+    let newx = String(x).split('').reverse().join('') * 1
+    // console.log(x === newx)
+    return x === newx
+  }
+  isPalindrome(12899821)
+  isPalindrome(-121)
+  isPalindrome(10)
+
+  //
+  /**返回不同 单词翻译 的数量
+   * @param {string[]} words
+   * @return {number}
+   */
+
+  var uniqueMorseRepresentations = function (words) {
+    let arr = words.map(i => fn(i))
+    // console.log(arr)
+    // console.log([...new Set(arr)])
+  }
+  uniqueMorseRepresentations(['gin', 'zen', 'gig', 'msg'])
+
+  function fn(str) {
+    let obj = {
+      a: '.-',
+      b: '-...',
+      c: '-.-.',
+      d: '-..',
+      e: '.',
+      f: '..-.',
+      g: '--.',
+      h: '....',
+      i: '..',
+      j: '.---',
+      k: '-.-',
+      l: '.-..',
+      m: '--',
+      n: '-.',
+      o: '---',
+      p: '.--.',
+      q: '--.-',
+      r: '.-.',
+      s: '...',
+      t: '-',
+      u: '..-',
+      v: '...-',
+      w: '.--',
+      x: '-..-',
+      y: '-.--',
+      z: '--..'
     }
-    isPalindrome(12899821)
-    isPalindrome(-121)
-    isPalindrome(10)
-
-    //
-    /**返回不同 单词翻译 的数量
-     * @param {string[]} words
-     * @return {number}
-     */
-
-    var uniqueMorseRepresentations = function (words) {
-      let arr = words.map(i => fn(i))
-      // console.log(arr)
-      // console.log([...new Set(arr)])
+    let arr = str.split('')
+    let newstr = ''
+    for (let i of arr) {
+      newstr += obj[i]
     }
-    uniqueMorseRepresentations(['gin', 'zen', 'gig', 'msg'])
+    return newstr
+  }
 
-    function fn(str) {
-      let obj = {
-        a: '.-',
-        b: '-...',
-        c: '-.-.',
-        d: '-..',
-        e: '.',
-        f: '..-.',
-        g: '--.',
-        h: '....',
-        i: '..',
-        j: '.---',
-        k: '-.-',
-        l: '.-..',
-        m: '--',
-        n: '-.',
-        o: '---',
-        p: '.--.',
-        q: '--.-',
-        r: '.-.',
-        s: '...',
-        t: '-',
-        u: '..-',
-        v: '...-',
-        w: '.--',
-        x: '-..-',
-        y: '-.--',
-        z: '--..'
-      }
-      let arr = str.split('')
-      let newstr = ''
-      for (let i of arr) {
-        newstr += obj[i]
-      }
-      return newstr
-    }
+  // 排序
+  const source = [
+    null,
+    { id: function () {}, name: 'test7' },
+    { id: '6', name: 'test7' },
+    { id: 1, name: 'test6' },
+    { id: 6, name: 'test2' },
+    { id: 3, name: 'test56' },
+    { id: 2, name: 'test7' },
+    { id: 9, name: 'test1' },
+    { id: 9, name: 'test0' }
+  ]
+  // const arr = source
+  //   .reduce((list, item, index, oldArr) => {
+  //     if (item && typeof item.id === 'number') {
+  //       // list.push(item)
+  //       list[item.id] = item.name //通过索引排序，再去空
+  //     }
+  //     return list
+  //   }, [])
+  //   .filter(i => i)
 
-    // 排序
-    const source = [
-      null,
-      { id: function () {}, name: 'test7' },
-      { id: '6', name: 'test7' },
-      { id: 1, name: 'test6' },
-      { id: 6, name: 'test2' },
-      { id: 3, name: 'test56' },
-      { id: 2, name: 'test7' },
-      { id: 9, name: 'test1' },
-      { id: 9, name: 'test0' }
-    ]
-    // const arr = source
-    //   .reduce((list, item, index, oldArr) => {
-    //     if (item && typeof item.id === 'number') {
-    //       // list.push(item)
-    //       list[item.id] = item.name //通过索引排序，再去空
-    //     }
-    //     return list
-    //   }, [])
-    //   .filter(i => i)
+  // let obj = {}
+  //     const arr = source
+  //     .reduce((list, item, index, oldArr) => {
+  //       // obj[item.name]  ?? '' : obj[item.name]
+  //       if (item && typeof item.id === 'number') {
+  //         // list.push(item)
+  //         list.push(item.name) = item.name //通过索引排序，再去空
+  //       }
+  //       return list
+  //     }, [])
 
-  let obj = {}
-      const arr = source
-      .reduce((list, item, index, oldArr) => {
-        // obj[item.name]  ?? '' : obj[item.name]
-        if (item && typeof item.id === 'number') {
-          // list.push(item)
-          list.push(item.name) = item.name //通过索引排序，再去空
-        }
-        return list
-      }, [])
+  // const arr = source
+  //   .filter(item => item && typeof item.id === 'number')
+  //   .sort((a, b) => a.id - b.id)
+  //   .map(i => i.name)
+  // console.log(arr)
 
-
-    // const arr = source
-    //   .filter(item => item && typeof item.id === 'number')
-    //   .sort((a, b) => a.id - b.id)
-    //   .map(i => i.name)
-    console.log(arr)
-
-    const object = {
-      a: {
-        b: {
-          c: '',
-          d: ''
-        },
-        e: {
-          f: {
-            g: ''
-          }
-        }
+  const object = {
+    a: {
+      b: {
+        c: '',
+        d: ''
       },
-      h: ''
-    }
-    function fn11(obj) {
-      let arr = []
-      fun(obj)
-      function fun(obj, str = '') {
-        for (let key in obj) {
-          if (typeof obj[key] === 'string') {
-            arr.push(str + key)
-          } else {
-            fun(obj[key], str + key)
-          }
+      e: {
+        f: {
+          g: ''
         }
       }
-      return arr
+    },
+    h: ''
+  }
+  function fn11(obj) {
+    let arr = []
+    fun(obj)
+    function fun(obj, str = '') {
+      for (let key in obj) {
+        if (typeof obj[key] === 'string') {
+          arr.push(str + key)
+        } else {
+          fun(obj[key], str + key)
+        }
+      }
     }
+    return arr
+  }
 
-    console.log(fn11(object))
+  console.log(fn11(object))
+
+  let numArr = [100, 2, 11, 43, 1, 3, 4, 21, 44, 22]
+  let numArr2 = [100, 2, 11, 43, 1, 3, 4, 21, 44, 22]
+  console.log(numArr, 'numArr')
+  for (let i = 0; i < numArr.length; i++) {
+    for (let j = 0; j < numArr.length - 1; j++) {
+      console.log(numArr[i], numArr[j + 1])
+      if (numArr[i] > numArr[j + 1]) {
+        let num = numArr[i]
+        console.log(num)
+        numArr[i] = numArr[j + 1]
+        numArr[j + 1] = num
+        // i++
+        // debugger
+      }
+    }
+  }
+  console.log(numArr, 'numArr')
 </script>
