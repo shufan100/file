@@ -26,24 +26,24 @@
  */
 /*********************************************** ??（非空运算符） **********************************************/
 // ?? 和 || 差不多，但??会将0和''也作为值返回
-let a = 0 ?? 'sf' //0
-let a2 = null ?? 'sf' // sf
-let a3 = '' ?? 'sf' //''
-let a4 = false ?? 'sf' //false
-console.log(a, a2, a3, a4)
+// let a = 0 ?? 'sf' //0
+// let a2 = null ?? 'sf' // sf
+// let a3 = '' ?? 'sf' //''
+// let a4 = false ?? 'sf' //false
+// console.log(a, a2, a3, a4)
 
 /*********************************************** ??=（空赋值运算符） **********************************************/
-let aa = 0
-let b = '你好'
-let c = null
-let d = 123
-b ??= aa // b = “你好”
-c ??= d // c = '123'
+// let aa = 0
+// let b = '你好'
+// let c = null
+// let d = 123
+// b ??= aa // b = “你好”
+// c ??= d // c = '123'
 
 /***********************************************  ?.（链判断） **********************************************/
-let obj1 = { c: 11 }
-console.log(obj1?.a) // undefined
-console.log(obj1?.c) // 11
+// let obj1 = { c: 11 }
+// console.log(obj1?.a) // undefined
+// console.log(obj1?.c) // 11
 
 /***********************************************  startsWith、endsWith **********************************************/
 let s = 'hello world!'
@@ -76,7 +76,8 @@ Number.isInteger(25.1) // false
 
 /***********************************************  BigInt：整数无线大 **********************************************/
 // BigInt：整数无线大
-BigInt(2122222221212199999)
+let bgi = BigInt(2122222221212199999)
+console.log(bgi)
 
 /***********************************************  Symbol：表示独一无二的值 **********************************************/
 Number.prototype[Symbol.iterator] = function* () {
@@ -101,21 +102,25 @@ let Sy4 = Symbol('1')
 // 去重
 const set = new Set([1, 2, 4, 4, 3]) //{1,2,3,4}
 const set2 = [...new Set('ababbc')].join('') //abc
+
 // 成员总数
 const items = new Set([1, 2, 3, 4, 4, 6, '5', 5, 5]) //{1,2,3,4,6,'5',5} //向 Set 加入值的时候，不会发生类型转换
 items.size //7
-var S1 = new Set([1, 2, 3, 3, '3'])
-S1 // Set {1, 2, 3, "3"}  注意：数字3和字符串'3'是不同的元素
-//通过add(key)方法可以添加元素到Set中，可以重复添加，但不会有效果：
+console.log('Set.size：', items.size)
+
+let S1 = new Set([1, 2, 3, 3, '3'])
+console.log('Set数据结构：', S1) //{ 1, 2, 3, '3' }   注意：数字3和字符串'3'是不同的元素
+
+//add 通过add(key)方法可以添加元素到Set中；可以重复添加，但不会有效果：
 S1.add(4)
-// S1 // Set {1, 2, 3, 4}
+console.log('Set的add', S1) //Set(5) { 1, 2, 3, '3', 4 }
 S1.add(4)
-// S1 // 仍然是 Set {1, 2, 3, 4}
+console.log('Set的add重复添加', S1) //Set(5) { 1, 2, 3, '3', 4 }
+
 //通过delete(key)方法可以删除元素：
-var S2 = new Set([1, 2, 3])
-// S2 // Set {1, 2, 3}
+let S2 = new Set([1, 2, 3])
 S2.delete(3)
-// S2 // Set {1, 2}
+console.log('Set的delete', S2) // Set(2) { 1, 2 }
 
 /***********************************************  new WeakSet **********************************************/
 // WeakSet：值只能是对象、数组
@@ -124,6 +129,7 @@ const a1 = [
   [3, 4]
 ]
 const ws = new WeakSet(a1) // WeakSet {[1, 2], [3, 4]}
+console.log('WeakSet:', ws)
 
 /***********************************************  new Map **********************************************/
 // Map：Map数据结构；对象；键值可为任何类型；正常对象键值只能是字符串
@@ -132,32 +138,15 @@ const map = new Map([
   ['age', 20],
   [false, 'Author']
 ]) //Map(3) {'name' => '张三', 'age' => 20, false => 'Author'}
+
 map.get('name') //张三
 map.has('age') //true
 map.set('pp', 100) //Map(4) {'name' => '张三', 'age' => 20, false => 'Author', 'pp' => 100}
 map.delete(false) //Map(3) {'name' => '张三', 'age' => 20, 'pp' => 100}
+
 let m1 = { a: 1 }
 map.set(m1, '999') //Map(4) {'name' => '张三', 'age' => 20, 'pp' => 100, {a:1} => '999'}
 map.get(m1) //'999'
-var m = new Map([
-  ['Michael', 95],
-  ['Bob', 75],
-  ['Tracy', 85]
-])
-m.get('Michael') // 95
-//初始化Map需要一个二维数组，或者直接初始化一个空Map。Map具有以下方法：
-var m = new Map() // 空Map
-m.set('Adam', 67) // 添加新的key-value
-m.set('Bob', 59)
-m.has('Adam') // 是否存在key 'Adam': true
-m.get('Adam') // 67
-m.delete('Adam') // 删除key 'Adam'
-m.get('Adam') // undefined
-//由于一个key只能对应一个value，所以，多次对一个key放入value，后面的值会把前面的值冲掉：
-var m = new Map()
-m.set('Adam', 67)
-m.set('Adam', 88)
-m.get('Adam') // 88
 
 /***********************************************  new Proxy **********************************************/
 // Proxy：在对象之前架设的一层'拦截'，外界访问对象都必须通过这层拦截。

@@ -23,6 +23,12 @@
       value：填充的值；
       start：开始填充的位置；
       end：填充结束的位置。
+       // es6 获取数组最大最小值————————————————————————————————————
+  var arro = [0, 8, 3, 46]
+  // var max = Math.max.apply(null,arro);//46
+  var max = Math.max(...arro) //46
+  var min = Math.min(...arro) //46
+  console.log(max, min, 'max')
 
     */
 
@@ -76,3 +82,10 @@ console.log('slice数组截取:', aa2) // [ { id: 3, name: '地点2' }, { id: 4,
 /*********************************************** fill 填充元素 **********************************************/
 let arr3 = ['a', 'b', 'c', 'd']
 console.log('fill填充元素:', arr3.fill(7, 1, 3)) //[ 'a', 7, 7, 'd' ]
+
+/***********************************************  Math.max、 Math.min 数组最大最小值 **********************************************/
+var arro = [0, 8, 3, 46]
+// var max = Math.max.apply(null,arro);//46
+var max = Math.max(...arro) //46
+var min = Math.min(...arro) //46
+console.log(max, min, 'max')
