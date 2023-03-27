@@ -23,6 +23,10 @@
   18. Reflect
   19. new WeakSet
 
+  // es2023  从后向前 遍历数组，这两个方法适用于数组和类数组
+  20. indexOf  找索如果找到了就会返回当前的一个下标，若果没找到就会反回-1
+  21. lastIndexOf 它是从最后一个值向前查找的 找索如果找到了就会返回当前的一个下标，若果没找到就会反回-1
+
  */
 /*********************************************** ??（非空运算符） **********************************************/
 // ?? 和 || 差不多，但??会将0和''也作为值返回
@@ -213,3 +217,10 @@ var loggedObj = new Proxy(obj, {
  *    Reflect.apply(target, thisArg, args)
  *    Reflect.construct(target, args)
  */
+
+/*********************************************** findLast、findLastIndex  （ 从后向前 遍历数组，这两个方法适用于数组和类数组） **********************************************/
+const array = [{ v: 1 }, { v: 2 }, { v: 3 }, { v: 4 }, { v: 5 }]
+
+array.findLast(elem => elem.v > 3) // {v: 5}
+array.findLastIndex(elem => elem.v > 3) // 4
+array.findLastIndex(elem => elem.v > 5) // undefined

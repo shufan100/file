@@ -257,7 +257,8 @@ module.exports = {
       // })
     ],
     // runtimeChunk: 'single', //会生成一个唯一单独的runtime.js文件，就是manifest。
-    /** 代码分割配置 */
+
+    /** 拆分过大的js、控制wenpack生成js文件、防止模块重复打包 */
     splitChunks: {
       // 这里的配置是cacheGroups里所有的配置
       chunks: 'all', // async对异步引入的代码分割  initial对同步引入代码分割  all对同步异步引入的分割都开启
@@ -273,7 +274,7 @@ module.exports = {
       cacheGroups: {
         // defaultVendors: {
         //   // 组名
-        //   test: /[\\/]node_modules[\\/]/, // 需要打包到一起的模块priority: -10，// 权重(越大越高)
+        //   test: /[\\/]node_modules[\\/]/, // 需要打包到一起的模块
         //   priority: -10, //权重（越大越高）
         //   reuseExistingChunk: true // 如果当前 chunk 包含已从主 bundle 中拆分出的模块，则它将被重用，而不是生成新的模块
         // },

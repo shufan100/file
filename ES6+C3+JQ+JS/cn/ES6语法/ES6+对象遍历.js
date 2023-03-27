@@ -3,6 +3,7 @@
  * @date 2023-03-23 10:24:08
  * @Description 对象遍历
  *
+  Object.(控制台查看最新语法)
   1. for...in   // 遍历对象
   2. Object.keys() // 获取对象健名
   2. Object.values() // 获取对象健值
