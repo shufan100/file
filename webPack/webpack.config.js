@@ -42,12 +42,12 @@ module.exports = {
   entry: ['./src/main.js', './public/index.html'], //写html才能使用热更新
   // entry:{ main:'./src/main.js'  }  // entry完整写法  //1个入口只会生成一个js文件，多个入口打包就生成多个文件
 
-  /** ----------------------------------2、output 输出---------------------------------------------- */
+  /** ----------------------------------2、output 打包输出路径---------------------------------------------- */
   output: {
-    path: path.resolve(__dirname, 'dist'), // 输出路径
-    // pubilcPatch:'/'
-    filename: 'static/js/[name].js', //入口文件打包输出文件名
-    chunkFilename: 'static/js/[name].js', //打包其他文件输出的文件名
+    path: path.resolve(__dirname, 'dist'), // 输出文件存放的目录，必须是 string 类型的绝对路径
+    pubilcPatch: '', //发布到线上的所有资源的 URL 前缀，string 类型。（'/assets/':指定目录下;  '':根目录下;  'https://cdn.example.com/':CDN 上去;）
+    filename: 'static/js/[name].js', //输出文件的名称
+    chunkFilename: 'static/js/[name].js', //打包其他文件输出的文件名 （附加 Chunk 的文件名称  ）
     clean: true //在生成文件之前清空 output 目录 webpack5.20.0+
   },
 
@@ -70,15 +70,17 @@ module.exports = {
    *    3、oneOf匹配到对应的规则，就不往下走了。（可提升性能）
    */
   module: {
+    // 配置 Loader
     rules: [
       {
         oneOf: [
           // less-loader 解析less（不完美：是style内联样式）
           {
-            test: /\.less$/, // 只检测.less文件  /\.css$/ 只会检测.css文件
-            // laoder: 'less-loader'  // 只能使用一个loader
+            test: /\.less$/, // 正则匹配命中.less文件使用该loader
+            // 1、使用一个loader
+            // laoder: 'less-loader'
+            // 2、使用多个 Loader，执行顺序从下到上（从右到左）
             use: [
-              // use: 执行顺序从下到上（从右到左）
               MiniCssExtractPlugin.loader, // 将css打包成.css文件引入
               // 'style-loader', // 用于在html文档中创建一个style标签，将样式塞进去
               'css-loader', // 将css转换成为commonJs的一个模块
@@ -179,10 +181,14 @@ module.exports = {
         ]
       }
     ]
+    // 不用解析和处理的模块
+    // noParse: [
+    //   /special-library\.js$/ // 用正则匹配
+    // ]
   },
 
   /** ----------------------------------5、plugins 插件---------------------------------------------- */
-  // 作用：作用在项目构建完使用
+  // 作用：项目构建完后使用，作用整个项目
   plugins: [
     /**  1、编译前先清空dist文件夹 */
     new CleanWebpackPlugin(),
@@ -194,13 +200,13 @@ module.exports = {
       // minfly: {}
     }),
     /**  3、将所有的css文件打包成一个css文件 */
-    // 会将所有的css文件打包成一个css文件
     new MiniCssExtractPlugin({
-      filename: 'static/css/[name].css' // 配置生成css文件的名字和文件路径
+      filename: 'static/css/[name].css', // 配置生成css文件的名字和文件路径
+      chunkFilename: '[id].css'
     })
   ],
 
-  /** ----------------------------------resolve 解析模块规则---------------------------------------------- */
+  /** ----------------------------------resolve  配置寻找模块的规则---------------------------------------------- */
   resolve: {
     // 别名
     alias: {
@@ -217,9 +223,25 @@ module.exports = {
   devServer: {
     open: true, //自动打开浏览器新标签
     port: 3000, // 端口
+    host: '0.0.0.0', //支持任何地址访问DevServer的Http服务
     hot: true // true开启热更新（HMR）、false刷新浏览器
     // compress:true //启动gzip压缩
+    // historyApiFallback: true, // 是否开发 HTML5 History API 网页
   },
+
+  // profile: true, // 是否捕捉 Webpack 构建的性能信息，用于分析什么原因导致构建性能不佳
+  // cache: false, // 开发环境 缓存生成的 webpack 模块和 chunk，来改善构建速度。（在 生产 模式 中被禁用）
+  // watch: true, // 是否开始
+  // watchOptions: {
+  //   // 监听模式选项
+  //   // 不监听的文件或文件夹，支持正则匹配。默认为空
+  //   ignored: /node_modules/,
+  //   // 监听到变化发生后会等300ms再去执行动作，防止文件更新太快导致重新编译频率太高
+  //   // 默认为300ms
+  //   aggregateTimeout: 300,
+  //   // 判断文件是否发生变化是不停的去询问系统指定文件有没有变化，默认每秒问 1000 次
+  //   poll: 1000
+  // },
 
   /** ----------------------------------optimization 优化---------------------------------------------- */
   optimization: {
