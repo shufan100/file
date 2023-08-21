@@ -1,4 +1,9 @@
-打字效果*/
+/*页面置灰*/
+html{
+  filter: grayscale(100%);  
+}
+
+/*打字效果*/
 .typing {
   height: 10vh;
   display: flex;
