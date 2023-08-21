@@ -45,7 +45,7 @@ module.exports = {
   /** ----------------------------------2、output 打包输出路径---------------------------------------------- */
   output: {
     path: path.resolve(__dirname, 'dist'), // 输出文件存放的目录，必须是 string 类型的绝对路径
-    pubilcPatch: '', //发布到线上的所有资源的 URL 前缀，string 类型。（'/assets/':指定目录下;  '':根目录下;  'https://cdn.example.com/':CDN 上去;）
+    // pubilcPatch: '', //发布到线上的所有资源的 URL 前缀，string 类型。（'/assets/':指定目录下;  '':根目录下;  'https://cdn.example.com/':CDN 上去;）
     filename: 'static/js/[name].js', //输出文件的名称
     chunkFilename: 'static/js/[name].js', //打包其他文件输出的文件名 （附加 Chunk 的文件名称  ）
     clean: true //在生成文件之前清空 output 目录 webpack5.20.0+
