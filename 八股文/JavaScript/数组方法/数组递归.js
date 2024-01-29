@@ -1,24 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>数组递归过滤</title>
-</head>
-<body>
-
-</body>
-</html>
-<script type="text/javascript">
 // 什么是递归？
 //    递归：一个在函数内部调用其本身，那么这个函数就是递归。
 //    优点：结构清晰、可读性强
 //    缺点：效率低、调用栈可能溢出、其实每一次函数在调用时会在内存栈中分配空间，而每个进程栈内存是有限的，当调用的层次太多是，就会超出栈的容量，从而导致栈溢出
 
-
 // 一般用于菜单路由权限控制
 const menuList = [
   {
     key: '/home',
-    label: '首页',
+    label: '首页'
   },
   {
     label: '表单相关',
@@ -139,11 +128,11 @@ const menuList = [
   },
   {
     label: '用户管理',
-    key: '/user',
+    key: '/user'
   },
   {
     label: '作者',
-    key: '/abouts',
+    key: '/abouts'
   }
 ]
 // 两层循环过滤
@@ -166,59 +155,56 @@ const menuList = [
 
  */
 
-
 // 递归 (过滤不符合条件的数据)
-function filterArr(arr){
-	for (let i = 0; i < arr.length; i++) {
-		let children = arr[i].children
-		if(children){
-			filterArr(children)
-		}
-		if(arr[i].roles && arr[i].roles[0]=== 'editor'){
-			console.log(arr[i])
-			arr.splice(i, 1)
-			i--
-		}
-	}
+function filterArr(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    let children = arr[i].children
+    if (children) {
+      filterArr(children)
+    }
+    if (arr[i].roles && arr[i].roles[0] === 'editor') {
+      console.log(arr[i])
+      arr.splice(i, 1)
+      i--
+    }
+  }
 }
 filterArr(menuList)
 
 console.log(menuList)
 
-
 // 递归（数组相同type整合）
 let arrs = [
-    { name: 2121, type: '站外' },
-    { name: 343, type: '站外' },
-    { name: 65, type: '站外' },
-    { name: 21, type: '电压' },
-    { name: 98, type: '电压' },
-    { name: 54, type: '站外' }
-  ]
+  { name: 2121, type: '站外' },
+  { name: 343, type: '站外' },
+  { name: 65, type: '站外' },
+  { name: 21, type: '电压' },
+  { name: 98, type: '电压' },
+  { name: 54, type: '站外' }
+]
 
-  let arr = []
-  let obj = {}
-  for (var i = 0; i < arrs.length; i++) {
-    if (!obj[arrs[i].type]) {
-      obj[arrs[i].type] = []
-      obj[arrs[i].type].push(arrs[i])
+let arr = []
+let obj = {}
+for (var i = 0; i < arrs.length; i++) {
+  if (!obj[arrs[i].type]) {
+    obj[arrs[i].type] = []
+    obj[arrs[i].type].push(arrs[i])
+  } else {
+    obj[arrs[i].type].push(arrs[i])
+  }
+}
+console.log(obj)
+
+let result = []
+let fun = function (ary) {
+  for (let i = 0; i < ary.length; i++) {
+    let item = ary[i]
+    if (Array.isArray(ary[i])) {
+      fun(item)
     } else {
-      obj[arrs[i].type].push(arrs[i])
+      result.push(item)
     }
   }
-  console.log(obj)
-
-  let result = []
-  let fun = function (ary) {
-    for (let i = 0; i < ary.length; i++) {
-      let item = ary[i]
-      if (Array.isArray(ary[i])) {
-        fun(item)
-      } else {
-        result.push(item)
-      }
-    }
-  }
-  fun(arrs)
-  console.log(result,'result')
-</script>
+}
+fun(arrs)
+console.log(result, 'result')

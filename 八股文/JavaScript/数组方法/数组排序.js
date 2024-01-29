@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>数组排序</title>
-</head>
-<body>
-
-</body>
-</html>
-<script type="text/javascript">
 	// 排序+++++++==============================================================================================
 let numList = [9,1,4,5,31,7,43,4,2,1,8]
 
@@ -54,4 +44,3 @@ function newSort(arr){
 }
 newSort(numList)
 console.log(numList)
-</script>
