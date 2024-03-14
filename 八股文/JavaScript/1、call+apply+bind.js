@@ -1,13 +1,12 @@
-/**
- * @author SHUF
- * @date 2024-01-29 11:03:59
- * @Description call和apply、bind
- */
 
 //call和apply用来改变函数调用的this指向。 （call传单个参数，apply传数组，call是apply的语法糖
 //bind返回对应函数, 便于稍后调用； apply, call则是立即调用。除此外, 在 ES6 的箭头函数下, call 和 apply 将失效
 
-//2-1、call**************
+/**
+* @author SHUF
+* @date 2024-02-02 17:25:43
+* @Description *****call*****
+*/
 //call 方法第一个参数是要绑定给this的值，后面传入的是一个参数列表。当第一个参数为null、undefined的时候，默认指向window。
 
 var message = 'window：'
@@ -16,11 +15,11 @@ var obj = {
 }
 
 function getName(firstName, lastName) {
-  console.log(this.message + firstName + ' ' + lastName)
+  console.log(this.message , firstName , lastName)
 }
-getName(1, 2)
-getName.call(null, 'Dot', 'Dolby') //传入null 函数内部的this指向window
-getName.call(obj, 'Dot', 'Dolby') //传入obj对象 函数内部的this指向obj对象
+getName(1, 2) // window： 1 2
+getName.call(null, 'Dot', 'Dolby') //window： Dot Dolby  传入null,函数内部的this指向window
+getName.call(obj, 'Dot', 'Dolby') //My name is: Dot Dolby   传入obj对象,函数内部的this指向obj对象
 
 //2-2、apply**************
 //apply接受两个参数，第一个参数是要绑定给this的值，第二个参数是一个参数数组。当第一个参数为null、undefined的时候，默认指向window。

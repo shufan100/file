@@ -6,7 +6,7 @@ let arr = [
   { id: 5, name: '对接' }
 ]
 let arr2 = [
-  { id: 1, name: '蒋介石' },
+  { id: 1, name: '掘金' },
   { id: 2, name: '库萨克' },
   { id: 3, name: '路由' },
   { id: 4, name: '看看书' },

@@ -4,9 +4,9 @@
     <title>Promise</title>
   </head>
   <body>
-    <button onclick="gets()">抽奖</button>
+    <!-- <button onclick="gets()">抽奖</button>
     <button onclick="getData()">ajax</button>
-    <button onclick="main3()">async+await</button>
+    <button onclick="main3()">async+await</button> -->
   </body>
 </html>
 <script type="text/javascript">
@@ -15,111 +15,124 @@
 
   /************************************************  事例  *************************************************************************/
   // 抽奖--------------------------------------
-  function rand(n, m) {
-    return Math.ceil(Math.random() * (n - m + 1)) + m - 1
-  }
-  const rands = (n, m) => Math.ceil(Math.random() * (n - m + 1)) + m - 1
-  function gets() {
-    const p = new Promise((resolve, reject) => {
-      console.log('pending')
-      setTimeout(() => {
-        let n = rands(1, 100)
-        console.log(n)
-        if (n <= 30) {
-          resolve(n) // 将promise状态设置成功
-        } else {
-          reject(n) // 将promise状态设置失败
-        }
-      }, 500)
-    })
+  // function rand(n, m) {
+  //   return Math.ceil(Math.random() * (n - m + 1)) + m - 1
+  // }
+  // const rands = (n, m) => Math.ceil(Math.random() * (n - m + 1)) + m - 1
+  // function gets() {
+  //   const p = new Promise((resolve, reject) => {
+  //     console.log('pending')
+  //     setTimeout(() => {
+  //       let n = rands(1, 100)
+  //       console.log(n)
+  //       if (n <= 30) {
+  //         resolve(n) // 将promise状态设置成功
+  //       } else {
+  //         reject(n) // 将promise状态设置失败
+  //       }
+  //     }, 500)
+  //   })
 
-    console.log(p)
-    p.then(
-      res => {
-        console.log(res, '==')
-        alert('恭喜中奖，100万RMB!--' + res)
-      },
-      err => {
-        console.log('再接再厉！--' + err)
-      }
-    ).catch(err => {
-      console.log(err, '==')
-    })
-  }
+  //   console.log(p)
+  //   p.then(
+  //     res => {
+  //       console.log(res, '==')
+  //       alert('恭喜中奖，100万RMB!--' + res)
+  //     },
+  //     err => {
+  //       console.log('再接再厉！--' + err)
+  //     }
+  //   ).catch(err => {
+  //     console.log(err, '==')
+  //   })
+  // }
 
-  //ajax请求封装-----------------------------
-  function Ajaxs(path, type = 'POST') {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest() //1、new一个xhr的实例对象
-      xhr.open(type, path) // 2、初始化
-      xhr.send() // 3、发送 && 参数
-      xhr.onreadystatechange = function () {
-        //4、处理响应结果
-        console.log('readyState>>', xhr.readyState)
-        // ===4是所有结果返回的状态
-        if (xhr.readyState === 4) {
-          // 判断响应码为 2xx -- 成功响应
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve(JSON.parse(xhr.response))
-          } else {
-            // 失败响应
-            reject(JSON.parse(xhr.response))
-          }
-        }
-      }
-    })
-  }
-  function getData() {
-    Ajaxs('https://api.apiopen.top/getJoke').then(
-      res => {
-        console.log(res, '---')
-      },
-      err => {
-        console.log(err, '===1')
-      }
-    )
-  }
+  // //ajax请求封装-----------------------------
+  // function Ajaxs(path, type = 'POST') {
+  //   return new Promise((resolve, reject) => {
+  //     const xhr = new XMLHttpRequest() //1、new一个xhr的实例对象
+  //     xhr.open(type, path) // 2、初始化
+  //     xhr.send() // 3、发送 && 参数
+  //     xhr.onreadystatechange = function () {
+  //       //4、处理响应结果
+  //       console.log('readyState>>', xhr.readyState)
+  //       // ===4是所有结果返回的状态
+  //       if (xhr.readyState === 4) {
+  //         // 判断响应码为 2xx -- 成功响应
+  //         if (xhr.status >= 200 && xhr.status < 300) {
+  //           resolve(JSON.parse(xhr.response))
+  //         } else {
+  //           // 失败响应
+  //           reject(JSON.parse(xhr.response))
+  //         }
+  //       }
+  //     }
+  //   })
+  // }
+  // function getData() {
+  //   Ajaxs('https://api.apiopen.top/getJoke').then(
+  //     res => {
+  //       console.log(res, '---')
+  //     },
+  //     err => {
+  //       console.log(err, '===1')
+  //     }
+  //   )
+  // }
 
-  // 封装函数返回一个promise对象------------------------------
-  function fun() {
-    return new Promise((resolve, reject) => {
-      if (false) reject('错误数据')
-      resolve('成功数据')
-    })
-  }
-  fun().then(
-    res => {
-      console.log(res)
-    },
-    err => {
-      console.warn(err)
-    }
-  )
+  // // 封装函数返回一个promise对象------------------------------
+  // function fun() {
+  //   return new Promise((resolve, reject) => {
+  //     if (false) reject('错误数据')
+  //     resolve('成功数据')
+  //   })
+  // }
+  // fun().then(
+  //   res => {
+  //     console.log(res)
+  //   },
+  //   err => {
+  //     console.warn(err)
+  //   }
+  // )
 
   /************************************************  Promise.resolve()  *************************************************************************/
   // 1、返回1个成功的Promise
   // 2、如果传入的参数 非promise类型的对象，则返回的结果为promise对象  ,fulfilled、resolved都是成功回调
 
   const p1 = Promise.resolve('resolve值11')
-  console.log(p1)
+  p1.then(res => {
+    console.log('Promise.resolve--then：', res)
+  })
 
   // 如果传入的参数 为promise类型的对象，则将参数Promise返回的结果返回，其结果返回为promise
   const p2 = Promise.resolve(new Promise((resolve, reject) => resolve('success11')))
-  console.log(p2)
+  p2.then(res => {
+    console.log('Promise.resolve--then：', res)
+  })
 
   const p3 = Promise.resolve(new Promise((resolve, reject) => reject('errorr11')))
-  console.log(p3)
+  p3.catch(err => {
+    console.log('Promise.resolve--catch：', err)
+    console.warn('--------------------------Promise.resolve------------------------------')
+  })
 
   /************************************************  Promise.reject()  *************************************************************************/
   // 1、返回1个失败的Promise
 
   const p4 = Promise.reject('reject值')
-  p4.catch(err => {})
-  console.log(p4)
+  p4.catch(err => {
+    console.log('Promise.reject--catch', err)
+  })
 
   const p5 = Promise.reject(new Promise((resolve, reject) => resolve(true)))
-  p5.catch(err => {})
-  console.log(p5)
+  p5.catch(pp5 => {
+    pp5.then(res => {
+      console.log('Promise.reject--then', res)
+      console.warn('--------------------------Promise.reject------------------------------')
+    })
+    console.log('Promise.reject--catch', pp5)
+  })
 
   /************************************************  Promise.all([])  *************************************************************************/
   // 1、返回一个新的promise对象，值为所有promise成功回调值的数组
@@ -134,21 +147,26 @@
       resolve([1, 2, 3, 4])
     })
   )
-  const promise4 = Promise.resolve(new Promise((resolve, reject) => reject('error11')))
   const promise5 = new Promise((resolve, reject) => {
     // 异步
     setTimeout(() => {
       resolve('ok')
     }, 1000)
   })
+  const promise6 = Promise.reject('失败数据1111')
 
   // 成功all：3个都成功，返回一个新的promise，值为3个promise返回的值、值为数组形式（新的promise）
   const pv1 = Promise.all([promise1, promise2, promise3])
-  console.log('pv1>>>111', pv1) //成功：打印[{name:'tom',age:19}, '成功数据1111', [1,2,3,4] ]
+  pv1.then(res => {
+    console.log('promise.all--成功：', res) // [{name:'tom',age:19}, '成功数据1111', [1,2,3,4] ]
+  })
 
   // 失败all：有1个promise失败、返回一个新的promise，值为失败的promise的值（新的promise）
-  const pv2 = Promise.all([promise1, promise2, promise4])
-  console.log('pv2>>>', pv2) //失败：打印 error11
+  const pv2 = Promise.all([promise1, promise3, promise6])
+  pv2.catch(err => {
+    console.log('promise.all--失败：', err) // 失败数据1111
+    console.warn('--------------------------Promise.all------------------------------')
+  })
   //
   //
   //
@@ -159,19 +177,35 @@
   // 3、 如果第一个加了计数器需要等待，就按第二个promise状态来定
 
   //成功(同步任务)
-  const result3 = Promise.race([promise1, promise2, promise3])
-  console.log('result3>>>', result3) // 新promise的值：{name:'tom',age:19}
+  const r1 = Promise.race([promise1, promise2, promise3])
+  r1.then(res => {
+    console.log('Promise.race--then：', res) // {name:'tom',age:19}
+  })
 
   //失败(同步任务)
-  const result4 = Promise.race([promise4, promise2, promise3])
-  console.log('result4>>>', result4) // 新promise的值：[1,2,3,4]
+  const r2 = Promise.race([promise6, promise2, promise3])
+  r2.catch(err => {
+    console.log('Promise.race--catch：', err) //失败数据1111
+  })
 
   //成功(异步任务)
-  const result5 = Promise.race([promise5, promise2, promise3])
-  console.log('result5>>>', result5) // 新promise的值：成功数据1111
-  //
-  //
-  //
+  const r3 = Promise.race([promise5, promise2, promise3])
+  r3.then(res => {
+    console.log('Promise.race--异步：', res) // 成功数据1111
+    console.warn('--------------------------Promise.race------------------------------')
+  })
+
+  /************************************************  Promise.allSettled([]) *************************************************************************/
+  const promises = [Promise.resolve('ok1'), Promise.reject('err1'), Promise.resolve('ok2')]
+
+  Promise.allSettled(promises)
+    .then(results => {
+      console.log('promise.allSettled--有成功和失败：', results) //[ { status: 'fulfilled', value: 'ok1' }, { status: 'rejected', reason: 'err1' }, { status: 'fulfilled', value: 'ok2' } ]
+      console.warn('--------------------------Promise.allSettled------------------------------')
+    })
+    .catch(error => {
+      console.error(error)
+    })
 
   /************************************************  promise链式任务 + 中断promise链  *************************************************************************/
   // 中断promise链: 只有一种方法就是返回一个pending状态的promise
@@ -182,18 +216,20 @@
   })
 
   p6.then(res => {
-    console.log(res) // ok
+    console.log('promise链式任务--pending：', res)
     return new Promise((resolve, reject) => {
-      resolve('error')
+      resolve('success')
     })
   })
     .then(res => {
-      console.log(res) // success
-      return false
+      console.log('promise链式任务--then1：', res)
+      return 'error'
     })
     .then(res => {
-      console.log(res, 11) // false 11
-      return new Promise(() => {}) //中断promise链
+      console.log('promise链式任务--then2：', res) // false 11
+      console.warn('--------------------------promise链式任务 + 中断promise链------------------------------')
+
+      return new Promise(() => {}) //中断promise链,后面就不会打印了
     })
     .then(res => {
       console.log(res, 22) // undefined 22
@@ -209,33 +245,34 @@
     })
 
   // promise解决回调地狱 -------------------------------------------~
-  Ajaxs('https://api.apiopen.top/getJoke')
-    .then(res => {
-      console.log(res, '1')
-      return Ajaxs('https://api.apiopen.top/getJoke')
-    })
-    .then(res => {
-      console.log(res, '2')
-      return Ajaxs('https://api.apiopen.top/getJoke')
-    })
-    .then(res => {
-      console.log(res, '3')
-    })
-    .catch(err => {
-      console.log(err, '捕获接口的错误')
-    })
+  // Ajaxs('https://api.apiopen.top/getJoke')
+  //   .then(res => {
+  //     console.log(res, '1')
+  //     return Ajaxs('https://api.apiopen.top/getJoke')
+  //   })
+  //   .then(res => {
+  //     console.log(res, '2')
+  //     return Ajaxs('https://api.apiopen.top/getJoke')
+  //   })
+  //   .then(res => {
+  //     console.log(res, '3')
+  //   })
+  //   .catch(err => {
+  //     console.log(err, '捕获接口的错误')
+  //   })
 
   /************************************************  async+await *************************************************************************/
   async function main() {
     // return 123;  //返回值是123的Pormise，
-    return new Promise((resolve, reject) => {
-      //返回值是ok的Pormise，
-      resolve('ok')
-    })
+    return new Promise((resolve, reject) =>  resolve('ok'))
   }
   const m = main()
-  m.then(res => {})
-  console.log(m) //promiase对象
+  m.then(res => {
+    m.then(res2=>{
+      console.log('async+await--成功：',  res2) // ok
+    })
+  })
+  
 
   async function main22() {
     // 1、右侧为其它值
@@ -244,62 +281,32 @@
     const res2 = await new Promise((resolve, reject) => {
       resolve('success1111')
     })
-    console.log(res, res2, '---成功--') // false  success1111
+    console.log('async+await--成功：', res, res2) // false  success1111
 
     // 3、右侧为promis对象 --失败
     try {
-      var res3 = await new Promise((resolve, reject) => {
+      var result1 = await new Promise((resolve, reject) => {
         reject('error1111')
       })
-    } catch (e) {
-      console.log(e, '---失败--') //error1111
+    } catch (err) {
+      console.log('async+await--失败：', err) // error1111
     }
   }
   main22()
 
-  async function main3() {
-    try {
-      const res1 = await Ajaxs('https://api.apiopen.top/getJoke')
-      const res2 = await Ajaxs('https://api.apiopen.top/getJoke1')
-      const res3 = await Ajaxs('https://api.apiopen.top/getJoke')
-      console.log(res1, '----1---')
-      console.log(res2, '----2---')
-      console.log(res3, '----3---')
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  // async function main3() {
+  //   try {
+  //     const res1 = await Ajaxs('https://api.apiopen.top/getJoke')
+  //     const res2 = await Ajaxs('https://api.apiopen.top/getJoke1')
+  //     const res3 = await Ajaxs('https://api.apiopen.top/getJoke')
+  //     console.log(res1, '----1---')
+  //     console.log(res2, '----2---')
+  //     console.log(res3, '----3---')
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
   // main3()
-
-  // Promise:
-  let pro1 = Promise.resolve('ok')
-  let pro2 = Promise.reject('err')
-  let pro3 = Promise.reject('err2')
-  //  --Promise.try()
-  // --finally：不接受任何参数；执行完then或catch后执行；
-  // Promise.prototype.finally()
-  new Promise((resolve, reject) => resolve('resolvesss'))
-    .then(res => console.log('then:', res))
-    .catch(error => {})
-    .finally(() => console.log('finally:', 111))
-
-  //  --Promise.all([])：所有s实例都成功才返回；有一个Promise错就返回错的Promise，可将promies接收一个catch
-  Promise.all([pro1, pro2.catch(e => e)]).then(res => {
-    console.log('Promise.all():', res) // ['ok', 'err']
-  })
-
-  //  --Promise.allSettled([])：等所有实例不管成功还是失败都执行完，再调用
-  Promise.allSettled([pro1, pro2]).then(res => {
-    console.log('Promise.allSettled():', res) // [ {status:'fulfilled',value:'ok'}, {status:'rejected',value:'err'} ]
-  })
-
-  //  --Promise.any([])：只有有一个实例成功，就返回成功；
-  Promise.any([pro2, pro3]).catch(err => {
-    console.log('Promise.any():', err) // AggregateError: All promises were rejected
-  })
-  Promise.any([pro2, pro1]).then(res => {
-    console.log('Promise.any():', res) // 'ok'
-  })
 
   // ***************promise执行顺序*********************
   // 同步(全局、promise函数体)
@@ -309,36 +316,36 @@
   //
   // )
 
-  console.log(1)
-  async function main1() {
-    await main2()
-    console.log(2) //微任务，then
-  }
+  // console.log(1)
+  // async function main1() {
+  //   await main2()
+  //   console.log(2) //微任务，then
+  // }
 
-  async function main2() {
-    console.log(3) // 这也是promise函数体
-  }
-  main1()
-  setTimeout(() => {
-    console.log(9)
-  }, 100)
-  setTimeout(() => {
-    console.log(4)
-  }, 0)
+  // async function main2() {
+  //   console.log(3) // 这也是promise函数体
+  // }
+  // main1()
+  // setTimeout(() => {
+  //   console.log(9)
+  // }, 100)
+  // setTimeout(() => {
+  //   console.log(4)
+  // }, 0)
 
-  new Promise(resolve => {
-    console.log(5)
-    resolve() //加这个，promise才会走then方法
-  })
-    .then(() => {
-      console.log(6)
-    })
-    .then(() => {
-      console.log(7)
-    })
+  // new Promise(resolve => {
+  //   console.log(5)
+  //   resolve() //加这个，promise才会走then方法
+  // })
+  //   .then(() => {
+  //     console.log(6)
+  //   })
+  //   .then(() => {
+  //     console.log(7)
+  //   })
 
-  console.log(8)
-  console.warn('sssssssssssssssss')
+  // console.log(8)
+  // console.warn('sssssssssssssssss')
 
   // 1 3 5 8 2 6 7 4  9
   //
@@ -346,20 +353,20 @@
   // setImmediate(()=>{
   //   console.log(1)
   // })
-  console.log(2)
-  setTimeout(() => {
-    console.log(3)
-  }, 0) //第一次放入任务队列中，事件循环加载，然后走setImmediate
-  setTimeout(() => {
-    console.log(4)
-  }, 100) //100毫秒后第二次放入任务队列中，所以这个打印在setImmediate后
-  console.log(5)
-  new Promise(resolve => {
-    console.log(6) // 同步
-    resolve() // 加这个，promise才会走then方法
-  }).then(() => {
-    console.log(7)
-  })
+  // console.log(2)
+  // setTimeout(() => {
+  //   console.log(3)
+  // }, 0) //第一次放入任务队列中，事件循环加载，然后走setImmediate
+  // setTimeout(() => {
+  //   console.log(4)
+  // }, 100) //100毫秒后第二次放入任务队列中，所以这个打印在setImmediate后
+  // console.log(5)
+  // new Promise(resolve => {
+  //   console.log(6) // 同步
+  //   resolve() // 加这个，promise才会走then方法
+  // }).then(() => {
+  //   console.log(7)
+  // })
   // process.nextTick(()=>{
   //   console.log(8)
   // })

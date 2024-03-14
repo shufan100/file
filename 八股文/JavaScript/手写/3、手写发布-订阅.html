@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="add()">1</button>
+  </body>
+</html>
+<script>
+  class EventEmitter {
+    constructor() {
+      this.handlers = {}
+    }
+    // on监听器
+    on(eventName, cb) {
+      if (!this.handlers[eventName]) {
+        this.handlers[eventName] = []
+      }
+      this.handlers[eventName].push(cb)
+    }
+    // emit触发目标事件
+    emit(eventName, ...args) {
+      if (this.handlers[eventName]) {
+        const handlers = this.handlers[eventName].slice()
+        handlers.forEach(callback => {
+          callback(...args)
+        })
+      }
+    }
+    // 移除某个事件回调队列里的指定回调函数
+    off(eventName, cb) {
+      if (this.handlers[eventName]) {
+        delete this.handlers[eventName]
+      }
+    }
+    // once单次监听器
+    once(eventName, cb) {
+      const wrapper = (...args) => {
+        cb(...args)
+        this.off(eventName, wrapper)
+      }
+      this.on(eventName, wrapper)
+    }
+  }
+
+  
+// 使用发布-订阅
+  let bus = new EventEmitter()
+  bus.on('add', data => {
+    console.log(data)
+    bus.off('add')
+  })
+
+  function add() {
+    bus.emit('add', [1, 2])
+  }
+</script>

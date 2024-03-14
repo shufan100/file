@@ -9,7 +9,7 @@
  *  -es5 和 es6 例子：(区别)
  *    --类不存在变量提示; function存在变量提升;
  */
-console.warn('-----------es5----------')
+console.warn('------------------------------------------------------------------------es5----------')
 // es5写法
 function Persones5(name, age) {
   this.name = name
@@ -35,7 +35,7 @@ console.log(pro1.hasOwnProperty('speak')) //false
 
 //
 
-console.warn('----------es6-----------')
+console.warn('------------------------------------------------------------------es6-----------')
 // es6 class类名写法
 class Person {
   sex1 = this.sex //新写法
